@@ -36,7 +36,7 @@ read -p "Ingresa tu opción (1-3): " option
 case $option in
     1)
         echo -e "${YELLOW}Iniciando modo DESARROLLO...${NC}"
-        npm run dev || npm start || echo -e "${RED}No se pudo iniciar dev server.${NC}"
+        npm start || npm start || echo -e "${RED}No se pudo iniciar dev server.${NC}"
         ;;
     2)
         echo -e "${YELLOW}Generando BUILD de PRODUCCIÓN...${NC}"
