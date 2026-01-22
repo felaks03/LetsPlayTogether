@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
 const VideojuegoSchema = new Schema({
   titulo: { type: String, required: true },
@@ -11,4 +11,4 @@ const VideojuegoSchema = new Schema({
   creadoEn: { type: Date, default: Date.now },
 });
 
-module.exports = model('Videojuego', VideojuegoSchema);
+module.exports = model("Videojuego", VideojuegoSchema);

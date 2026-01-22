@@ -1,4 +1,4 @@
-const Videojuego = require('../models/videojuego.model');
+const Videojuego = require("../models/videojuego.model");
 
 async function videojuegoList() {
   return Videojuego.find().lean();
