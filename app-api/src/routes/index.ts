@@ -1,8 +1,17 @@
 import { Router } from "express";
-import mercancia from "./mercancia.routes";
 
 const router = Router();
 
-router.use("/mercancias", mercancia);
+let videojuegosRouter: any;
+try {
+
+  videojuegosRouter = require("./videojuego.routes.js");
+} catch (e) {
+
+  videojuegosRouter =
+    require("./videojuego.routes").default || require("./videojuego.routes");
+}
+
+router.use("/videojuegos", videojuegosRouter);
 
 export default router;
