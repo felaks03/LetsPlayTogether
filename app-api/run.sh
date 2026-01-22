@@ -1,25 +1,22 @@
 #!/bin/bash
 
-# Configuración de colores para la terminal
 BOLD="[1m"
 GREEN="[0;32m"
 BLUE="[0;34m"
 YELLOW="[0;33m"
 RED="[0;31m"
-NC="[0m" # No Color
+NC="[0m"
 
 echo -e "${BOLD}${GREEN}=== LetPlayTogether BACKEND - Lanzador de Aplicación ===${NC}"
 echo ""
 
 cd "$(dirname "$0")" || { echo -e "${RED}No se pudo acceder al directorio del script${NC}"; exit 1; }
 
-# Verificar Node.js y npm
 if ! command -v node &> /dev/null || ! command -v npm &> /dev/null; then
     echo -e "${RED}Node.js o npm no están instalados.${NC}"
     exit 1
 fi
 
-# Instalar dependencias si no existen
 if [ ! -d "node_modules" ]; then
     echo -e "${YELLOW}Instalando dependencias...${NC}"
     npm install
