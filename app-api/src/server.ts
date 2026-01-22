@@ -6,7 +6,7 @@ dotenv.config();
 
 const port = process.env.PORT || 3000;
 const mongoUri =
-  process.env.MONGO_URI || "mongodb:
+  process.env.MONGO_URI || "mongodb://localhost:27017/letplaytogether";
 
 const connectDB = async () => {
   try {
