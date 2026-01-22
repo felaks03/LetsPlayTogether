@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import routes from "./routes";
 
 dotenv.config();
 
@@ -12,5 +13,7 @@ app.use(cors());
 app.get("/", (_req, res) => {
   res.send("Backend funcionando");
 });
+
+app.use("/api", routes);
 
 export default app;
