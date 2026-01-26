@@ -1,22 +1,12 @@
-import express, { Request, Response } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import cors from "cors";
+import app from "./app";
 
-// Cargar variables de .env
 dotenv.config();
 
-// Crear instancia de Express
-const app = express();
 const port = process.env.PORT || 3000;
-const mongoUri =
-  process.env.MONGO_URI || "mongodb://localhost:27017/letplaytogether";
+const mongoUri = "mongodb://localhost:27017/letplaytogether";
 
-// Middleware
-app.use(express.json());
-app.use(cors());
-
-// Función para conectar a MongoDB
 const connectDB = async () => {
   try {
     await mongoose.connect(mongoUri);
@@ -27,15 +17,8 @@ const connectDB = async () => {
   }
 };
 
-// Conectar a la base de datos
 connectDB();
 
-// Rutas de prueba
-app.get("/", (req: Request, res: Response) => {
-  res.send("Backend funcionando");
-});
-
-// Arrancar servidor
 app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
 });

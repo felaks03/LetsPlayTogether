@@ -1,3 +1,12 @@
+# app-front
+
+Angular frontend for LetsPlayTogether.
+
+Commands:
+
+- Install deps: `npm install`
+- Start dev server: `npm start`
+- Build production: `npm run build`
 # AppFrontTemp
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.0.
