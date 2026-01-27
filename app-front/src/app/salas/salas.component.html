@@ -1,0 +1,8 @@
+<div *ngIf="cargando">Cargando salas...</div>
+<div *ngIf="error">{{ error }}</div>
+
+<ul *ngIf="!cargando && !error">
+  <li *ngFor="let sala of salas">
+    <strong>{{ sala.nombre }}</strong> - Estado: {{ sala.estado }} - Usuarios: {{ sala.usuarios.length }}/{{ sala.maxUsuarios }}
+  </li>
+</ul>
