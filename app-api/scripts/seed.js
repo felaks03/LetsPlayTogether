@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Videojuego = require("./src/models/videojuego.model");
+const Videojuego = require("../src/models/videojuego.model");
 
 require("dotenv").config();
 
@@ -56,7 +56,7 @@ async function seedDatabase() {
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Conectado a MongoDB");
 
-    await Videojuego.deleteMany(); // Limpiar datos existentes
+    await Videojuego.deleteMany();
     console.log("Datos existentes eliminados");
 
     await Videojuego.insertMany(mockData);

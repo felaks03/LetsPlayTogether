@@ -8,9 +8,11 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --watch src --ext ts --exec \"ts-node\" src/server.ts",
+    "dev": "nodemon --watch src --ext ts,js --exec \"ts-node\" src/server.ts",
+    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
     "start": "node dist/server.js",
-    "build": "tsc"
+    "build": "tsc",
+    "seed": "node scripts/seed.js"
   },
   "keywords": [],
   "author": "",
