@@ -13,7 +13,7 @@ const router = Router();
 router.post("/", createUserController);
 router.get("/:id", authMiddleware, getUserByIdController);
 router.put("/:id", authMiddleware, updateUserController);
-router.delete("/:id", authMiddleware, adminMiddleware, deleteUserController);
+router.delete("/:id", authMiddleware, deleteUserController);
 router.get("/", authMiddleware, getUsersController);
 
 export default router;
