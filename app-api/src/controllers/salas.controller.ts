@@ -6,25 +6,20 @@ import { Types } from "mongoose";
 /**
  * Tipos para los params y body de cada endpoint
  */
-
-// Para rutas que reciben :id
 interface SalaIdParam {
   id: string;
 }
 
-// Para join y leave de sala
 interface SalaUserBody {
   salaId: string;
   userId: string;
 }
 
-// Para actualizar estado
 interface SalaEstadoBody {
   salaId: string;
   estado: "OPEN" | "IN_GAME" | "FULL" | "CLOSED";
 }
 
-// Para crear sala
 interface SalaCreateBody {
   nombre: string;
   videojuego: string;
@@ -51,10 +46,7 @@ export async function getSalas(req: Request, res: Response) {
 export async function getSalaById(req: Request<SalaIdParam>, res: Response) {
   try {
     const { id } = req.params;
-
-    if (!Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ error: "ID de sala inválido" });
-    }
+    if (!Types.ObjectId.isValid(id)) return res.status(400).json({ error: "ID de sala inválido" });
 
     const sala = await SalaService.getSalaById(id);
     if (!sala) return res.status(404).json({ error: "Sala no encontrada" });
@@ -71,13 +63,10 @@ export async function getSalaById(req: Request<SalaIdParam>, res: Response) {
 export async function createSala(req: Request<{}, {}, SalaCreateBody>, res: Response) {
   try {
     const data = req.body;
-
-    // Validaciones mínimas
     if (!data.nombre || !data.videojuego || !data.host) {
       return res.status(400).json({ error: "Datos incompletos para crear sala" });
     }
 
-    // Convertimos los IDs que vienen como string en ObjectId de Mongoose
     const nuevaSala = await SalaService.createSala({
       ...data,
       videojuego: new Types.ObjectId(data.videojuego),
@@ -90,18 +79,12 @@ export async function createSala(req: Request<{}, {}, SalaCreateBody>, res: Resp
   }
 }
 
-
 /**
  * Unirse a una sala
  */
 export async function joinSala(req: Request<{}, {}, SalaUserBody>, res: Response) {
   try {
     const { salaId, userId } = req.body;
-
-    if (!Types.ObjectId.isValid(salaId) || !Types.ObjectId.isValid(userId)) {
-      return res.status(400).json({ error: "IDs inválidos" });
-    }
-
     const sala = await SalaService.joinSala(salaId, userId);
     res.json(sala);
   } catch (err: any) {
@@ -115,37 +98,36 @@ export async function joinSala(req: Request<{}, {}, SalaUserBody>, res: Response
 export async function leaveSala(req: Request<{}, {}, SalaUserBody>, res: Response) {
   try {
     const { salaId, userId } = req.body;
-
-    if (!Types.ObjectId.isValid(salaId) || !Types.ObjectId.isValid(userId)) {
-      return res.status(400).json({ error: "IDs inválidos" });
-    }
-
     const sala = await SalaService.leaveSala(salaId, userId);
     res.json(sala);
-  } catch (err) {
-    res.status(500).json({ error: "Error al salir de la sala" });
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
   }
 }
+
 
 /**
  * Actualizar estado de sala
  */
-export async function updateEstadoSala(req: Request<{}, {}, SalaEstadoBody>, res: Response) {
+export async function updateEstadoSalaController(
+  req: Request<{}, {}, SalaEstadoBody>,
+  res: Response
+) {
   try {
     const { salaId, estado } = req.body;
 
-    if (!Types.ObjectId.isValid(salaId)) {
-      return res.status(400).json({ error: "ID de sala inválido" });
+    // VALIDAMOS que no se intente enviar FULL manualmente
+    if (estado === "FULL") {
+      return res.status(400).json({ error: "No se puede poner FULL manualmente" });
     }
 
     const sala = await SalaService.updateEstadoSala(salaId, estado);
-    if (!sala) return res.status(404).json({ error: "Sala no encontrada" });
-
     res.json(sala);
-  } catch (err) {
-    res.status(500).json({ error: "Error al actualizar el estado de la sala" });
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
   }
 }
+
 
 /**
  * Eliminar sala
@@ -153,7 +135,6 @@ export async function updateEstadoSala(req: Request<{}, {}, SalaEstadoBody>, res
 export async function deleteSala(req: Request<SalaIdParam>, res: Response) {
   try {
     const { id } = req.params;
-
     if (!Types.ObjectId.isValid(id)) return res.status(400).json({ error: "ID inválido" });
 
     const sala = await SalaService.deleteSala(id);

@@ -21,7 +21,7 @@ export class SalasComponent implements OnInit {
   nuevaSalaMaxUsuarios = 4;
 
   // Reemplaza con el ID del usuario actual
-  hostId = '697a5cb7661c1e020e6a3020';
+  hostId = '697a5cb7661c1e020e6a301f';
 
   constructor(private salasService: SalasService) {}
 
@@ -111,12 +111,15 @@ cambiarEstadoSala(sala: Sala, estado: Sala['estado']) {
 }
 
 esUsuarioEnSala(sala: Sala): boolean {
-  return sala.usuarios.some(u => u.toString() === this.hostId);
+  return sala.usuarios
+    .map(u => u.toString())
+    .includes(this.hostId);
 }
 
 esHost(sala: Sala): boolean {
   return sala.host.toString() === this.hostId;
 }
+
 
 
 }
