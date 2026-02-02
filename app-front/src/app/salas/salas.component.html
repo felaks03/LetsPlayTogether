@@ -1,0 +1,40 @@
+<!-- Lista de salas -->
+<ul *ngIf="!cargando() && !error()">
+  <li *ngFor="let sala of salas()">
+    <strong>{{ sala.nombre }}</strong> -
+    Estado: {{ sala.estado }} -
+    Usuarios: {{ sala.usuarios.length }}/{{ sala.maxUsuarios }}
+
+    <!-- Unirse -->
+    <button
+      (click)="unirseSala(sala)"
+      [disabled]="esUsuarioEnSala(sala)">
+      Unirse
+    </button>
+
+    <!-- Salir -->
+    <button
+      (click)="salirSala(sala)"
+      [disabled]="!esUsuarioEnSala(sala)">
+      Salir
+    </button>
+
+    <!-- Eliminar sala (solo host) -->
+    <button
+      *ngIf="esHost(sala)"
+      (click)="eliminarSala(sala)">
+      Eliminar
+    </button>
+
+    <!-- Cambiar estado (solo host) -->
+    <select
+      *ngIf="esHost(sala)"
+      [(ngModel)]="sala.estado"
+      (change)="cambiarEstadoSala(sala, sala.estado)">
+      <option value="OPEN">OPEN</option>
+      <option value="IN_GAME">IN_GAME</option>
+      <option value="FULL">FULL</option>
+      <option value="CLOSED">CLOSED</option>
+    </select>
+  </li>
+</ul>
