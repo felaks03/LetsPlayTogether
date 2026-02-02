@@ -6,13 +6,14 @@ import {
     updateUserController,
     deleteUserController,
 } from "../controllers/user.controller";
+import { authMiddleware, adminMiddleware } from "../auth/auth.middleware";
 
 const router = Router();
 
 router.post("/", createUserController);
-router.get("/", getUsersController);
 router.get("/:id", getUserByIdController);
 router.put("/:id", updateUserController);
-router.delete("/:id", deleteUserController);
+router.delete("/:id", authMiddleware, adminMiddleware, deleteUserController);
+router.get("/", authMiddleware, getUsersController);
 
 export default router;
