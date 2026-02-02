@@ -16,7 +16,8 @@ router.post("/", SalaController.createSala);
 // Acciones
 router.post("/join", SalaController.joinSala);
 router.post("/leave", SalaController.leaveSala);
-router.patch("/estado", SalaController.updateEstadoSala);
+router.patch("/estado", SalaController.updateEstadoSalaController);
+
 
 // Obtener / eliminar por ID (SIEMPRE al final)
 router.get("/:id", SalaController.getSalaById);

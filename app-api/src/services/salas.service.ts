@@ -4,7 +4,6 @@ import { Types } from "mongoose";
 /**
  * Crear una sala
  */
-
 interface CreateSalaData {
   nombre: string;
   videojuego: Types.ObjectId;
@@ -17,11 +16,11 @@ export async function createSala(data: CreateSalaData) {
   const sala = new Sala({
     ...data,
     usuarios: [data.host],
+    estado: "OPEN", // Siempre inicia abierta
   });
 
   return sala.save();
 }
-
 
 /**
  * Obtener todas las salas
@@ -42,15 +41,13 @@ export async function getSalaById(id: string) {
  * Unirse a una sala
  */
 export async function joinSala(salaId: string, userId: string) {
-  // Validación de IDs
   if (!Types.ObjectId.isValid(salaId) || !Types.ObjectId.isValid(userId)) {
-    return null;
+    throw new Error("IDs inválidos");
   }
 
   const sala = await Sala.findById(salaId);
-  if (!sala) return null;
+  if (!sala) throw new Error("Sala no encontrada");
 
-  // No permitir unirse si la sala está cerrada
   if (sala.estado === "CLOSED") {
     throw new Error("La sala está cerrada");
   }
@@ -72,14 +69,13 @@ export async function joinSala(salaId: string, userId: string) {
   // Añadir usuario
   sala.usuarios.push(userObjectId);
 
-  // Actualizar estado según cantidad
-  if (sala.usuarios.length === sala.maxUsuarios) {
+  // Actualizar estado automáticamente si llega al máximo
+  if (sala.usuarios.length >= sala.maxUsuarios) {
     sala.estado = "FULL";
-  } else if (sala.estado === "OPEN") {
-    sala.estado = "IN_GAME";
   }
 
-  return sala.save();
+  await sala.save();
+  return sala;
 }
 
 /**
@@ -87,27 +83,45 @@ export async function joinSala(salaId: string, userId: string) {
  */
 export async function leaveSala(salaId: string, userId: string) {
   if (!Types.ObjectId.isValid(salaId) || !Types.ObjectId.isValid(userId)) {
-    return null;
+    throw new Error("IDs inválidos");
   }
 
-  return Sala.findByIdAndUpdate(
-    salaId,
-    { $pull: { usuarios: new Types.ObjectId(userId) } },
-    { new: true }
-  ).lean();
+  const sala = await Sala.findById(salaId);
+  if (!sala) throw new Error("Sala no encontrada");
+
+  const userObjectId = new Types.ObjectId(userId);
+
+  sala.usuarios = sala.usuarios.filter(u => !u.equals(userObjectId));
+
+  // Recalcular estado si la sala no está cerrada
+  if (sala.estado !== "CLOSED") {
+    sala.estado = sala.usuarios.length >= sala.maxUsuarios ? "FULL" : "OPEN";
+  }
+
+  await sala.save();
+  return sala;
 }
 
 /**
  * Actualizar el estado de una sala
+ * Solo se permite OPEN, IN_GAME o CLOSED manualmente
+ * FULL solo se maneja automáticamente
  */
-export async function updateEstadoSala(salaId: string, estado: ISala["estado"]) {
-  if (!Types.ObjectId.isValid(salaId)) return null;
+export async function updateEstadoSala(
+  salaId: string,
+  estado: "OPEN" | "IN_GAME" | "CLOSED"
+) {
+  if (!Types.ObjectId.isValid(salaId)) {
+    throw new Error("ID inválido");
+  }
 
-  return Sala.findByIdAndUpdate(
-    salaId,
-    { estado },
-    { new: true }
-  ).lean();
+  const sala = await Sala.findById(salaId);
+  if (!sala) throw new Error("Sala no encontrada");
+
+  // FULL ya no se puede poner manualmente
+  sala.estado = estado;
+  await sala.save();
+  return sala;
 }
 
 /**

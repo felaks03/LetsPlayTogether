@@ -1,3 +1,36 @@
+<h2>Salas disponibles</h2>
+
+<!-- Mensajes -->
+<div *ngIf="cargando()">Cargando salas...</div>
+<div *ngIf="error()">{{ error() }}</div>
+
+<!-- Crear sala -->
+<div class="crear-sala">
+  <h3>Crear sala</h3>
+
+  <input
+    type="text"
+    placeholder="Nombre de la sala"
+    [(ngModel)]="nuevaSalaNombre"
+  />
+
+  <input
+    type="text"
+    placeholder="ID del videojuego"
+    [(ngModel)]="nuevaSalaVideojuegoId"
+  />
+
+  <input
+    type="number"
+    placeholder="Máx usuarios"
+    [(ngModel)]="nuevaSalaMaxUsuarios"
+  />
+
+  <button (click)="crearSala()">Crear sala</button>
+</div>
+
+<hr />
+
 <!-- Lista de salas -->
 <ul *ngIf="!cargando() && !error()">
   <li *ngFor="let sala of salas()">
@@ -19,7 +52,7 @@
       Salir
     </button>
 
-    <!-- Eliminar sala (solo host) -->
+    <!-- Eliminar sala -->
     <button
       *ngIf="esHost(sala)"
       (click)="eliminarSala(sala)">
@@ -33,7 +66,6 @@
       (change)="cambiarEstadoSala(sala, sala.estado)">
       <option value="OPEN">OPEN</option>
       <option value="IN_GAME">IN_GAME</option>
-      <option value="FULL">FULL</option>
       <option value="CLOSED">CLOSED</option>
     </select>
   </li>
