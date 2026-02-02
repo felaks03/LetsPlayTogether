@@ -10,22 +10,16 @@ const router = Router();
 // Obtener todas las salas
 router.get("/", SalaController.getSalas);
 
-// Obtener sala por ID
-router.get("/:id", SalaController.getSalaById);
-
 // Crear sala
 router.post("/", SalaController.createSala);
 
-// Unirse a una sala
+// Acciones
 router.post("/join", SalaController.joinSala);
-
-// Salir de una sala
 router.post("/leave", SalaController.leaveSala);
-
-// Actualizar estado de sala
 router.patch("/estado", SalaController.updateEstadoSala);
 
-// Eliminar sala
+// Obtener / eliminar por ID (SIEMPRE al final)
+router.get("/:id", SalaController.getSalaById);
 router.delete("/:id", SalaController.deleteSala);
 
 export default router;

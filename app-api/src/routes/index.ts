@@ -1,17 +1,10 @@
 import { Router } from "express";
+import videojuegosRouter from "./videojuego.routes";
+import salasRouter from "./salas.routes";
 
 const router = Router();
 
-let videojuegosRouter: any;
-try {
-
-  videojuegosRouter = require("./videojuego.routes.js");
-} catch (e) {
-
-  videojuegosRouter =
-    require("./videojuego.routes").default || require("./videojuego.routes");
-}
-
 router.use("/videojuegos", videojuegosRouter);
+router.use("/salas", salasRouter);
 
 export default router;
