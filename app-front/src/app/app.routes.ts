@@ -4,7 +4,8 @@ import { VideojuegoDetalleComponent } from './videojuego-detalle/videojuego-deta
 import { SalasComponent } from './salas/salas.component';
 
 export const routes: Routes = [
-  { path: '', component: SalasComponent },
+  { path: '', redirectTo: 'videojuegos', pathMatch: 'full' },
   { path: 'videojuegos', component: VideojuegosDashboardComponent },
   { path: 'videojuegos/:id', component: VideojuegoDetalleComponent },
+  { path: 'salas', component: SalasComponent },
 ];

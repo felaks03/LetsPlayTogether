@@ -1,102 +1,184 @@
 #!/bin/bash
 
-BOLD="[1m"
-GREEN="[0;32m"
-BLUE="[0;34m"
-YELLOW="[0;33m"
-RED="[0;31m"
-NC="[0m"
+# LetsPlayTogether - Script para iniciar todo (MongoDB Docker + Backend + Frontend)
 
-echo -e "${BOLD}${GREEN}=== LetPlayTogether - Iniciador Completo ===${NC}"
-echo ""
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m'
 
-# Función para matar procesos en un puerto específico
+PROJECT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# ─────────────────────────────────────────────
+# Función para liberar un puerto específico
+# ─────────────────────────────────────────────
 kill_port() {
-    local port=$1
-    echo -e "${YELLOW}Buscando procesos en puerto ${port}...${NC}"
-    
-    if command -v lsof &> /dev/null; then
-        local pids=$(lsof -t -i :$port)
-        if [ -n "$pids" ]; then
-            echo -e "${YELLOW}Matando procesos en puerto ${port}...${NC}"
-            kill -9 $pids 2>/dev/null || true
-            sleep 1
-            echo -e "${GREEN}Puerto ${port} liberado.${NC}"
-        else
-            echo -e "${BLUE}No hay procesos en puerto ${port}.${NC}"
-        fi
+    local PORT="$1"
+
+    if sudo fuser -k ${PORT}/tcp >/dev/null 2>&1; then
+        echo -e "${YELLOW}⚠️  Puerto $PORT liberado${NC}"
+        sleep 1
+        return 0
     else
-        echo -e "${YELLOW}lsof no disponible, intentando con fuser...${NC}"
-        fuser -k ${port}/tcp 2>/dev/null || true
+        echo -e "${BLUE}ℹ️  No había procesos en el puerto $PORT${NC}"
+        return 1
     fi
 }
 
-# Verificar que Node.js y npm están instalados
-if ! command -v node &> /dev/null || ! command -v npm &> /dev/null; then
-    echo -e "${RED}Error: Node.js o npm no están instalados.${NC}"
-    exit 1
-fi
-
-# Liberar puertos
-echo -e "${BOLD}Liberando puertos...${NC}"
-kill_port 3000
-kill_port 4200
-echo ""
-
-# Instalación de dependencias si es necesario
-echo -e "${BOLD}Verificando dependencias...${NC}"
-
-if [ ! -d "app-api/node_modules" ]; then
-    echo -e "${YELLOW}Instalando dependencias de app-api...${NC}"
-    cd app-api && npm install && cd ..
-fi
-
-if [ ! -d "app-front/node_modules" ]; then
-    echo -e "${YELLOW}Instalando dependencias de app-front...${NC}"
-    cd app-front && npm install && cd ..
-fi
-
-echo ""
-echo -e "${BOLD}${GREEN}Iniciando aplicaciones...${NC}"
-echo -e "${BLUE}Backend (puerto 3000):${NC} http://localhost:3000"
-echo -e "${BLUE}Frontend (puerto 4200):${NC} http://localhost:4200"
-echo ""
-echo -e "${YELLOW}Presiona Ctrl+C para detener todo.${NC}"
-echo ""
-
-# Función para limpiar al presionar Ctrl+C
-cleanup() {
-    echo ""
-    echo -e "${YELLOW}Deteniendo aplicaciones...${NC}"
-    kill $BACKEND_PID 2>/dev/null || true
-    kill $FRONTEND_PID 2>/dev/null || true
-    wait $BACKEND_PID 2>/dev/null || true
-    wait $FRONTEND_PID 2>/dev/null || true
-    echo -e "${GREEN}Aplicaciones detenidas.${NC}"
-    exit 0
+# ─────────────────────────────────────────────
+# Función para mostrar menú
+# ─────────────────────────────────────────────
+show_menu() {
+    echo -e "${GREEN}════════════════════════════════════════${NC}"
+    echo -e "${BLUE}LetsPlayTogether - Gestor de Servicios${NC}"
+    echo -e "${GREEN}════════════════════════════════════════${NC}"
+    echo "1) Matar puertos 4200 y 3000"
+    echo "2) Iniciar proyecto (Frontend + Backend + MongoDB)"
+    echo "0) Salir"
+    echo -e "${GREEN}════════════════════════════════════════${NC}"
+    read -p "Selecciona una opción: " OPTION
 }
 
-trap cleanup SIGINT SIGTERM
+# ─────────────────────────────────────────────
+# Iniciar proyecto completo
+# ─────────────────────────────────────────────
+start_project() {
 
-# Iniciar backend
-echo -e "${BOLD}${BLUE}>>> Iniciando BACKEND...${NC}"
-cd app-api
-npm run dev &
-BACKEND_PID=$!
-cd ..
+    echo -e "${GREEN}🚀 Iniciando LetsPlayTogether...${NC}"
+    echo "=========================="
 
-sleep 2
+    # Verificar Docker
+    if ! command -v docker &> /dev/null; then
+        echo -e "${RED}❌ Docker no está instalado${NC}"
+        exit 1
+    fi
 
-# Iniciar frontend
-echo -e "${BOLD}${BLUE}>>> Iniciando FRONTEND...${NC}"
-cd app-front
-npm start &
-FRONTEND_PID=$!
-cd ..
+    # Verificar Node
+    if ! command -v node &> /dev/null; then
+        echo -e "${RED}❌ Node.js no está instalado${NC}"
+        exit 1
+    fi
 
-echo ""
-echo -e "${GREEN}✓ Ambas aplicaciones iniciadas${NC}"
-echo ""
+    # Liberar puertos antes de arrancar
+    echo -e "${BLUE}[Sistema]${NC} Liberando puertos necesarios..."
+    kill_port 4200
+    kill_port 3000
 
-# Esperar a que ambos procesos terminen
-wait
+    # ───── MongoDB Docker ─────
+    echo ""
+    echo -e "${BLUE}[Docker]${NC} Iniciando MongoDB..."
+    cd "$PROJECT_DIR/app-api"
+    docker-compose up -d mongodb
+
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✓ MongoDB iniciado${NC}"
+        sleep 3
+    else
+        echo -e "${RED}❌ Error al iniciar MongoDB${NC}"
+    fi
+
+    # ───── Backend ─────
+    echo ""
+    echo -e "${BLUE}[Backend]${NC} Preparando backend..."
+    cd "$PROJECT_DIR/app-api"
+
+    if [ ! -d "node_modules" ]; then
+        npm install
+    fi
+
+    echo -e "${GREEN}[Backend]${NC} Iniciando en puerto 3000..."
+    npm run dev &
+    BACKEND_PID=$!
+
+    # ───── Frontend ─────
+    echo ""
+    echo -e "${BLUE}[Frontend]${NC} Preparando frontend..."
+    cd "$PROJECT_DIR/app-front"
+
+    if [ ! -d "node_modules" ]; then
+        npm install
+    fi
+
+    echo -e "${GREEN}[Frontend]${NC} Iniciando en puerto 4200..."
+    npm start &
+    FRONTEND_PID=$!
+
+    # ───── Resumen ─────
+    echo ""
+    echo -e "${GREEN}════════════════════════════════════════════════${NC}"
+    echo -e "${GREEN}✓ Servicios iniciados:${NC}"
+    echo "Frontend: http://localhost:4200"
+    echo "Backend:  http://localhost:3000"
+    echo "MongoDB:  localhost:27017"
+    echo -e "${GREEN}════════════════════════════════════════════════${NC}"
+    echo ""
+    echo "Presiona Ctrl+C para detener todo"
+
+    # ───── Capturar Ctrl+C ─────
+    trap "
+        echo ''
+        echo 'Deteniendo servicios...'
+        kill $FRONTEND_PID $BACKEND_PID 2>/dev/null
+        cd '$PROJECT_DIR/app-api'
+        docker-compose down
+        echo '✓ Todo detenido correctamente'
+        exit 0
+    " SIGINT
+
+    wait
+}
+
+# ─────────────────────────────────────────────
+# Matar puertos manualmente
+# ─────────────────────────────────────────────
+kill_ports() {
+    echo -e "${YELLOW}Liberando puertos 4200 y 3000...${NC}"
+    echo ""
+    kill_port 4200
+    kill_port 3000
+    echo ""
+    echo -e "${GREEN}✓ Puertos liberados${NC}"
+}
+
+# ─────────────────────────────────────────────
+# MAIN
+# ─────────────────────────────────────────────
+if [ $# -eq 0 ]; then
+    while true; do
+        show_menu
+        case $OPTION in
+            1)
+                echo ""
+                kill_ports
+                break
+                ;;
+            2)
+                echo ""
+                start_project
+                break
+                ;;
+            0)
+                echo "Saliendo..."
+                exit 0
+                ;;
+            *)
+                echo -e "${RED}Opción inválida${NC}"
+                echo ""
+                ;;
+        esac
+    done
+else
+    case $1 in
+        start)
+            start_project
+            ;;
+        kill)
+            kill_ports
+            ;;
+        *)
+            echo "Uso: ./run.sh [start|kill]"
+            exit 1
+            ;;
+    esac
+fi

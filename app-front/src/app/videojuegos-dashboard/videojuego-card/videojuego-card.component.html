@@ -1,16 +1,17 @@
 <div class="card">
     <div class="card-imagen">
-        <img [src]="videojuego.imagen" [alt]="videojuego.nombre" />
+        <img *ngIf="videojuego.imagen" [src]="videojuego.imagen" [alt]="videojuego.titulo" />
+        <div *ngIf="!videojuego.imagen" class="placeholder-img">🎮</div>
     </div>
 
     <div class="card-contenido">
-        <div class="genero-badge">{{ videojuego.genero }}</div>
+        <div class="genero-badge" *ngIf="videojuego.genero">{{ videojuego.genero }}</div>
 
-        <h3 class="titulo">{{ videojuego.nombre }}</h3>
+        <h3 class="titulo">{{ videojuego.titulo }}</h3>
 
-        <div class="calificacion">
+        <div class="calificacion" *ngIf="videojuego.puntuacion != null">
             <span *ngFor="let star of obtenerEstrellas()" class="estrella">{{ star }}</span>
-            <span class="puntuacion">({{ videojuego.calificacion }}/5)</span>
+            <span class="puntuacion">({{ videojuego.puntuacion }}/10)</span>
         </div>
 
         <div class="plataformas">
@@ -20,8 +21,8 @@
         </div>
 
         <div class="pie-card">
-            <span class="jugadores">👥 {{ videojuego.jugadoresOnline | number }}</span>
-            <a [routerLink]="['/videojuegos', videojuego.id]" class="btn-detalles">Ver Detalles</a>
+            <span class="jugadores-activos">Jugadores activos: por hacer</span>
+            <a [routerLink]="['/videojuegos', videojuego._id]" class="btn-detalles">Ver Detalles</a>
         </div>
     </div>
 </div>

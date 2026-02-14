@@ -5,6 +5,8 @@ import { Schema, model, Document } from "mongoose";
  */
 export interface IVideojuego extends Document {
   titulo: string;
+  descripcion?: string;
+  imagen?: string;
   genero?: string;
   desarrollador?: string;
   fechaLanzamiento?: Date;
@@ -16,6 +18,8 @@ export interface IVideojuego extends Document {
 
 const VideojuegoSchema = new Schema<IVideojuego>({
   titulo: { type: String, required: true },
+  descripcion: { type: String },
+  imagen: { type: String },
   genero: { type: String },
   desarrollador: { type: String },
   fechaLanzamiento: { type: Date },

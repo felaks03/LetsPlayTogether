@@ -2,17 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { VideojuegoCardComponent } from './videojuego-card/videojuego-card.component';
-
-interface Videojuego {
-  id: string;
-  nombre: string;
-  descripcion: string;
-  imagen: string;
-  genero: string;
-  plataformas: string[];
-  calificacion: number;
-  jugadoresOnline: number;
-}
+import { VideojuegosService, Videojuego } from './videojuegos.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-videojuegos-dashboard',
@@ -24,77 +15,45 @@ interface Videojuego {
 export class VideojuegosDashboardComponent implements OnInit {
   videojuegos: Videojuego[] = [];
   terminoBusqueda: string = '';
+  cargando = false;
+  error: string | null = null;
+
+  // Admin modal
+  mostrarModal = false;
+  modoEdicion = false;
+  videojuegoEditando: Partial<Videojuego> = {};
+
+  // Confirmación eliminar
+  mostrarConfirmacion = false;
+  videojuegoAEliminar: Videojuego | null = null;
+
+  constructor(
+    private videojuegosService: VideojuegosService,
+    private authService: AuthService,
+  ) {}
 
   ngOnInit() {
     this.cargarVideojuegos();
   }
 
+  get esAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
   cargarVideojuegos() {
-    // Datos de prueba
-    this.videojuegos = [
-      {
-        id: '1',
-        nombre: 'Cyberpunk 2077',
-        descripcion:
-          'Un emocionante juego RPG de rol en primera persona ambientado en un futuro distópico.',
-        imagen: 'https://via.placeholder.com/300x400?text=Cyberpunk+2077',
-        genero: 'RPG',
-        plataformas: ['PC', 'PS5', 'Xbox'],
-        calificacion: 4.5,
-        jugadoresOnline: 125000,
+    this.cargando = true;
+    this.error = null;
+    this.videojuegosService.obtenerVideojuegos().subscribe({
+      next: (data) => {
+        this.videojuegos = data;
+        this.cargando = false;
       },
-      {
-        id: '2',
-        nombre: 'Call of Duty: Modern Warfare III',
-        descripcion: 'El último capítulo de la saga con intensas batallas multijugador.',
-        imagen: 'https://via.placeholder.com/300x400?text=Call+of+Duty',
-        genero: 'FPS',
-        plataformas: ['PC', 'PS5', 'Xbox'],
-        calificacion: 4.3,
-        jugadoresOnline: 450000,
+      error: (err) => {
+        this.error = 'Error al cargar videojuegos. Asegúrate de estar logueado.';
+        console.error(err);
+        this.cargando = false;
       },
-      {
-        id: '3',
-        nombre: 'Elden Ring',
-        descripcion: 'Un épico juego de rol de acción en un mundo abierto lleno de misterios.',
-        imagen: 'https://via.placeholder.com/300x400?text=Elden+Ring',
-        genero: 'RPG',
-        plataformas: ['PC', 'PS5', 'Xbox'],
-        calificacion: 4.8,
-        jugadoresOnline: 250000,
-      },
-      {
-        id: '4',
-        nombre: 'StarCraft II',
-        descripcion:
-          'Estrategia en tiempo real competitiva con profundidad estratégica sin límites.',
-        imagen: 'https://via.placeholder.com/300x400?text=StarCraft+II',
-        genero: 'Estrategia',
-        plataformas: ['PC'],
-        calificacion: 4.6,
-        jugadoresOnline: 80000,
-      },
-      {
-        id: '5',
-        nombre: 'The Legend of Zelda: Tears of the Kingdom',
-        descripcion: 'Una aventura épica en un mundo mágico lleno de peligros y tesoros.',
-        imagen: 'https://via.placeholder.com/300x400?text=Zelda',
-        genero: 'Aventura',
-        plataformas: ['Nintendo Switch'],
-        calificacion: 4.9,
-        jugadoresOnline: 300000,
-      },
-      {
-        id: '6',
-        nombre: 'FIFA 24',
-        descripcion: 'El simulador de fútbol más realista con los mejores jugadores del mundo.',
-        imagen: 'https://via.placeholder.com/300x400?text=FIFA+24',
-        genero: 'Deportes',
-        plataformas: ['PC', 'PS5', 'Xbox'],
-        calificacion: 4.2,
-        jugadoresOnline: 500000,
-      },
-    ];
+    });
   }
 
   get videojuegosFiltrados(): Videojuego[] {
@@ -104,7 +63,104 @@ export class VideojuegosDashboardComponent implements OnInit {
     const termino = this.terminoBusqueda.toLowerCase();
     return this.videojuegos.filter(
       (vj) =>
-        vj.nombre.toLowerCase().includes(termino) || vj.genero.toLowerCase().includes(termino),
+        vj.titulo.toLowerCase().includes(termino) ||
+        (vj.genero && vj.genero.toLowerCase().includes(termino)),
     );
+  }
+
+  // ---- Admin CRUD ----
+
+  abrirModalCrear() {
+    this.modoEdicion = false;
+    this.videojuegoEditando = {
+      titulo: '',
+      descripcion: '',
+      imagen: '',
+      genero: '',
+      desarrollador: '',
+      plataformas: [],
+      puntuacion: 0,
+      multijugador: false,
+    };
+    this.mostrarModal = true;
+  }
+
+  abrirModalEditar(vj: Videojuego) {
+    this.modoEdicion = true;
+    this.videojuegoEditando = { ...vj, plataformas: [...vj.plataformas] };
+    this.mostrarModal = true;
+  }
+
+  cerrarModal() {
+    this.mostrarModal = false;
+    this.videojuegoEditando = {};
+  }
+
+  get plataformasTexto(): string {
+    return this.videojuegoEditando.plataformas?.join(', ') || '';
+  }
+
+  set plataformasTexto(val: string) {
+    this.videojuegoEditando.plataformas = val
+      .split(',')
+      .map((p) => p.trim())
+      .filter((p) => p);
+  }
+
+  guardarVideojuego() {
+    if (!this.videojuegoEditando.titulo) {
+      this.error = 'El título es obligatorio';
+      return;
+    }
+
+    if (this.modoEdicion && this.videojuegoEditando._id) {
+      this.videojuegosService
+        .actualizarVideojuego(this.videojuegoEditando._id, this.videojuegoEditando)
+        .subscribe({
+          next: () => {
+            this.cerrarModal();
+            this.cargarVideojuegos();
+          },
+          error: (err) => {
+            this.error = 'Error al actualizar videojuego';
+            console.error(err);
+          },
+        });
+    } else {
+      this.videojuegosService.crearVideojuego(this.videojuegoEditando).subscribe({
+        next: () => {
+          this.cerrarModal();
+          this.cargarVideojuegos();
+        },
+        error: (err) => {
+          this.error = 'Error al crear videojuego';
+          console.error(err);
+        },
+      });
+    }
+  }
+
+  confirmarEliminar(vj: Videojuego) {
+    this.videojuegoAEliminar = vj;
+    this.mostrarConfirmacion = true;
+  }
+
+  cancelarEliminar() {
+    this.videojuegoAEliminar = null;
+    this.mostrarConfirmacion = false;
+  }
+
+  eliminarVideojuego() {
+    if (!this.videojuegoAEliminar) return;
+    this.videojuegosService.eliminarVideojuego(this.videojuegoAEliminar._id).subscribe({
+      next: () => {
+        this.cancelarEliminar();
+        this.cargarVideojuegos();
+      },
+      error: (err) => {
+        this.error = 'Error al eliminar videojuego';
+        console.error(err);
+      },
+    });
   }
 }

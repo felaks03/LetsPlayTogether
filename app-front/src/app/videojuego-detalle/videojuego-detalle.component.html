@@ -1,11 +1,20 @@
 <div class="contenedor-detalle">
     <button routerLink="/videojuegos" class="btn-volver">← Volver</button>
 
+    <div *ngIf="cargando" class="cargando">
+        <p>Cargando...</p>
+    </div>
+
+    <div *ngIf="error" class="error-msg">
+        <p>{{ error }}</p>
+    </div>
+
     <div *ngIf="videojuego" class="card-grande">
-        <img [src]="videojuego.imagen" [alt]="videojuego.nombre" class="imagen-card" />
+        <img *ngIf="videojuego.imagen" [src]="videojuego.imagen" [alt]="videojuego.titulo" class="imagen-card" />
+        <div *ngIf="!videojuego.imagen" class="placeholder-grande">🎮</div>
 
         <div class="overlay-contenido">
-            <h2 class="titulo-juego">{{ videojuego.nombre }}</h2>
+            <h2 class="titulo-juego">{{ videojuego.titulo }}</h2>
             <button class="btn-entrar-sala">Entrar a sala</button>
         </div>
     </div>
@@ -14,7 +23,7 @@
         <div class="card-description">
             <div class="card-descripcion">
                 <h2 class="titulo-card">Descripción</h2>
-                <p>{{ videojuego.descripcion }}</p>
+                <p>{{ videojuego.descripcion || 'Sin descripción disponible' }}</p>
             </div>
             <div *ngIf="videojuego" class="botones-contenedor">
                 <button class="btn-guias">Guías y tutoriales</button>
@@ -22,17 +31,20 @@
             </div>
         </div>
 
-
-
         <div class="card-informacion">
             <h2 class="titulo-card">Información de Juego</h2>
 
-            <div class="info-item">
+            <div class="info-item" *ngIf="videojuego.genero">
                 <h3>Género</h3>
                 <p>{{ videojuego.genero }}</p>
             </div>
 
-            <div class="info-item">
+            <div class="info-item" *ngIf="videojuego.desarrollador">
+                <h3>Desarrollador</h3>
+                <p>{{ videojuego.desarrollador }}</p>
+            </div>
+
+            <div class="info-item" *ngIf="videojuego.plataformas.length">
                 <h3>Plataformas</h3>
                 <div class="plataformas-list">
                     <span *ngFor="let plataforma of videojuego.plataformas" class="plataforma-tag">
@@ -41,21 +53,18 @@
                 </div>
             </div>
 
-            <div class="info-item">
+            <div class="info-item" *ngIf="videojuego.puntuacion != null">
                 <h3>Calificación</h3>
                 <div class="calificacion-info">
                     <span *ngFor="let star of obtenerEstrellas()" class="estrella-info">{{ star }}</span>
-                    <span class="puntuacion-info">({{ videojuego.calificacion }}/5)</span>
+                    <span class="puntuacion-info">({{ videojuego.puntuacion }}/10)</span>
                 </div>
             </div>
 
             <div class="info-item">
-                <h3>Jugadores Online</h3>
-                <p class="jugadores-online">{{ videojuego.jugadoresOnline | number }}</p>
+                <h3>Jugadores activos</h3>
+                <p class="jugadores-activos-tag">Por hacer</p>
             </div>
         </div>
     </div>
-
-
-
 </div>

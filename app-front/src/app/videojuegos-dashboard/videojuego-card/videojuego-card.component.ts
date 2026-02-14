@@ -1,17 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-
-interface Videojuego {
-  id: string;
-  nombre: string;
-  descripcion: string;
-  imagen: string;
-  genero: string;
-  plataformas: string[];
-  calificacion: number;
-  jugadoresOnline: number;
-}
+import { Videojuego } from '../videojuegos.service';
 
 @Component({
   selector: 'app-videojuego-card',
@@ -23,10 +13,15 @@ interface Videojuego {
 export class VideojuegoCardComponent {
   @Input() videojuego!: Videojuego;
 
+  get puntuacionSobre5(): number {
+    return (this.videojuego.puntuacion || 0) / 2;
+  }
+
   obtenerEstrella(index: number): string {
-    if (index < Math.floor(this.videojuego.calificacion)) {
+    const puntuacion = this.puntuacionSobre5;
+    if (index < Math.floor(puntuacion)) {
       return '★';
-    } else if (index < this.videojuego.calificacion) {
+    } else if (index < puntuacion) {
       return '☆';
     }
     return '☆';
