@@ -1,0 +1,27 @@
+<div class="card">
+    <div class="card-imagen">
+        <img [src]="videojuego.imagen" [alt]="videojuego.nombre" />
+    </div>
+
+    <div class="card-contenido">
+        <div class="genero-badge">{{ videojuego.genero }}</div>
+
+        <h3 class="titulo">{{ videojuego.nombre }}</h3>
+
+        <div class="calificacion">
+            <span *ngFor="let star of obtenerEstrellas()" class="estrella">{{ star }}</span>
+            <span class="puntuacion">({{ videojuego.calificacion }}/5)</span>
+        </div>
+
+        <div class="plataformas">
+            <span *ngFor="let plataforma of videojuego.plataformas" class="plataforma-badge">
+                {{ plataforma }}
+            </span>
+        </div>
+
+        <div class="pie-card">
+            <span class="jugadores">👥 {{ videojuego.jugadoresOnline | number }}</span>
+            <a [routerLink]="['/videojuegos', videojuego.id]" class="btn-detalles">Ver Detalles</a>
+        </div>
+    </div>
+</div>
