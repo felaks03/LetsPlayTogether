@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 
 const userSchema = new Schema({
     nick: {
@@ -18,14 +18,27 @@ const userSchema = new Schema({
         type: Number,
         required: true,
     },
-    favoritos: {
-        type: [String],
-        default: [],
+    foto: {
+        type: String,
+        default: "/assets/avatar-default.png",
     },
-    mensajes: {
-        type: [String],
-        default: [],
+    redes: {
+        twitter: { type: String, default: "" },
+        discord: { type: String, default: "" },
+        twitch: { type: String, default: "" },
     },
+    favoritos: [
+        {
+            type: Types.ObjectId,
+            ref: "Videojuego",
+        },
+    ],
+    amigos: [
+        {
+            type: Types.ObjectId,
+            ref: "User",
+        },
+    ],
     role: {
         type: String,
         enum: ["user", "admin"],

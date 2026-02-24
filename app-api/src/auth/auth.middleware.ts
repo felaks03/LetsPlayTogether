@@ -15,7 +15,11 @@ export const authMiddleware = (
     const token = authHeader.split(" ")[1];
 
     try {
-        jwt.verify(token, process.env.JWT_SECRET as string);
+        const decoded: any = jwt.verify(
+            token,
+            process.env.JWT_SECRET as string
+        );
+        (req as any).user = { id: decoded.id, role: decoded.role };
         next();
     } catch (error) {
         res.status(401).json({ message: "Token inválido" });
