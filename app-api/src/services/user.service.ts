@@ -34,6 +34,8 @@ export const addAmigo = async (userId: string, friendId: string) => {
     }
     const user = await User.findById(userId);
     if (!user) throw new Error("Usuario no encontrado");
+    const amigo = await User.findById(friendId);
+    if (!amigo) throw new Error("El usuario a añadir no existe");
     if (userId === friendId) throw new Error("No puedes añadirte a ti mismo");
     const yaEsta = user.amigos.some(
         (a: any) => a.toString() === friendId

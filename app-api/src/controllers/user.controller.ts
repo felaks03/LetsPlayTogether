@@ -1,94 +1,140 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import {
     createUser,
     getUsers,
-    getUserById,
     getUserByIdWithPopulate,
     updateUser,
     deleteUser,
     addAmigo,
     removeAmigo,
 } from "../services/user.service";
+import { AppError } from "../middleware/AppError";
 
-export const createUserController = async (req: Request, res: Response) => {
-    const user = await createUser(req.body);
-    res.status(201).json(user);
-};
-
-export const getUsersController = async (_req: Request, res: Response) => {
-    const users = await getUsers();
-    res.json(users);
-};
-
-export const getUserByIdController = async (req: Request, res: Response) => {
-    const user = await getUserByIdWithPopulate(req.params.id as string);
-    if (!user) {
-        return res.status(404).json({ message: "Usuario no encontrado" });
+export const createUserController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const user = await createUser(req.body);
+        res.status(201).json(user);
+    } catch (err: any) {
+        next(err);
     }
-    res.json(user);
 };
 
-export const updateUserController = async (req: Request, res: Response) => {
+export const getUsersController = async (
+    _req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const users = await getUsers();
+        res.json(users);
+    } catch (err: any) {
+        next(err);
+    }
+};
+
+export const getUserByIdController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const user = await getUserByIdWithPopulate(req.params.id as string);
+        if (!user) {
+            return next(new AppError(404, "Usuario no encontrado"));
+        }
+        res.json(user);
+    } catch (err: any) {
+        next(err);
+    }
+};
+
+export const updateUserController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     const id = req.params.id as string;
     const currentUser = (req as any).user;
     if (currentUser.id !== id && currentUser.role !== "admin") {
-        return res.status(403).json({ message: "Solo puedes editar tu perfil" });
+        return next(new AppError(403, "Solo puedes editar tu perfil"));
     }
-    const user = await updateUser(id, req.body);
-    if (!user) {
-        return res.status(404).json({ message: "Usuario no encontrado" });
+    try {
+        const user = await updateUser(id, req.body);
+        if (!user) {
+            return next(new AppError(404, "Usuario no encontrado"));
+        }
+        res.json(user);
+    } catch (err: any) {
+        next(err);
     }
-    res.json(user);
 };
 
-export const deleteUserController = async (req: Request, res: Response) => {
+export const deleteUserController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     const id = req.params.id as string;
     const currentUser = (req as any).user;
     if (currentUser.id !== id && currentUser.role !== "admin") {
-        return res.status(403).json({ message: "Solo puedes borrar tu perfil" });
+        return next(new AppError(403, "Solo puedes borrar tu perfil"));
     }
-    const user = await deleteUser(id);
-    if (!user) {
-        return res.status(404).json({ message: "Usuario no encontrado" });
+    try {
+        const user = await deleteUser(id);
+        if (!user) {
+            return next(new AppError(404, "Usuario no encontrado"));
+        }
+        res.json({ message: "Usuario eliminado" });
+    } catch (err: any) {
+        next(err);
     }
-    res.json({ message: "Usuario eliminado" });
 };
 
-export const addAmigoController = async (req: Request, res: Response) => {
+export const addAmigoController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     const userId = req.params.id as string;
     const currentUser = (req as any).user;
     if (currentUser.id !== userId) {
-        return res.status(403).json({ message: "Solo puedes gestionar tus amigos" });
+        return next(new AppError(403, "Solo puedes gestionar tus amigos"));
     }
     const friendId = req.body.userId;
     if (!friendId) {
-        return res.status(400).json({ message: "Falta userId en el body" });
+        return next(new AppError(400, "Falta userId en el body"));
     }
     try {
         const user = await addAmigo(userId, friendId);
         res.json(user);
     } catch (err: any) {
-        if (err.message === "Usuario no encontrado") {
-            return res.status(404).json({ message: err.message });
-        }
-        res.status(400).json({ message: err.message });
+        const es404 =
+            err.message === "Usuario no encontrado" ||
+            err.message === "El usuario a añadir no existe";
+        next(new AppError(es404 ? 404 : 400, err.message));
     }
 };
 
-export const removeAmigoController = async (req: Request, res: Response) => {
+export const removeAmigoController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     const userId = req.params.id as string;
     const friendId = req.params.friendId as string;
     const currentUser = (req as any).user;
     if (currentUser.id !== userId) {
-        return res.status(403).json({ message: "Solo puedes gestionar tus amigos" });
+        return next(new AppError(403, "Solo puedes gestionar tus amigos"));
     }
     try {
         const user = await removeAmigo(userId, friendId);
         res.json(user);
     } catch (err: any) {
-        if (err.message === "Usuario no encontrado") {
-            return res.status(404).json({ message: err.message });
-        }
-        res.status(400).json({ message: err.message });
+        const status = err.message === "Usuario no encontrado" ? 404 : 400;
+        next(new AppError(status, err.message));
     }
 };

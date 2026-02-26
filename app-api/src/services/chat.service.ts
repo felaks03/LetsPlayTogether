@@ -12,7 +12,7 @@ export const getChatsByUserId = async (userId: string) => {
     })
         .populate("participante1", "nick foto")
         .populate("participante2", "nick foto")
-        .sort({ fechaCreacion: -1 });
+        .sort({ ultimaActividad: -1 });
 };
 
 export const getChatById = async (chatId: string, userId: string) => {
@@ -77,5 +77,6 @@ export const createMensaje = async (
         emisor: emisorId,
         contenido,
     });
+    await Chat.findByIdAndUpdate(chatId, { ultimaActividad: new Date() });
     return await Mensaje.findById(mensaje._id).populate("emisor", "nick foto");
 };

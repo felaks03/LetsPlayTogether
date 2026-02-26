@@ -1,0 +1,17 @@
+<div *ngIf="cargando()">Cargando chat...</div>
+<div *ngIf="error()">{{ error() }}</div>
+
+<ng-container *ngIf="!cargando() && data()">
+  <p><a routerLink="/chats">Volver a chats</a></p>
+  <h2>Chat</h2>
+  <div>
+    <div *ngFor="let m of data()!.mensajes">
+      {{ nickEmisor(m) }}: {{ m.contenido }}
+      <span *ngIf="esMio(m)"> (tú)</span>
+    </div>
+  </div>
+  <p>
+    <input type="text" [(ngModel)]="nuevoMensaje" (keyup.enter)="enviar()" placeholder="Escribe un mensaje" />
+    <button (click)="enviar()" [disabled]="enviando() || !nuevoMensaje.trim()">Enviar</button>
+  </p>
+</ng-container>

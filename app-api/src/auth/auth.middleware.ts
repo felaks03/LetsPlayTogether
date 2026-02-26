@@ -1,15 +1,16 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { AppError } from "../middleware/AppError";
 
 export const authMiddleware = (
     req: Request,
-    res: Response,
+    _res: Response,
     next: NextFunction
 ) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-        return res.status(401).json({ message: "Token requerido" });
+        return next(new AppError(401, "Token requerido"));
     }
 
     const token = authHeader.split(" ")[1];
@@ -21,20 +22,20 @@ export const authMiddleware = (
         );
         (req as any).user = { id: decoded.id, role: decoded.role };
         next();
-    } catch (error) {
-        res.status(401).json({ message: "Token inválido" });
+    } catch (_error) {
+        next(new AppError(401, "Token inválido"));
     }
 };
 
 export const adminMiddleware = (
     req: Request,
-    res: Response,
+    _res: Response,
     next: NextFunction
 ) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-        return res.status(401).json({ message: "Token requerido" });
+        return next(new AppError(401, "Token requerido"));
     }
 
     const token = authHeader.split(" ")[1];
@@ -46,12 +47,12 @@ export const adminMiddleware = (
         );
 
         if (decoded.role !== "admin") {
-            return res.status(403).json({ message: "Acceso solo para admin" });
+            return next(new AppError(403, "Acceso solo para admin"));
         }
 
         next();
-    } catch (error) {
-        res.status(401).json({ message: "Token inválido" });
+    } catch (_error) {
+        next(new AppError(401, "Token inválido"));
     }
 };
 
