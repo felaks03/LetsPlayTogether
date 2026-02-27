@@ -41,8 +41,10 @@
     <!-- Unirse -->
     <button
       (click)="unirseSala(sala)"
-      [disabled]="esUsuarioEnSala(sala)">
-      Unirse
+      [disabled]="
+        esUsuarioEnSala(sala) ||
+        sala.estado === 'CLOSED' ||
+        sala.estado === 'FULL'">
     </button>
 
     <!-- Salir -->
