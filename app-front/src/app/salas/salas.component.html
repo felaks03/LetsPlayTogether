@@ -1,74 +1,350 @@
-<h2>Salas disponibles</h2>
+<div class="salas-container">
 
-<!-- Mensajes -->
-<div *ngIf="cargando()">Cargando salas...</div>
-<div *ngIf="error()">{{ error() }}</div>
+  <!-- ========================= -->
+  <!-- VISTA LISTADO -->
+  <!-- ========================= -->
+  <div *ngIf="vistaActual() === 'listado'" class="vista-listado">
 
-<!-- Crear sala -->
-<div class="crear-sala">
-  <h3>Crear sala</h3>
+    <h2 class="titulo-seccion">Salas disponibles</h2>
 
-  <input
-    type="text"
-    placeholder="Nombre de la sala"
-    [(ngModel)]="nuevaSalaNombre"
-  />
+    <!-- Mensajes -->
+    <div *ngIf="cargando()" class="info-box">Cargando salas...</div>
 
-  <input
-    type="text"
-    placeholder="ID del videojuego"
-    [(ngModel)]="nuevaSalaVideojuegoId"
-  />
+    <div *ngIf="error()" class="error-box">
+      {{ error() }}
+    </div>
 
-  <input
-    type="number"
-    placeholder="Máx usuarios"
-    [(ngModel)]="nuevaSalaMaxUsuarios"
-  />
+    <!-- Crear sala -->
+    <div class="card crear-sala-card">
+      <h3>Crear sala</h3>
 
-  <button (click)="crearSala()">Crear sala</button>
+      <div class="form-group">
+        <select [(ngModel)]="nuevaSalaVideojuegoId">
+
+          <option value="" disabled selected>
+            Selecciona un videojuego
+          </option>
+
+          <option 
+            *ngFor="let juego of videojuegos()" 
+            [value]="juego._id">
+            {{ juego.titulo }}
+          </option>
+
+        </select>
+      </div>  
+
+      <div class="form-group">
+        <input
+          type="number"
+          placeholder="Máx usuarios"
+          [(ngModel)]="nuevaSalaMaxUsuarios"
+        />
+      </div>
+
+      <button class="btn-primary" (click)="crearSala()">
+        Crear sala
+      </button>
+    </div>
+
+    <div class="card filtros-card">
+
+      <h4>Filtros</h4>
+
+      <div class="filtros-grid">
+
+        <input
+          type="text"
+          placeholder="Buscar por nombre..."
+          [ngModel]="filtroNombre()"
+          (ngModelChange)="filtroNombre.set($event)"
+        />
+
+        <select
+          [ngModel]="filtroEstado()"
+          (ngModelChange)="filtroEstado.set($event)">
+
+          <option value="ALL">Todos los estados</option>
+          <option value="OPEN">OPEN</option>
+          <option value="IN_GAME">IN_GAME</option>
+          <option value="FULL">FULL</option>
+          <option value="CLOSED">CLOSED</option>
+        </select>
+
+        <!-- Aviso si ya está en una sala -->
+        <div 
+          *ngIf="estaEnAlgunaSala() && vistaActual() === 'listado'"
+          class="info-box aviso-sala-activa">
+          Ya estás dentro de una sala activa.
+          Debes salir de ella antes de unirte a otra.
+        </div>
+
+      </div>
+
+  </div>
+
+
+    <!-- Lista de salas -->
+    <div class="lista-salas" *ngIf="!cargando() && !error()">
+
+      <div class="card sala-card" *ngFor="let sala of salasFiltradas">
+
+        <div class="sala-header">
+          <strong class="sala-nombre">{{ sala.nombre }}</strong>
+
+          <span 
+            class="badge"
+            [ngClass]="{
+              'badge-open': sala.estado === 'OPEN',
+              'badge-full': sala.estado === 'FULL',
+              'badge-closed': sala.estado === 'CLOSED',
+              'badge-game': sala.estado === 'IN_GAME'
+            }">
+            {{ sala.estado }}
+          </span>
+        </div>
+
+        <div class="sala-info">
+          Usuarios: {{ sala.usuarios.length }}/{{ sala.maxUsuarios }}
+        </div>
+
+        <div class="sala-actions">
+
+          <button
+            class="btn-secondary"
+            (click)="unirseSala(sala)"
+            [disabled]="
+              esUsuarioEnSala(sala) ||
+              sala.estado === 'CLOSED' ||
+              sala.estado === 'FULL' ||
+              (estaEnAlgunaSala() && !esUsuarioEnSala(sala))
+            ">
+            Unirse
+          </button>
+
+          <button
+            class="btn-secondary"
+            (click)="salirSala(sala)"
+            [disabled]="!esUsuarioEnSala(sala)">
+            Salir
+          </button>
+
+          <button
+            *ngIf="esHost(sala)"
+            class="btn-danger"
+            (click)="eliminarSala(sala)">
+            Eliminar
+          </button>
+
+          <select
+            *ngIf="esHost(sala)"
+            class="estado-select"
+            [value]="sala.estado"
+            (change)="cambiarEstadoSala(sala, $any($event.target).value)">
+            <option value="OPEN">OPEN</option>
+            <option value="IN_GAME">IN_GAME</option>
+            <option value="CLOSED">CLOSED</option>
+          </select>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- VISTA DENTRO DE SALA -->
+  <!-- ========================= -->
+  <div *ngIf="vistaActual() === 'sala' && salaActiva() as sala" class="vista-sala">
+
+    <div class="card sala-activa-card">
+
+      <div class="sala-activa-header">
+        <h2>{{ sala.nombre }}</h2>
+
+        <span 
+          class="badge"
+          [ngClass]="{
+            'badge-open': sala.estado === 'OPEN',
+            'badge-full': sala.estado === 'FULL',
+            'badge-closed': sala.estado === 'CLOSED',
+            'badge-game': sala.estado === 'IN_GAME'
+          }">
+          {{ sala.estado }}
+        </span>
+    </div>
+
+    <div *ngIf="esHost(sala)" class="host-indicator">
+        Eres el host de esta sala
+    </div>
+
+
+      <div class="sala-activa-info">
+        <p><strong>Jugadores:</strong> {{ sala.usuarios.length }}/{{ sala.maxUsuarios }}</p>
+        <p><strong>ID Videojuego:</strong> {{ sala.videojuego }}</p>
+      </div>
+
+      <div class="jugadores-lista">
+        <h4>Jugadores en la sala</h4>
+        <ul class="jugadores-ul">
+          <li 
+            *ngFor="let jugador of sala.usuarios"
+            class="jugador-item"
+            [ngClass]="{
+              'jugador-host': jugador.toString() === sala.host.toString(),
+              'jugador-yo': esUsuarioActual(jugador)
+            }">
+
+            <span>
+              {{ jugador }}
+            </span>
+
+            <span *ngIf="jugador.toString() === sala.host.toString()">
+              Host
+            </span>
+
+            <span *ngIf="esUsuarioActual(jugador)">
+              (Tú)
+            </span>
+
+          </li>
+          
+          <div 
+            class="estado-banner"
+            [ngClass]="{
+              'banner-open': sala.estado === 'OPEN',
+              'banner-game': sala.estado === 'IN_GAME',
+              'banner-full': sala.estado === 'FULL',
+              'banner-closed': sala.estado === 'CLOSED'
+            }">
+
+            <span *ngIf="sala.estado === 'OPEN'">
+              Sala abierta esperando jugadores
+            </span>
+
+            <span *ngIf="sala.estado === 'IN_GAME'">
+              Partida en curso
+            </span>
+
+            <span *ngIf="sala.estado === 'FULL'">
+              Sala completa
+            </span>
+
+            <span *ngIf="sala.estado === 'CLOSED'">
+              Sala cerrada por el host
+            </span>
+
+          </div>
+
+
+        </ul>
+
+      </div>
+
+      <div class="sala-activa-actions">
+
+          <!-- Controles del host -->
+          <div *ngIf="esHost(sala)" class="host-controls">
+
+            <h4>Controles del host</h4>
+
+            <button 
+              class="btn-primary"
+              *ngIf="sala.estado === 'OPEN'"
+              (click)="cambiarEstadoSala(sala, 'IN_GAME')">
+              Iniciar partida
+            </button>
+
+            <select
+              class="estado-select"
+              [value]="sala.estado"
+              (change)="cambiarEstadoSala(sala, $any($event.target).value)">
+              <option value="OPEN">OPEN</option>
+              <option value="IN_GAME">IN_GAME</option>
+              <option value="CLOSED">CLOSED</option>
+            </select>
+
+            <button 
+              class="btn-secondary"
+              *ngIf="sala.estado === 'CLOSED'"
+              (click)="cambiarEstadoSala(sala, 'OPEN')">
+              Reabrir sala
+            </button>
+
+            <button 
+              class="btn-danger"
+              (click)="eliminarSala(sala)">
+              Eliminar sala
+            </button>
+
+          </div>
+
+          <!-- Botones generales -->
+          <button 
+            class="btn-secondary" 
+            (click)="salirSala(sala)">
+            Salir de la sala
+          </button>
+
+          <button 
+            class="btn-primary" 
+            (click)="volverAlListado()">
+            Volver al listado
+          </button>
+
+        </div>
+
+        <div class="chat-container">
+
+          <h4>Chat de la sala</h4>
+
+          <div class="chat-mensajes" #chatScroll>
+
+            <div 
+              *ngFor="let mensaje of mensajes()"
+              class="chat-mensaje"
+              [ngClass]="{
+                'mensaje-propio': mensaje.emisor === hostId,
+                'mensaje-ajeno': mensaje.emisor !== hostId
+              }">
+
+              <div class="mensaje-contenido">
+                {{ mensaje.contenido }}
+              </div>
+
+              <div class="mensaje-fecha">
+                {{ mensaje.fecha | date:'shortTime' }}
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="chat-input">
+
+            <input
+              type="text"
+              placeholder="Escribe un mensaje..."
+              [(ngModel)]="nuevoMensaje"
+              (keyup.enter)="enviarMensaje()"
+            />
+
+            <button 
+              class="btn-primary"
+              (click)="enviarMensaje()">
+              Enviar
+            </button>
+
+          </div>
+
+        </div>
+
+
+
+    </div>
+
+  </div>
+
 </div>
-
-<hr />
-
-<!-- Lista de salas -->
-<ul *ngIf="!cargando() && !error()">
-  <li *ngFor="let sala of salas()">
-    <strong>{{ sala.nombre }}</strong> -
-    Estado: {{ sala.estado }} -
-    Usuarios: {{ sala.usuarios.length }}/{{ sala.maxUsuarios }}
-
-    <!-- Unirse -->
-    <button
-      (click)="unirseSala(sala)"
-      [disabled]="
-        esUsuarioEnSala(sala) ||
-        sala.estado === 'CLOSED' ||
-        sala.estado === 'FULL'">
-    </button>
-
-    <!-- Salir -->
-    <button
-      (click)="salirSala(sala)"
-      [disabled]="!esUsuarioEnSala(sala)">
-      Salir
-    </button>
-
-    <!-- Eliminar sala -->
-    <button
-      *ngIf="esHost(sala)"
-      (click)="eliminarSala(sala)">
-      Eliminar
-    </button>
-
-    <!-- Cambiar estado (solo host) -->
-    <select
-      *ngIf="esHost(sala)"
-      [(ngModel)]="sala.estado"
-      (change)="cambiarEstadoSala(sala, sala.estado)">
-      <option value="OPEN">OPEN</option>
-      <option value="IN_GAME">IN_GAME</option>
-      <option value="CLOSED">CLOSED</option>
-    </select>
-  </li>
-</ul>
