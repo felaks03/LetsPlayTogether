@@ -17,8 +17,6 @@ export const login = async (email: string, password: string) => {
     return null;
   }
 
-  // Marcar usuario como online
-  user.online = true;
   await user.save();
 
   const token = jwt.sign(
