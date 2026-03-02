@@ -1,16 +1,21 @@
 <nav class="navbar">
   <a class="nav-brand" routerLink="/">🎮 LetsPlayTogether</a>
+
   <div class="nav-links">
     <a routerLink="/videojuegos" routerLinkActive="active">Videojuegos</a>
     <a routerLink="/salas" routerLinkActive="active">Salas</a>
+    <a routerLink="/usuarios" routerLinkActive="active" *ngIf="auth.isLoggedIn()">
+      Añadir amigos
+    </a>
+  </div>
+
+  <div class="nav-user" *ngIf="auth.isLoggedIn()">
+    <a routerLink="/perfil">Mi perfil</a>
+    <button type="button" (click)="auth.logout()">Cerrar sesión</button>
   </div>
 </nav>
+
 <main>
   <h1>{{ title() }}</h1>
-  <nav *ngIf="auth.isLoggedIn()">
-    <a routerLink="/salas">Salas</a>
-    <a routerLink="/perfil">Tu perfil</a>
-    <button (click)="auth.logout()">Salir</button>
-  </nav>
   <router-outlet></router-outlet>
 </main>

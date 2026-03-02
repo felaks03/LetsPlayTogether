@@ -19,6 +19,14 @@
       <h3>Crear sala</h3>
 
       <div class="form-group">
+        <input
+          type="text"
+          placeholder="Nombre de la sala"
+          [(ngModel)]="nuevaSalaNombre"
+        />
+      </div>
+
+      <div class="form-group">
         <select [(ngModel)]="nuevaSalaVideojuegoId">
 
           <option value="" disabled selected>

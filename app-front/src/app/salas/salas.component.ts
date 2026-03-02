@@ -50,7 +50,7 @@ export class SalasComponent implements OnInit {
 
   ngOnInit() {
     this.cargarSalas();
-    this.cargarVideojuegos
+    this.cargarVideojuegos();
   }
 
   cargarSalas() {

@@ -66,7 +66,10 @@ export class PerfilComponent implements OnInit {
     const current = this.auth.currentUser();
     if (!u || !current || u._id === current._id) return;
     this.userService.addAmigo(current._id, u._id).subscribe({
-      next: () => this.ngOnInit(),
+      next: (updated) => {
+        this.auth.currentUser.set(updated);
+        this.user.set(updated);
+      },
       error: (err) => this.error.set(err.error?.message || 'Error al añadir amigo')
     });
   }
@@ -75,7 +78,10 @@ export class PerfilComponent implements OnInit {
     const current = this.auth.currentUser();
     if (!current) return;
     this.userService.removeAmigo(current._id, amigoId).subscribe({
-      next: () => this.ngOnInit(),
+      next: (updated) => {
+        this.auth.currentUser.set(updated);
+        this.user.set(updated);
+      },
       error: (err) => this.error.set(err.error?.message || 'Error al quitar amigo')
     });
   }

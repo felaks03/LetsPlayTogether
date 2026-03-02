@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../auth/auth.service';
+import { Chat } from '../chat/chat.service';
 
 const API = 'http://localhost:3000/api/users';
 
@@ -31,5 +32,11 @@ export class UserService {
 
   removeAmigo(userId: string, friendId: string): Observable<User> {
     return this.http.delete<User>(`${API}/${userId}/amigos/${friendId}`);
+  }
+
+  getOrCreateChatConUsuario(otroUsuarioId: string): Observable<Chat> {
+    return this.http.post<Chat>('http://localhost:3000/api/chats', {
+      otroUsuarioId,
+    });
   }
 }
