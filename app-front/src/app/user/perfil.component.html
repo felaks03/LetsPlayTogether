@@ -1,0 +1,40 @@
+<div *ngIf="cargando()">Cargando perfil...</div>
+<div *ngIf="error()">{{ error() }}</div>
+
+<ng-container *ngIf="!cargando() && user(); let u">
+  <h2>Perfil: {{ u.nick }}</h2>
+  <p>Email: {{ u.email }}</p>
+  <p>Edad: {{ u.edad }}</p>
+  <p *ngIf="u.foto">Foto: {{ u.foto }}</p>
+  <div *ngIf="u.redes">
+    <p *ngIf="u.redes.twitter">Twitter: {{ u.redes.twitter }}</p>
+    <p *ngIf="u.redes.discord">Discord: {{ u.redes.discord }}</p>
+    <p *ngIf="u.redes.twitch">Twitch: {{ u.redes.twitch }}</p>
+  </div>
+
+  <h3>Juegos favoritos</h3>
+  <ul *ngIf="u.favoritos && u.favoritos.length">
+    <li *ngFor="let f of u.favoritos">{{ $any(f).titulo || $any(f)._id }}</li>
+  </ul>
+  <p *ngIf="!u.favoritos?.length">Sin favoritos</p>
+
+  <h3>Amigos</h3>
+  <ul *ngIf="u.amigos && u.amigos.length">
+    <li *ngFor="let a of u.amigos">
+      <a [routerLink]="['/usuarios', $any(a)._id]">{{ $any(a).nick || $any(a)._id }}</a>
+      <button *ngIf="esMiPerfil()" (click)="quitarAmigo($any(a)._id)">Quitar amigo</button>
+    </li>
+  </ul>
+  <p *ngIf="!u.amigos?.length">Sin amigos</p>
+
+  <div *ngIf="esMiPerfil()">
+    <a [routerLink]="['/usuarios', u._id, 'editar']">Editar perfil</a>
+    <a routerLink="/chats">Mensajes</a>
+    <button (click)="eliminar()">Borrar cuenta</button>
+  </div>
+
+  <div *ngIf="!esMiPerfil() && auth.currentUser()">
+    <button *ngIf="!yaEsAmigo(u._id)" (click)="anadirAmigo()">Añadir amigo</button>
+    <button (click)="abrirChat()">Abrir chat</button>
+  </div>
+</ng-container>

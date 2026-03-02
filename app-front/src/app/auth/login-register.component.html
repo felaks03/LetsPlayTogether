@@ -1,0 +1,19 @@
+<h2>{{ esLogin() ? 'Login' : 'Registro' }}</h2>
+<div *ngIf="error()">{{ error() }}</div>
+<div *ngIf="cargando()">Cargando...</div>
+
+<ng-container *ngIf="esLogin()">
+  <p>Email: <input type="text" [(ngModel)]="email" /></p>
+  <p>Password: <input type="password" [(ngModel)]="password" /></p>
+  <button (click)="enviarLogin()" [disabled]="cargando()">Entrar</button>
+  <p><a routerLink="/register">Ir a registro</a></p>
+</ng-container>
+
+<ng-container *ngIf="!esLogin()">
+  <p>Nick: <input type="text" [(ngModel)]="nick" /></p>
+  <p>Email: <input type="text" [(ngModel)]="email" /></p>
+  <p>Password: <input type="password" [(ngModel)]="password" /></p>
+  <p>Edad: <input type="number" [(ngModel)]="edad" /></p>
+  <button (click)="enviarRegister()" [disabled]="cargando()">Registrarse</button>
+  <p><a routerLink="/login">Ir a login</a></p>
+</ng-container>
