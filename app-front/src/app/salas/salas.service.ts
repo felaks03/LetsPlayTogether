@@ -14,6 +14,14 @@ export interface Sala {
   expiraEn?: string;
 }
 
+export interface Videojuego {
+  _id: string;
+  titulo: string;
+  genero?: string;
+  plataformas: string[];
+}
+
+
 @Injectable({
   providedIn: 'root',
 })
@@ -49,4 +57,11 @@ export class SalasService {
   deleteSala(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  getVideojuegos() {
+    return this.http.get<Videojuego[]>(
+      'http://localhost:3000/api/videojuegos'
+    );
+  }
+
 }
