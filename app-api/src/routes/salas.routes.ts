@@ -1,26 +1,15 @@
 import { Router } from "express";
 import * as SalaController from "../controllers/salas.controller";
+import { asyncHandler } from "../middleware/asyncHandler";
 
 const router = Router();
 
-/**
- * Rutas para Salas
- */
-
-// Obtener todas las salas
-router.get("/", SalaController.getSalas);
-
-// Crear sala
-router.post("/", SalaController.createSala);
-
-// Acciones
-router.post("/join", SalaController.joinSala);
-router.post("/leave", SalaController.leaveSala);
-router.patch("/estado", SalaController.updateEstadoSalaController);
-
-
-// Obtener / eliminar por ID (SIEMPRE al final)
-router.get("/:id", SalaController.getSalaById);
-router.delete("/:id", SalaController.deleteSala);
+router.get("/", asyncHandler(SalaController.getSalas));
+router.post("/", asyncHandler(SalaController.createSala));
+router.post("/join", asyncHandler(SalaController.joinSala));
+router.post("/leave", asyncHandler(SalaController.leaveSala));
+router.patch("/estado", asyncHandler(SalaController.updateEstadoSalaController));
+router.get("/:id", asyncHandler(SalaController.getSalaById));
+router.delete("/:id", asyncHandler(SalaController.deleteSala));
 
 export default router;

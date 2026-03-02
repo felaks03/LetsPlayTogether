@@ -6,5 +6,11 @@
   </div>
 </nav>
 <main>
+  <h1>{{ title() }}</h1>
+  <nav *ngIf="auth.isLoggedIn()">
+    <a routerLink="/salas">Salas</a>
+    <a routerLink="/perfil">Tu perfil</a>
+    <button (click)="auth.logout()">Salir</button>
+  </nav>
   <router-outlet></router-outlet>
 </main>

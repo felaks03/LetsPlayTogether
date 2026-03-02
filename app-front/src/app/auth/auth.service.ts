@@ -1,81 +1,69 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
-export interface UserInfo {
+const API = 'http://localhost:3000/api';
+
+export interface User {
   _id: string;
   nick: string;
   email: string;
   edad: number;
-  favoritos: string[];
-  mensajes: string[];
-  role: 'user' | 'admin';
-  online: boolean;
-  salaActual: string | null;
+  foto?: string;
+  redes?: { twitter?: string; discord?: string; twitch?: string };
+  favoritos?: unknown[];
+  amigos?: unknown[];
+  role?: string;
 }
 
 export interface LoginResponse {
-  user: UserInfo;
+  user: User;
   token: string;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api/auth';
-  private currentUserSubject = new BehaviorSubject<UserInfo | null>(null);
-  currentUser$ = this.currentUserSubject.asObservable();
+  private api = `${API}/auth`;
+  private tokenKey = 'token';
+  private userKey = 'user';
+
+  currentUser = signal<User | null>(null);
+  token = signal<string | null>(null);
 
   constructor(private http: HttpClient) {
-    this.loadFromStorage();
+    const t = sessionStorage.getItem(this.tokenKey);
+    const u = sessionStorage.getItem(this.userKey);
+    if (t) this.token.set(t);
+    if (u) this.currentUser.set(JSON.parse(u));
   }
 
-  private loadFromStorage(): void {
-    const token = localStorage.getItem('token');
-    const user = localStorage.getItem('user');
-    if (token && user) {
-      try {
-        this.currentUserSubject.next(JSON.parse(user));
-      } catch {
-        this.logout();
-      }
-    }
+  register(data: { nick: string; email: string; password: string; edad: number }): Observable<User> {
+    return this.http.post<User>(`${this.api}/register`, data);
   }
 
   login(email: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password }).pipe(
+    return this.http.post<LoginResponse>(`${this.api}/login`, { email, password }).pipe(
       tap((res) => {
-        localStorage.setItem('token', res.token);
-        localStorage.setItem('user', JSON.stringify(res.user));
-        this.currentUserSubject.next(res.user);
-      }),
+        this.token.set(res.token);
+        this.currentUser.set(res.user);
+        sessionStorage.setItem(this.tokenKey, res.token);
+        sessionStorage.setItem(this.userKey, JSON.stringify(res.user));
+      })
     );
   }
 
-  register(data: { nick: string; email: string; password: string; edad: number }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, data);
-  }
-
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    this.currentUserSubject.next(null);
+    this.token.set(null);
+    this.currentUser.set(null);
+    sessionStorage.removeItem(this.tokenKey);
+    sessionStorage.removeItem(this.userKey);
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
-  }
-
-  getCurrentUser(): UserInfo | null {
-    return this.currentUserSubject.value;
-  }
-
-  isAdmin(): boolean {
-    return this.currentUserSubject.value?.role === 'admin';
+    return this.token() ?? sessionStorage.getItem(this.tokenKey);
   }
 
   isLoggedIn(): boolean {
-    return !!this.getToken() && !!this.currentUserSubject.value;
+    return !!this.getToken();
   }
 }

@@ -43,7 +43,8 @@ export class SalasComponent implements OnInit {
   nuevaSalaMaxUsuarios = 4;
 
   // Reemplaza con el ID del usuario actual
-  hostId = '697a5cb7661c1e020e6a301f';
+  // hostId = '69810b5fa840472affc1ba43';
+  hostId = '698119804374cee72b4cf6e7';
 
   constructor(private salasService: SalasService) {}
 

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import * as VideojuegoCtrl from "../controllers/videojuego.controller";
 import { authMiddleware, adminMiddleware } from "../auth/auth.middleware";
+import { asyncHandler } from "../middleware/asyncHandler";
 
 const router = Router();
 
