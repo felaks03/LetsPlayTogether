@@ -1,0 +1,14 @@
+<div *ngIf="cargando()">Cargando...</div>
+<div *ngIf="error()">{{ error() }}</div>
+
+<ng-container *ngIf="!cargando() && user()">
+  <h2>Editar perfil</h2>
+  <p>Nick: <input type="text" [(ngModel)]="nick" /></p>
+  <p>Edad: <input type="number" [(ngModel)]="edad" /></p>
+  <p>Foto (URL): <input type="text" [(ngModel)]="foto" /></p>
+  <p>Twitter: <input type="text" [(ngModel)]="twitter" /></p>
+  <p>Discord: <input type="text" [(ngModel)]="discord" /></p>
+  <p>Twitch: <input type="text" [(ngModel)]="twitch" /></p>
+  <button (click)="guardar()" [disabled]="guardando()">Guardar</button>
+  <a [routerLink]="['/usuarios', user()!._id]">Volver al perfil</a>
+</ng-container>

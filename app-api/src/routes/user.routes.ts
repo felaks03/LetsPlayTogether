@@ -5,15 +5,20 @@ import {
     getUserByIdController,
     updateUserController,
     deleteUserController,
+    addAmigoController,
+    removeAmigoController,
 } from "../controllers/user.controller";
-import { authMiddleware, adminMiddleware } from "../auth/auth.middleware";
+import { authMiddleware } from "../auth/auth.middleware";
+import { asyncHandler } from "../middleware/asyncHandler";
 
 const router = Router();
 
-router.post("/", createUserController);
-router.get("/:id", authMiddleware, getUserByIdController);
-router.put("/:id", authMiddleware, updateUserController);
-router.delete("/:id", authMiddleware, deleteUserController);
-router.get("/", authMiddleware, getUsersController);
+router.post("/", asyncHandler(createUserController));
+router.get("/", authMiddleware, asyncHandler(getUsersController));
+router.get("/:id", authMiddleware, asyncHandler(getUserByIdController));
+router.put("/:id", authMiddleware, asyncHandler(updateUserController));
+router.delete("/:id", authMiddleware, asyncHandler(deleteUserController));
+router.post("/:id/amigos", authMiddleware, asyncHandler(addAmigoController));
+router.delete("/:id/amigos/:friendId", authMiddleware, asyncHandler(removeAmigoController));
 
 export default router;
