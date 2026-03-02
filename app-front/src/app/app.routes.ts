@@ -8,6 +8,9 @@ import { ChatComponent } from './chat/chat.component';
 import { SalasComponent } from './salas/salas.component';
 import { HomeComponent } from './home/home.component';
 import { PerfilRedirectComponent } from './perfil-redirect/perfil-redirect.component';
+import { VideojuegosDashboardComponent } from './videojuegos-dashboard/videojuegos-dashboard.component';
+import { VideojuegoDetalleComponent } from './videojuego-detalle/videojuego-detalle.component';
+
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,5 +22,7 @@ export const routes: Routes = [
   { path: 'usuarios/:id', component: PerfilComponent },
   { path: 'usuarios/:id/editar', component: EditarPerfilComponent },
   { path: 'chats', component: ListaChatsComponent },
-  { path: 'chats/:id', component: ChatComponent }
-];
+  { path: 'chats/:id', component: ChatComponent },
+  { path: 'videojuegos', component: VideojuegosDashboardComponent },
+  { path: 'videojuegos/:id', component: VideojuegoDetalleComponent }
+]
