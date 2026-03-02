@@ -4,12 +4,13 @@ import { authMiddleware, adminMiddleware } from "../auth/auth.middleware";
 
 const router = Router();
 
-//Auth desactivada temporalmente para realizar frontend salas
+// GET públicas (sin autenticación)
 router.get("/", VideojuegoCtrl.videojuegoGetAll);
 router.get("/:id", VideojuegoCtrl.videojuegoGetById);
-router.post("/", VideojuegoCtrl.videojuegoCreate);
-router.put("/:id", VideojuegoCtrl.videojuegoUpdate);
-router.delete("/:id", VideojuegoCtrl.videojuegoDelete);
 
+// POST, PUT, DELETE protegidas (requieren auth + admin)
+router.post("/", authMiddleware, adminMiddleware, VideojuegoCtrl.videojuegoCreate);
+router.put("/:id", authMiddleware, adminMiddleware, VideojuegoCtrl.videojuegoUpdate);
+router.delete("/:id", authMiddleware, adminMiddleware, VideojuegoCtrl.videojuegoDelete);
 
 export default router;

@@ -1,4 +1,5 @@
 import Sala, { ISala } from "../models/salas.model";
+import User from "../models/user.model";
 import { Types } from "mongoose";
 
 /**
@@ -55,7 +56,7 @@ export async function joinSala(salaId: string, userId: string) {
   const userObjectId = new Types.ObjectId(userId);
 
   // Evitar duplicados
-  if (sala.usuarios.some(u => u.equals(userObjectId))) {
+  if (sala.usuarios.some((u) => u.equals(userObjectId))) {
     return sala;
   }
 
@@ -68,6 +69,9 @@ export async function joinSala(salaId: string, userId: string) {
 
   // Añadir usuario
   sala.usuarios.push(userObjectId);
+
+  // Actualizar salaActual del usuario
+  await User.findByIdAndUpdate(userId, { salaActual: sala._id });
 
   // Actualizar estado automáticamente si llega al máximo
   if (sala.usuarios.length >= sala.maxUsuarios) {
@@ -91,7 +95,10 @@ export async function leaveSala(salaId: string, userId: string) {
 
   const userObjectId = new Types.ObjectId(userId);
 
-  sala.usuarios = sala.usuarios.filter(u => !u.equals(userObjectId));
+  sala.usuarios = sala.usuarios.filter((u) => !u.equals(userObjectId));
+
+  // Quitar salaActual del usuario
+  await User.findByIdAndUpdate(userId, { salaActual: null });
 
   // Recalcular estado si la sala no está cerrada
   if (sala.estado !== "CLOSED") {
@@ -109,7 +116,7 @@ export async function leaveSala(salaId: string, userId: string) {
  */
 export async function updateEstadoSala(
   salaId: string,
-  estado: "OPEN" | "IN_GAME" | "CLOSED"
+  estado: "OPEN" | "IN_GAME" | "CLOSED",
 ) {
   if (!Types.ObjectId.isValid(salaId)) {
     throw new Error("ID inválido");
