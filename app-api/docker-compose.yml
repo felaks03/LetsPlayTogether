@@ -1,0 +1,48 @@
+services:
+  mongodb:
+    image: mongo:6.0
+    container_name: letsplay_mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-password}
+      MONGO_INITDB_DATABASE: ${MONGO_DB:-letsplay}
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - letsplay_network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: letsplay_backend
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: 3000
+      MONGO_URI: mongodb://${MONGO_USER:-admin}:${MONGO_PASSWORD:-password}@mongodb:27017/${MONGO_DB:-letsplay}?authSource=admin
+      JWT_SECRET: ${JWT_SECRET:-your_secret_key_here}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - letsplay_network
+    volumes:
+      - ./src:/app/src
+      - ./dist:/app/dist
+    command: node dist/server.js
+
+volumes:
+  mongodb_data:
+
+networks:
+  letsplay_network:
+    driver: bridge

@@ -1,4 +1,10 @@
+<nav class="navbar">
+  <a class="nav-brand" routerLink="/">🎮 LetsPlayTogether</a>
+  <div class="nav-links">
+    <a routerLink="/videojuegos" routerLinkActive="active">Videojuegos</a>
+    <a routerLink="/salas" routerLinkActive="active">Salas</a>
+  </div>
+</nav>
 <main>
-  <h1>{{ title() }}</h1>
-  <app-salas></app-salas>
+  <router-outlet></router-outlet>
 </main>
