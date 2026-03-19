@@ -1,3 +1,22 @@
-<h2>Página principal</h2>
-<p><a routerLink="/register">Ir a registro</a></p>
-<p><a routerLink="/login">Ir a login</a></p>
+<section class="landing">
+  <div class="landing-left">
+    <h1>Noticias LetsPlayTogether</h1>
+    <p class="subtitle">Todo lo que puedes hacer en la plataforma.</p>
+
+    <div class="news-card">
+      <img [src]="noticiaActual.foto" [alt]="noticiaActual.titulo" />
+      <h3>{{ noticiaActual.titulo }}</h3>
+      <p>{{ noticiaActual.texto }}</p>
+    </div>
+
+    <div class="news-controls">
+      <button type="button" (click)="anterior()">&#8592; Anterior</button>
+      <span>{{ indiceActual() + 1 }} / {{ noticias.length }}</span>
+      <button type="button" (click)="siguiente()">Siguiente &#8594;</button>
+    </div>
+  </div>
+
+  <div class="landing-right">
+    <app-login-register></app-login-register>
+  </div>
+</section>

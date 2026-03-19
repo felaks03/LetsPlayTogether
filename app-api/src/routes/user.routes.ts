@@ -8,12 +8,12 @@ import {
     addAmigoController,
     removeAmigoController,
 } from "../controllers/user.controller";
-import { authMiddleware } from "../auth/auth.middleware";
+import { authMiddleware, adminMiddleware } from "../auth/auth.middleware";
 import { asyncHandler } from "../middleware/asyncHandler";
 
 const router = Router();
 
-router.post("/", asyncHandler(createUserController));
+router.post("/", authMiddleware, adminMiddleware, asyncHandler(createUserController));
 router.get("/", authMiddleware, asyncHandler(getUsersController));
 router.get("/:id", authMiddleware, asyncHandler(getUserByIdController));
 router.put("/:id", authMiddleware, asyncHandler(updateUserController));

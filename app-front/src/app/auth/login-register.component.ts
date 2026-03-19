@@ -1,14 +1,15 @@
 import { Component, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, ActivatedRoute, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-login-register',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './login-register.component.html'
+  imports: [CommonModule, FormsModule],
+  templateUrl: './login-register.component.html',
+  styleUrls: ['./login-register.component.css']
 })
 export class LoginRegisterComponent implements OnInit {
   esLogin = signal(true);
@@ -21,15 +22,11 @@ export class LoginRegisterComponent implements OnInit {
 
   constructor(
     private auth: AuthService,
-    private router: Router,
-    private route: ActivatedRoute
+    private router: Router
   ) {}
 
   ngOnInit() {
-    const mode = this.route.snapshot.data['mode'];
-    if (mode === 'register') {
-      this.esLogin.set(false);
-    }
+    this.esLogin.set(true);
   }
 
   toggleModo() {

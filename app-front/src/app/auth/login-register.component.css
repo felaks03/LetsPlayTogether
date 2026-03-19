@@ -1,0 +1,55 @@
+.auth-box {
+  max-width: 420px;
+  margin: 0 auto;
+  display: grid;
+  gap: 8px;
+}
+
+.auth-box h2 {
+  margin: 0 0 10px;
+}
+
+.auth-box label {
+  font-size: 14px;
+  color: #c6d0ee;
+}
+
+.auth-box input {
+  padding: 10px;
+  border: 1px solid #3a487a;
+  border-radius: 8px;
+  background: #0f1527;
+  color: #f2f5ff;
+}
+
+.actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.actions button {
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: #5a67d8;
+  color: #fff;
+  cursor: pointer;
+}
+
+.actions button.secondary {
+  background: #2d3658;
+}
+
+.actions button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #ff9aa2;
+}
+
+.loading {
+  color: #ffd166;
+}

@@ -5,9 +5,9 @@ import { asyncHandler } from "../middleware/asyncHandler";
 
 const router = Router();
 
-// GET públicas (sin autenticación)
-router.get("/", VideojuegoCtrl.videojuegoGetAll);
-router.get("/:id", VideojuegoCtrl.videojuegoGetById);
+// Todas protegidas para usuarios logeados
+router.get("/", authMiddleware, VideojuegoCtrl.videojuegoGetAll);
+router.get("/:id", authMiddleware, VideojuegoCtrl.videojuegoGetById);
 
 // POST, PUT, DELETE protegidas (requieren auth + admin)
 router.post("/", authMiddleware, adminMiddleware, VideojuegoCtrl.videojuegoCreate);

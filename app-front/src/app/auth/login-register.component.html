@@ -1,19 +1,42 @@
-<h2>{{ esLogin() ? 'Login' : 'Registro' }}</h2>
-<div *ngIf="error()">{{ error() }}</div>
-<div *ngIf="cargando()">Cargando...</div>
+<div class="auth-box">
+  <h2>{{ esLogin() ? 'Iniciar sesión' : 'Registro' }}</h2>
 
-<ng-container *ngIf="esLogin()">
-  <p>Email: <input type="text" [(ngModel)]="email" /></p>
-  <p>Password: <input type="password" [(ngModel)]="password" /></p>
-  <button (click)="enviarLogin()" [disabled]="cargando()">Entrar</button>
-  <p><a routerLink="/register">Ir a registro</a></p>
-</ng-container>
+  <p class="error" *ngIf="error()">{{ error() }}</p>
+  <p class="loading" *ngIf="cargando()">Cargando...</p>
 
-<ng-container *ngIf="!esLogin()">
-  <p>Nick: <input type="text" [(ngModel)]="nick" /></p>
-  <p>Email: <input type="text" [(ngModel)]="email" /></p>
-  <p>Password: <input type="password" [(ngModel)]="password" /></p>
-  <p>Edad: <input type="number" [(ngModel)]="edad" /></p>
-  <button (click)="enviarRegister()" [disabled]="cargando()">Registrarse</button>
-  <p><a routerLink="/login">Ir a login</a></p>
-</ng-container>
+  <ng-container *ngIf="esLogin()">
+    <label>Email</label>
+    <input type="email" [(ngModel)]="email" />
+
+    <label>Contraseña</label>
+    <input type="password" [(ngModel)]="password" />
+
+    <div class="actions">
+      <button (click)="enviarLogin()" [disabled]="cargando()">Iniciar sesión</button>
+      <button type="button" class="secondary" (click)="toggleModo()" [disabled]="cargando()">
+        Registrarse
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!esLogin()">
+    <label>Nick</label>
+    <input type="text" [(ngModel)]="nick" />
+
+    <label>Email</label>
+    <input type="email" [(ngModel)]="email" />
+
+    <label>Contraseña</label>
+    <input type="password" [(ngModel)]="password" />
+
+    <label>Edad</label>
+    <input type="number" [(ngModel)]="edad" min="13" />
+
+    <div class="actions">
+      <button (click)="enviarRegister()" [disabled]="cargando()">Crear cuenta</button>
+      <button type="button" class="secondary" (click)="toggleModo()" [disabled]="cargando()">
+        Logearse
+      </button>
+    </div>
+  </ng-container>
+</div>

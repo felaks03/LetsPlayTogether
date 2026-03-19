@@ -1,3 +1,9 @@
+:host {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .navbar {
   display: flex;
   align-items: center;
@@ -40,4 +46,88 @@
   color: #fff;
   background: rgba(124, 58, 237, 0.4);
   border: 1px solid rgba(124, 58, 237, 0.6);
+}
+
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-user a {
+  color: #dbe4ff;
+  text-decoration: none;
+}
+
+.nav-user button {
+  border: 1px solid #6b7cb3;
+  background: #2a355d;
+  color: #fff;
+  border-radius: 8px;
+  padding: 7px 10px;
+  cursor: pointer;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  padding: 0 12px;
+  flex: 1;
+}
+
+.app-footer {
+  margin-top: 0;
+  border-top: 1px solid #293457;
+  padding: 12px 20px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #aab6d9;
+  font-size: 13px;
+}
+
+.app-footer.app-footer-fixed {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: #0f1427;
+  z-index: 90;
+}
+
+main.main-with-fixed-footer {
+  padding-bottom: 34px;
+}
+
+.social-links {
+  display: flex;
+  gap: 8px;
+}
+
+.social-links a {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid #4f6199;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #eef2ff;
+  text-decoration: none;
+  font-weight: 700;
+  background: #1a2340;
+}
+
+@media (max-width: 760px) {
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .app-footer {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
 }
