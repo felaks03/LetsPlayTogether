@@ -1,12 +1,41 @@
-/* Estilo global: neon futurista limpio (misma línea que el perfil) — nivel 2º DAW */
+/* Paleta principal: morado · rosa · lila · azul · cyan · amarillo */
 
 :root {
-  --fondo: #07070f;
-  --texto: #e4e8f5;
-  --texto-suave: #94a3b8;
-  --neon-cyan: #22d3ee;
-  --neon-rosa: #e879f9;
-  --borde-suave: rgba(34, 211, 238, 0.12);
+  --fondo: #080a18;
+  --texto: #f4f0fb;
+  --texto-suave: #b8b0d4;
+
+  --color-cyan: #22d3ee;
+  --color-azul: #6366f1;
+  --color-morado: #a855f7;
+  --color-lila: #c084fc;
+  --color-rosa: #ec4899;
+  --color-amarillo: #fde047;
+
+  /* Alias / compatibilidad con nombres anteriores */
+  --neon-cyan: var(--color-cyan);
+  --neon-rosa: var(--color-rosa);
+  --neon-morado: var(--color-morado);
+  --neon-lila: var(--color-lila);
+  --neon-azul: var(--color-azul);
+  --acento-amarillo: var(--color-amarillo);
+
+  --borde-suave: rgba(99, 102, 241, 0.22);
+
+  /* Títulos y textos con clip (cyan → azul → morado → lila → rosa → amarillo) */
+  --gradiente-titulos: linear-gradient(
+    105deg,
+    #22d3ee 0%,
+    #6366f1 20%,
+    #8b5cf6 40%,
+    #c084fc 55%,
+    #ec4899 75%,
+    #fde047 100%
+  );
+
+  /* Botones / acentos fuertes */
+  --gradiente-boton: linear-gradient(135deg, #06b6d4, #3b82f6, #7c3aed, #db2777);
+  --gradiente-boton-suave: linear-gradient(135deg, #22d3ee, #6366f1, #a855f7, #f472b6);
 }
 
 * {
@@ -22,12 +51,15 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: var(--fondo);
   background-image: radial-gradient(
-      ellipse 80% 50% at 50% -20%,
-      rgba(34, 211, 238, 0.08),
+      ellipse 75% 45% at 50% -15%,
+      rgba(99, 102, 241, 0.12),
       transparent
     ),
-    radial-gradient(ellipse 60% 40% at 100% 40%, rgba(232, 121, 249, 0.05), transparent),
-    radial-gradient(ellipse 50% 30% at 0% 60%, rgba(34, 211, 238, 0.04), transparent);
+    radial-gradient(ellipse 55% 35% at 100% 35%, rgba(168, 85, 247, 0.1), transparent),
+    radial-gradient(ellipse 50% 32% at 0% 55%, rgba(34, 211, 238, 0.07), transparent),
+    radial-gradient(ellipse 42% 28% at 85% 85%, rgba(244, 114, 182, 0.06), transparent),
+    radial-gradient(ellipse 40% 25% at 15% 80%, rgba(250, 204, 21, 0.05), transparent),
+    radial-gradient(ellipse 45% 30% at 0% 20%, rgba(192, 132, 252, 0.06), transparent);
   background-attachment: fixed;
   color: var(--texto);
 }
@@ -51,10 +83,21 @@ main {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(34, 211, 238, 0.35);
+  background: linear-gradient(
+    180deg,
+    rgba(34, 211, 238, 0.55),
+    rgba(99, 102, 241, 0.55),
+    rgba(168, 85, 247, 0.5)
+  );
   border-radius: 5px;
+  box-shadow: 0 0 8px rgba(250, 204, 21, 0.12);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(232, 121, 249, 0.4);
+  background: linear-gradient(
+    180deg,
+    rgba(236, 72, 153, 0.55),
+    rgba(192, 132, 252, 0.55),
+    rgba(34, 211, 238, 0.45)
+  );
 }

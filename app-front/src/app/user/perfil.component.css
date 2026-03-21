@@ -49,8 +49,18 @@
   flex-shrink: 0;
   padding: 4px;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(34, 211, 238, 0.45), rgba(232, 121, 249, 0.35));
-  box-shadow: 0 0 40px rgba(34, 211, 238, 0.15), 0 0 60px rgba(232, 121, 249, 0.08);
+  background: linear-gradient(
+    135deg,
+    rgba(34, 211, 238, 0.45),
+    rgba(99, 102, 241, 0.4),
+    rgba(168, 85, 247, 0.38),
+    rgba(236, 72, 153, 0.35),
+    rgba(250, 204, 21, 0.22)
+  );
+  box-shadow:
+    0 0 40px rgba(99, 102, 241, 0.22),
+    0 0 50px rgba(34, 211, 238, 0.12),
+    0 0 60px rgba(250, 204, 21, 0.06);
 }
 
 .avatar-grande {
@@ -81,7 +91,10 @@
   font-weight: 600;
   letter-spacing: -0.02em;
   color: #f8fafc;
-  text-shadow: 0 0 24px rgba(34, 211, 238, 0.25);
+  text-shadow:
+    0 0 20px rgba(34, 211, 238, 0.2),
+    0 0 32px rgba(168, 85, 247, 0.2),
+    0 0 40px rgba(250, 204, 21, 0.08);
 }
 
 .acciones-iconos {
@@ -98,7 +111,7 @@
   border-radius: 10px;
   border: none;
   background: rgba(255, 255, 255, 0.06);
-  color: #a5f3fc;
+  color: #f5d0fe;
   text-decoration: none;
   font-size: 1rem;
   cursor: pointer;
@@ -106,8 +119,8 @@
 }
 
 .icon-btn:hover {
-  background: rgba(34, 211, 238, 0.12);
-  box-shadow: 0 0 20px rgba(34, 211, 238, 0.2);
+  background: rgba(192, 132, 252, 0.12);
+  box-shadow: 0 0 20px rgba(192, 132, 252, 0.2);
 }
 
 .icon-btn.peligro {
@@ -134,7 +147,7 @@
 }
 
 .redes a {
-  color: #67e8f9;
+  color: #fde68a;
   font-size: 0.875rem;
   text-decoration: none;
   opacity: 0.85;
@@ -143,7 +156,7 @@
 
 .redes a:hover {
   opacity: 1;
-  text-shadow: 0 0 12px rgba(34, 211, 238, 0.5);
+  text-shadow: 0 0 12px rgba(192, 132, 252, 0.5);
 }
 
 .acciones-perfil {
@@ -176,14 +189,14 @@
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  background: rgba(34, 211, 238, 0.12);
-  color: #a5f3fc;
+  background: rgba(192, 132, 252, 0.12);
+  color: #f5d0fe;
   transition: background 0.2s, box-shadow 0.2s;
 }
 
 .btn-neon:hover {
-  background: rgba(34, 211, 238, 0.2);
-  box-shadow: 0 0 24px rgba(34, 211, 238, 0.15);
+  background: rgba(192, 132, 252, 0.2);
+  box-shadow: 0 0 24px rgba(192, 132, 252, 0.15);
 }
 
 .btn-neon.ghost {
@@ -194,7 +207,7 @@
 
 .btn-neon.ghost:hover {
   color: #e2e8f0;
-  box-shadow: inset 0 0 0 1px rgba(34, 211, 238, 0.35), 0 0 20px rgba(34, 211, 238, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(192, 132, 252, 0.35), 0 0 20px rgba(192, 132, 252, 0.08);
 }
 
 /* Favoritos: fila inferior, tarjetas cuadradas */
@@ -232,7 +245,7 @@
 
 .fav-cuadro:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.15), 0 12px 28px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 0 1px rgba(192, 132, 252, 0.15), 0 12px 28px rgba(0, 0, 0, 0.35);
 }
 
 .fav-cuadro-thumb {
@@ -290,8 +303,10 @@
     background: linear-gradient(
       180deg,
       transparent,
-      rgba(34, 211, 238, 0.12) 20%,
-      rgba(232, 121, 249, 0.1) 80%,
+      rgba(34, 211, 238, 0.1) 15%,
+      rgba(99, 102, 241, 0.14) 40%,
+      rgba(192, 132, 252, 0.12) 65%,
+      rgba(250, 204, 21, 0.06) 85%,
       transparent
     );
   }
@@ -352,7 +367,7 @@
 .amigo-tarjeta:hover {
   background: rgba(255, 255, 255, 0.05);
   color: #e2e8f0;
-  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.08), 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 0 1px rgba(192, 132, 252, 0.08), 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 .amigo-nick {
@@ -419,7 +434,7 @@
   padding: 28px;
   max-width: 400px;
   width: calc(100% - 32px);
-  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.15), 0 24px 64px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 1px rgba(192, 132, 252, 0.15), 0 24px 64px rgba(0, 0, 0, 0.5);
 }
 
 .modal-caja h3 {

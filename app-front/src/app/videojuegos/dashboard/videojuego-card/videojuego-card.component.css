@@ -1,5 +1,5 @@
 .card {
-  background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%);
+  background: linear-gradient(135deg, #1e0f32 0%, #12081f 100%);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
@@ -42,7 +42,7 @@
   align-items: center;
   justify-content: center;
   font-size: 4em;
-  background: linear-gradient(135deg, #0f3460, #1a1a2e);
+  background: linear-gradient(135deg, #2d1b45, #150a22);
 }
 
 .card-contenido {
@@ -54,8 +54,8 @@
 
 .genero-badge {
   display: inline-block;
-  background: rgba(124, 58, 237, 0.3);
-  color: #00d4ff;
+  background: rgba(99, 102, 241, 0.28);
+  color: #a5f3fc;
   padding: 4px 12px;
   border-radius: 15px;
   font-size: 0.8em;
@@ -97,12 +97,12 @@
 }
 
 .plataforma-badge {
-  background: rgba(0, 212, 255, 0.2);
-  color: #00d4ff;
+  background: rgba(168, 85, 247, 0.22);
+  color: #fde68a;
   padding: 4px 10px;
   border-radius: 12px;
   font-size: 0.8em;
-  border: 1px solid rgba(0, 212, 255, 0.4);
+  border: 1px solid rgba(250, 204, 21, 0.28);
 }
 
 .pie-card {
@@ -127,8 +127,8 @@
 .btn-detalles {
   padding: 8px 16px;
   background: transparent;
-  color: #00d4ff;
-  border: 1px solid #00d4ff;
+  color: #a5f3fc;
+  border: 1px solid rgba(34, 211, 238, 0.55);
   border-radius: 18px;
   font-size: 0.85em;
   cursor: pointer;
@@ -137,7 +137,10 @@
 }
 
 .btn-detalles:hover {
-  background: rgba(0, 212, 255, 0.1);
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.12), rgba(99, 102, 241, 0.15));
+  box-shadow:
+    0 0 12px rgba(34, 211, 238, 0.2),
+    0 0 16px rgba(250, 204, 21, 0.1);
   transform: translateX(2px);
 }
 

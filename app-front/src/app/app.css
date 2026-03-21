@@ -9,9 +9,12 @@
   align-items: center;
   justify-content: space-between;
   padding: 14px 28px;
-  background: rgba(15, 17, 26, 0.88);
-  border-bottom: 1px solid var(--borde-suave, rgba(34, 211, 238, 0.12));
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  background: rgba(18, 10, 28, 0.9);
+  border-bottom: 1px solid var(--borde-suave);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(34, 211, 238, 0.08),
+    0 0 40px rgba(99, 102, 241, 0.06);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -20,9 +23,14 @@
 .nav-brand {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--neon-cyan, #22d3ee);
+  background: var(--gradiente-titulos);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   text-decoration: none;
-  text-shadow: 0 0 20px rgba(34, 211, 238, 0.25);
+  filter: drop-shadow(0 0 14px rgba(34, 211, 238, 0.35))
+    drop-shadow(0 0 22px rgba(168, 85, 247, 0.2))
+    drop-shadow(0 0 28px rgba(250, 204, 21, 0.12));
 }
 
 .nav-links {
@@ -32,7 +40,7 @@
 }
 
 .nav-links a {
-  color: var(--texto-suave, #94a3b8);
+  color: var(--texto-suave);
   text-decoration: none;
   padding: 8px 16px;
   border-radius: 999px;
@@ -42,14 +50,23 @@
 }
 
 .nav-links a:hover {
-  color: var(--texto, #e4e8f5);
+  color: var(--texto);
   background: rgba(34, 211, 238, 0.08);
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.12);
 }
 
 .nav-links a.active {
-  color: var(--texto, #e4e8f5);
-  background: rgba(34, 211, 238, 0.12);
-  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.2);
+  color: var(--texto);
+  background: linear-gradient(
+    135deg,
+    rgba(34, 211, 238, 0.12),
+    rgba(99, 102, 241, 0.14),
+    rgba(168, 85, 247, 0.12)
+  );
+  box-shadow:
+    0 0 0 1px rgba(192, 132, 252, 0.35),
+    0 0 18px rgba(34, 211, 238, 0.1),
+    0 0 20px rgba(250, 204, 21, 0.06);
 }
 
 .nav-user {
@@ -65,22 +82,28 @@
 }
 
 .nav-user a:hover {
-  text-shadow: 0 0 12px rgba(34, 211, 238, 0.4);
+  color: #f0abfc;
+  text-shadow:
+    0 0 12px rgba(34, 211, 238, 0.4),
+    0 0 18px rgba(236, 72, 153, 0.25);
 }
 
 .nav-user button {
   border: none;
-  background: rgba(232, 121, 249, 0.12);
-  color: #f0abfc;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(168, 85, 247, 0.2));
+  color: #e0e7ff;
   border-radius: 999px;
   padding: 8px 14px;
   cursor: pointer;
   font-size: 0.85rem;
-  transition: background 0.2s;
+  transition: background 0.2s, box-shadow 0.2s;
 }
 
 .nav-user button:hover {
-  background: rgba(232, 121, 249, 0.2);
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.25), rgba(34, 211, 238, 0.12));
+  box-shadow:
+    0 0 0 1px rgba(250, 204, 21, 0.3),
+    0 0 16px rgba(99, 102, 241, 0.25);
 }
 
 main {
@@ -92,14 +115,14 @@ main {
 
 .app-footer {
   margin-top: 0;
-  border-top: 1px solid var(--borde-suave, rgba(34, 211, 238, 0.1));
+  border-top: 1px solid var(--borde-suave);
   padding: 14px 24px 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: var(--texto-suave, #64748b);
+  color: var(--texto-suave);
   font-size: 13px;
-  background: rgba(7, 7, 15, 0.6);
+  background: rgba(10, 6, 18, 0.65);
 }
 
 .app-footer.app-footer-fixed {
@@ -107,7 +130,7 @@ main {
   left: 0;
   bottom: 0;
   width: 100%;
-  background: rgba(15, 17, 26, 0.95);
+  background: rgba(18, 10, 28, 0.96);
   z-index: 90;
 }
 
@@ -124,11 +147,11 @@ main.main-with-fixed-footer {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1px solid rgba(34, 211, 238, 0.2);
+  border: 1px solid rgba(192, 132, 252, 0.28);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #a5f3fc;
+  color: #f5d0fe;
   text-decoration: none;
   font-weight: 700;
   font-size: 0.7rem;
@@ -137,8 +160,11 @@ main.main-with-fixed-footer {
 }
 
 .social-links a:hover {
-  border-color: rgba(34, 211, 238, 0.45);
-  box-shadow: 0 0 14px rgba(34, 211, 238, 0.15);
+  border-color: rgba(236, 72, 153, 0.45);
+  box-shadow:
+    0 0 14px rgba(34, 211, 238, 0.2),
+    0 0 20px rgba(168, 85, 247, 0.2),
+    0 0 24px rgba(250, 204, 21, 0.1);
 }
 
 @media (max-width: 760px) {
