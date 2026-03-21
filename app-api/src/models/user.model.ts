@@ -1,7 +1,6 @@
 import { Schema, model, Types } from "mongoose";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
 
 const userSchema = new Schema(
     {
@@ -22,12 +21,7 @@ const userSchema = new Schema(
         password: {
             type: String,
             required: true,
-            minlength: [6, "La contraseña debe tener al menos 6 caracteres"],
-            validate: {
-                validator: (v: string) => passwordRegex.test(v),
-                message:
-                    "La contraseña debe tener al menos una letra y un número",
-            },
+            minlength: [8, "La contraseña debe tener al menos 8 caracteres"],
         },
         edad: {
             type: Number,
@@ -36,7 +30,7 @@ const userSchema = new Schema(
         },
         foto: {
             type: String,
-            default: "/assets/avatar-default.png",
+            default: "/avatars/default.svg",
         },
         redes: {
             twitter: { type: String, default: "" },

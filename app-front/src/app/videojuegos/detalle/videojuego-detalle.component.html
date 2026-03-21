@@ -15,7 +15,21 @@
 
         <div class="overlay-contenido">
             <h2 class="titulo-juego">{{ videojuego.titulo }}</h2>
-            <button class="btn-entrar-sala">Entrar a sala</button>
+            <div class="fila-acciones-juego">
+              <button class="btn-entrar-sala">Entrar a sala</button>
+              <button
+                *ngIf="auth.isLoggedIn()"
+                type="button"
+                class="btn-estrella-fav"
+                [class.rellena]="esFavoritoUsuario()"
+                [disabled]="favoritoCargando"
+                (click)="toggleFavorito()"
+                [attr.aria-label]="esFavoritoUsuario() ? 'Quitar de favoritos' : 'Añadir a favoritos'"
+                [title]="esFavoritoUsuario() ? 'Quitar de favoritos' : 'Añadir a favoritos'"
+              >
+                {{ favoritoCargando ? '…' : (esFavoritoUsuario() ? '★' : '☆') }}
+              </button>
+            </div>
         </div>
     </div>
 

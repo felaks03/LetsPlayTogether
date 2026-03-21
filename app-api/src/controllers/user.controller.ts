@@ -7,8 +7,10 @@ import {
     deleteUser,
     addAmigo,
     removeAmigo,
+    toggleFavoritoVideojuego,
 } from "../services/user.service";
 import { AppError } from "../middleware/AppError";
+import User from "../models/user.model";
 
 export const createUserController = async (
     req: Request,
@@ -17,9 +19,15 @@ export const createUserController = async (
 ) => {
     try {
         const user = await createUser(req.body);
-        res.status(201).json(user);
+        const o = user.toObject();
+        const { password: _p, ...sinPass } = o;
+        res.status(201).json(sinPass);
     } catch (err: any) {
-        next(err);
+        if (err.code === 11000) {
+            return next(new AppError(400, "Ese email ya está registrado"));
+        }
+        const msg = err.message || "Error al crear usuario";
+        next(new AppError(400, msg));
     }
 };
 
@@ -59,7 +67,7 @@ export const updateUserController = async (
 ) => {
     const id = req.params.id as string;
     const currentUser = (req as any).user;
-    if (currentUser.id !== id && currentUser.role !== "admin") {
+    if (String(currentUser.id) !== String(id) && currentUser.role !== "admin") {
         return next(new AppError(403, "Solo puedes editar tu perfil"));
     }
     try {
@@ -69,7 +77,8 @@ export const updateUserController = async (
         }
         res.json(user);
     } catch (err: any) {
-        next(err);
+        const msg = err.message || "Error al actualizar";
+        next(new AppError(400, msg));
     }
 };
 
@@ -80,7 +89,7 @@ export const deleteUserController = async (
 ) => {
     const id = req.params.id as string;
     const currentUser = (req as any).user;
-    if (currentUser.id !== id && currentUser.role !== "admin") {
+    if (String(currentUser.id) !== String(id) && currentUser.role !== "admin") {
         return next(new AppError(403, "Solo puedes borrar tu perfil"));
     }
     try {
@@ -101,7 +110,7 @@ export const addAmigoController = async (
 ) => {
     const userId = req.params.id as string;
     const currentUser = (req as any).user;
-    if (currentUser.id !== userId) {
+    if (String(currentUser.id) !== String(userId)) {
         return next(new AppError(403, "Solo puedes gestionar tus amigos"));
     }
     const friendId = req.body.userId;
@@ -119,6 +128,30 @@ export const addAmigoController = async (
     }
 };
 
+export const toggleFavoritoController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    const id = req.params.id as string;
+    const videojuegoId = req.params.videojuegoId as string;
+    const currentUser = (req as any).user;
+    if (String(currentUser.id) !== String(id)) {
+        return next(new AppError(403, "Solo puedes cambiar tus favoritos"));
+    }
+    try {
+        const user = await toggleFavoritoVideojuego(id, videojuegoId);
+        res.json(user);
+    } catch (err: any) {
+        const msg = err.message || "Error";
+        const status =
+            msg === "Videojuego no encontrado" || msg === "Usuario no encontrado"
+                ? 404
+                : 400;
+        next(new AppError(status, msg));
+    }
+};
+
 export const removeAmigoController = async (
     req: Request,
     res: Response,
@@ -127,7 +160,7 @@ export const removeAmigoController = async (
     const userId = req.params.id as string;
     const friendId = req.params.friendId as string;
     const currentUser = (req as any).user;
-    if (currentUser.id !== userId) {
+    if (String(currentUser.id) !== String(userId)) {
         return next(new AppError(403, "Solo puedes gestionar tus amigos"));
     }
     try {
@@ -136,5 +169,31 @@ export const removeAmigoController = async (
     } catch (err: any) {
         const status = err.message === "Usuario no encontrado" ? 404 : 400;
         next(new AppError(status, err.message));
+    }
+};
+
+export const uploadAvatarController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    const id = req.params.id as string;
+    const currentUser = (req as any).user;
+    if (String(currentUser.id) !== String(id)) {
+        return next(new AppError(403, "Solo puedes cambiar tu foto"));
+    }
+    const file = req.file;
+    if (!file) {
+        return next(
+            new AppError(400, "Selecciona una imagen (JPG, PNG, WebP o GIF)")
+        );
+    }
+    try {
+        const fotoPath = `/uploads/avatars/${file.filename}`;
+        await User.findByIdAndUpdate(id, { foto: fotoPath });
+        const user = await getUserByIdWithPopulate(id);
+        res.json(user);
+    } catch (err: any) {
+        next(err);
     }
 };

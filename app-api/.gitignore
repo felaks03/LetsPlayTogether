@@ -2,6 +2,10 @@ node_modules/
 dist/
 .env.env.local
 
+# Fotos subidas por usuarios (se mantiene la carpeta con .gitkeep)
+uploads/avatars/*
+!uploads/avatars/.gitkeep
+
 # Docker
 .dockerignore
 docker-compose.override.yml

@@ -1,0 +1,250 @@
+[
+  {
+    "_id": { "$oid": "507f191e810c19729de860ea" },
+    "nick": "LunaGamer",
+    "email": "luna@ejemplo.com",
+    "password": "Prueba123!",
+    "edad": 22,
+    "foto": "/avatars/avatar-1.svg",
+    "redes": {
+      "twitter": "@lunagamer",
+      "discord": "luna#1234",
+      "twitch": "lunagamer"
+    },
+    "favoritos": [
+      { "$oid": "507f1f77bcf86cd799439011" },
+      { "$oid": "507f1f77bcf86cd799439014" },
+      { "$oid": "507f1f77bcf86cd799439019" }
+    ],
+    "amigos": [
+      { "$oid": "507f191e810c19729de860eb" },
+      { "$oid": "507f191e810c19729de860ed" }
+    ],
+    "role": "user",
+    "createdAt": { "$date": "2025-01-15T12:00:00.000Z" },
+    "updatedAt": { "$date": "2025-01-15T12:00:00.000Z" }
+  },
+  {
+    "_id": { "$oid": "507f191e810c19729de860eb" },
+    "nick": "KaiPro",
+    "email": "kai@ejemplo.com",
+    "password": "Prueba123!",
+    "edad": 27,
+    "foto": "/avatars/avatar-2.svg",
+    "redes": {
+      "twitter": "",
+      "discord": "kaipro",
+      "twitch": "kaiproplays"
+    },
+    "favoritos": [
+      { "$oid": "507f1f77bcf86cd799439012" },
+      { "$oid": "507f1f77bcf86cd799439013" },
+      { "$oid": "507f1f77bcf86cd799439015" },
+      { "$oid": "507f1f77bcf86cd799439018" }
+    ],
+    "amigos": [
+      { "$oid": "507f191e810c19729de860ea" },
+      { "$oid": "507f191e810c19729de860ec" },
+      { "$oid": "507f191e810c19729de860ee" }
+    ],
+    "role": "user",
+    "createdAt": { "$date": "2025-01-15T12:00:00.000Z" },
+    "updatedAt": { "$date": "2025-01-15T12:00:00.000Z" }
+  },
+  {
+    "_id": { "$oid": "507f191e810c19729de860ec" },
+    "nick": "AdminDemo",
+    "email": "admin@ejemplo.com",
+    "password": "Prueba123!",
+    "edad": 30,
+    "foto": "/avatars/default.svg",
+    "redes": {
+      "twitter": "",
+      "discord": "",
+      "twitch": ""
+    },
+    "favoritos": [
+      { "$oid": "507f1f77bcf86cd799439013" },
+      { "$oid": "507f1f77bcf86cd799439016" }
+    ],
+    "amigos": [{ "$oid": "507f191e810c19729de860eb" }],
+    "role": "admin",
+    "createdAt": { "$date": "2025-01-15T12:00:00.000Z" },
+    "updatedAt": { "$date": "2025-01-15T12:00:00.000Z" }
+  },
+  {
+    "_id": { "$oid": "507f191e810c19729de860ed" },
+    "nick": "NoxFPS",
+    "email": "nox@ejemplo.com",
+    "password": "Prueba123!",
+    "edad": 19,
+    "foto": "/avatars/avatar-3.svg",
+    "redes": {
+      "twitter": "@noxfps",
+      "discord": "noxfps",
+      "twitch": "noxfps"
+    },
+    "favoritos": [
+      { "$oid": "507f1f77bcf86cd799439013" },
+      { "$oid": "507f1f77bcf86cd799439017" },
+      { "$oid": "507f1f77bcf86cd799439018" }
+    ],
+    "amigos": [
+      { "$oid": "507f191e810c19729de860ea" },
+      { "$oid": "507f191e810c19729de860ef" }
+    ],
+    "role": "user",
+    "createdAt": { "$date": "2025-01-16T10:00:00.000Z" },
+    "updatedAt": { "$date": "2025-01-16T10:00:00.000Z" }
+  },
+  {
+    "_id": { "$oid": "507f191e810c19729de860ee" },
+    "nick": "MikaRPG",
+    "email": "mika@ejemplo.com",
+    "password": "Prueba123!",
+    "edad": 24,
+    "foto": "/avatars/avatar-4.svg",
+    "redes": {
+      "twitter": "",
+      "discord": "mikarpg",
+      "twitch": ""
+    },
+    "favoritos": [
+      { "$oid": "507f1f77bcf86cd799439012" },
+      { "$oid": "507f1f77bcf86cd799439014" },
+      { "$oid": "507f1f77bcf86cd799439019" }
+    ],
+    "amigos": [
+      { "$oid": "507f191e810c19729de860eb" },
+      { "$oid": "507f191e810c19729de860f0" }
+    ],
+    "role": "user",
+    "createdAt": { "$date": "2025-01-16T10:00:00.000Z" },
+    "updatedAt": { "$date": "2025-01-16T10:00:00.000Z" }
+  },
+  {
+    "_id": { "$oid": "507f191e810c19729de860ef" },
+    "nick": "SoleCraft",
+    "email": "sole@ejemplo.com",
+    "password": "Prueba123!",
+    "edad": 17,
+    "foto": "/avatars/avatar-1.svg",
+    "redes": {
+      "twitter": "@solecraft",
+      "discord": "",
+      "twitch": ""
+    },
+    "favoritos": [
+      { "$oid": "507f1f77bcf86cd799439016" },
+      { "$oid": "507f1f77bcf86cd799439019" },
+      { "$oid": "507f1f77bcf86cd79943901a" }
+    ],
+    "amigos": [
+      { "$oid": "507f191e810c19729de860ed" },
+      { "$oid": "507f191e810c19729de860f1" }
+    ],
+    "role": "user",
+    "createdAt": { "$date": "2025-01-16T10:00:00.000Z" },
+    "updatedAt": { "$date": "2025-01-16T10:00:00.000Z" }
+  },
+  {
+    "_id": { "$oid": "507f191e810c19729de860f0" },
+    "nick": "DaniCoop",
+    "email": "dani@ejemplo.com",
+    "password": "Prueba123!",
+    "edad": 26,
+    "foto": "/avatars/avatar-2.svg",
+    "redes": {
+      "twitter": "",
+      "discord": "danicoop",
+      "twitch": "danicoop"
+    },
+    "favoritos": [
+      { "$oid": "507f1f77bcf86cd799439015" },
+      { "$oid": "507f1f77bcf86cd799439017" },
+      { "$oid": "507f1f77bcf86cd79943901a" }
+    ],
+    "amigos": [
+      { "$oid": "507f191e810c19729de860ee" },
+      { "$oid": "507f191e810c19729de860f2" }
+    ],
+    "role": "user",
+    "createdAt": { "$date": "2025-01-16T10:00:00.000Z" },
+    "updatedAt": { "$date": "2025-01-16T10:00:00.000Z" }
+  },
+  {
+    "_id": { "$oid": "507f191e810c19729de860f1" },
+    "nick": "IrisIndie",
+    "email": "iris@ejemplo.com",
+    "password": "Prueba123!",
+    "edad": 21,
+    "foto": "/avatars/avatar-3.svg",
+    "redes": {
+      "twitter": "@irisindie",
+      "discord": "iris#8821",
+      "twitch": "irisindie"
+    },
+    "favoritos": [
+      { "$oid": "507f1f77bcf86cd799439014" },
+      { "$oid": "507f1f77bcf86cd799439019" },
+      { "$oid": "507f1f77bcf86cd799439011" }
+    ],
+    "amigos": [
+      { "$oid": "507f191e810c19729de860ef" },
+      { "$oid": "507f191e810c19729de860f3" }
+    ],
+    "role": "user",
+    "createdAt": { "$date": "2025-01-16T10:00:00.000Z" },
+    "updatedAt": { "$date": "2025-01-16T10:00:00.000Z" }
+  },
+  {
+    "_id": { "$oid": "507f191e810c19729de860f2" },
+    "nick": "LeoSpeedrun",
+    "email": "leo@ejemplo.com",
+    "password": "Prueba123!",
+    "edad": 23,
+    "foto": "/avatars/avatar-4.svg",
+    "redes": {
+      "twitter": "",
+      "discord": "leospeed",
+      "twitch": "leospeedrun"
+    },
+    "favoritos": [
+      { "$oid": "507f1f77bcf86cd799439011" },
+      { "$oid": "507f1f77bcf86cd799439012" },
+      { "$oid": "507f1f77bcf86cd799439016" }
+    ],
+    "amigos": [
+      { "$oid": "507f191e810c19729de860f0" },
+      { "$oid": "507f191e810c19729de860f3" }
+    ],
+    "role": "user",
+    "createdAt": { "$date": "2025-01-16T10:00:00.000Z" },
+    "updatedAt": { "$date": "2025-01-16T10:00:00.000Z" }
+  },
+  {
+    "_id": { "$oid": "507f191e810c19729de860f3" },
+    "nick": "RafaCasual",
+    "email": "rafa@ejemplo.com",
+    "password": "Prueba123!",
+    "edad": 29,
+    "foto": "/avatars/default.svg",
+    "redes": {
+      "twitter": "",
+      "discord": "",
+      "twitch": ""
+    },
+    "favoritos": [
+      { "$oid": "507f1f77bcf86cd799439017" },
+      { "$oid": "507f1f77bcf86cd79943901a" },
+      { "$oid": "507f1f77bcf86cd799439013" }
+    ],
+    "amigos": [
+      { "$oid": "507f191e810c19729de860f1" },
+      { "$oid": "507f191e810c19729de860f2" }
+    ],
+    "role": "user",
+    "createdAt": { "$date": "2025-01-16T10:00:00.000Z" },
+    "updatedAt": { "$date": "2025-01-16T10:00:00.000Z" }
+  }
+]

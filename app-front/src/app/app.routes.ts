@@ -6,9 +6,9 @@ import { ListaChatsComponent } from './chat/lista-chats.component';
 import { ChatComponent } from './chat/chat.component';
 import { SalasComponent } from './salas/salas.component';
 import { HomeComponent } from './home/home.component';
-import { PerfilRedirectComponent } from './perfil-redirect/perfil-redirect.component';
-import { VideojuegosDashboardComponent } from './videojuegos-dashboard/videojuegos-dashboard.component';
-import { VideojuegoDetalleComponent } from './videojuego-detalle/videojuego-detalle.component';
+import { PerfilRedirectComponent } from './user/perfil-redirect.component';
+import { VideojuegosDashboardComponent } from './videojuegos/dashboard/videojuegos-dashboard.component';
+import { VideojuegoDetalleComponent } from './videojuegos/detalle/videojuego-detalle.component';
 import { authGuard, guestGuard } from './auth/auth.guard';
 
 

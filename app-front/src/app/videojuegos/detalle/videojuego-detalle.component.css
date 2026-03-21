@@ -102,6 +102,41 @@
   transform: translateY(-2px);
 }
 
+.fila-acciones-juego {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-estrella-fav {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.35);
+  transition: color 0.2s, transform 0.15s;
+}
+
+.btn-estrella-fav:hover:not(:disabled) {
+  color: rgba(255, 215, 0, 0.95);
+  transform: scale(1.08);
+}
+
+.btn-estrella-fav.rellena {
+  color: #ffd700;
+  text-shadow: 0 0 18px rgba(255, 215, 0, 0.65);
+}
+
+.btn-estrella-fav:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .card-descripcion {
   width: 100%;
   padding: 30px;

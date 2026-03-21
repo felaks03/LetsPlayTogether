@@ -4,6 +4,12 @@ import { Observable, tap } from 'rxjs';
 
 const API = 'http://localhost:3000/api';
 
+export interface VideojuegoFavorito {
+  _id: string;
+  titulo: string;
+  imagen?: string;
+}
+
 export interface User {
   _id: string;
   nick: string;
@@ -11,7 +17,7 @@ export interface User {
   edad: number;
   foto?: string;
   redes?: { twitter?: string; discord?: string; twitch?: string };
-  favoritos?: unknown[];
+  favoritos?: (VideojuegoFavorito | string)[];
   amigos?: unknown[];
   role?: string;
 }
@@ -37,7 +43,13 @@ export class AuthService {
     if (u) this.currentUser.set(JSON.parse(u));
   }
 
-  register(data: { nick: string; email: string; password: string; edad: number }): Observable<User> {
+  register(data: {
+    nick: string;
+    email: string;
+    password: string;
+    edad: number;
+    foto?: string;
+  }): Observable<User> {
     return this.http.post<User>(`${this.api}/register`, data);
   }
 
@@ -57,6 +69,12 @@ export class AuthService {
     this.currentUser.set(null);
     sessionStorage.removeItem(this.tokenKey);
     sessionStorage.removeItem(this.userKey);
+  }
+
+  /** Tras editar perfil o favoritos: guarda usuario en memoria y sessionStorage */
+  syncCurrentUser(user: User): void {
+    this.currentUser.set(user);
+    sessionStorage.setItem(this.userKey, JSON.stringify(user));
   }
 
   getToken(): string | null {

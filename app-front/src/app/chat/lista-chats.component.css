@@ -1,0 +1,93 @@
+.chats-page {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 20px 16px 32px;
+  color: #e8ecff;
+}
+
+.chats-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.sub {
+  margin: 6px 0 20px;
+  color: #94a3b8;
+  font-size: 0.95rem;
+}
+
+.estado {
+  text-align: center;
+  padding: 24px;
+}
+
+.estado.error {
+  color: #fca5a5;
+}
+
+.lista-ig {
+  border: 1px solid #334155;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0f172a;
+}
+
+.fila-chat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #1e293b;
+}
+
+.fila-chat:last-child {
+  border-bottom: none;
+}
+
+.wrap-avatar {
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.avatar-chat {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #475569;
+  background: #1e293b;
+}
+
+.cuerpo-chat {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.nombre {
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.preview {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.hora {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  color: #64748b;
+  text-decoration: none;
+}
+
+.vacio {
+  padding: 24px;
+  text-align: center;
+  color: #94a3b8;
+}

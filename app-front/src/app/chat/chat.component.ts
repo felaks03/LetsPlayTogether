@@ -9,7 +9,8 @@ import { AuthService, User } from '../auth/auth.service';
   selector: 'app-chat',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './chat.component.html'
+  templateUrl: './chat.component.html',
+  styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
   data = signal<ChatConMensajes | null>(null);
@@ -71,5 +72,22 @@ export class ChatComponent implements OnInit {
     const me = this.auth.currentUser()?._id;
     const id = typeof m.emisor === 'object' ? (m.emisor as User)._id : m.emisor;
     return me === id;
+  }
+
+  idEmisor(m: Mensaje): string {
+    const e = m.emisor;
+    return typeof e === 'object' && e && '_id' in e ? (e as User)._id : String(e);
+  }
+
+  otroEnChat(): User | null {
+    const d = this.data();
+    const me = this.auth.currentUser()?._id;
+    if (!d || !me) return null;
+    const p1 = d.chat.participante1;
+    const p2 = d.chat.participante2;
+    const u1 = typeof p1 === 'object' ? (p1 as User) : null;
+    const u2 = typeof p2 === 'object' ? (p2 as User) : null;
+    if (!u1 || !u2) return null;
+    return u1._id === me ? u2 : u1;
   }
 }

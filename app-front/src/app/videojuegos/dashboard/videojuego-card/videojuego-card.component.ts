@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { Videojuego } from '../videojuegos.service';
+import { Videojuego } from '../../videojuegos.service';
 
 @Component({
   selector: 'app-videojuego-card',

@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ChatService, Chat } from './chat.service';
 import { AuthService, User } from '../auth/auth.service';
+import { urlFotoPerfil } from '../shared/foto-url';
 
 @Component({
   selector: 'app-lista-chats',
   standalone: true,
   imports: [CommonModule, RouterLink],
-  templateUrl: './lista-chats.component.html'
+  templateUrl: './lista-chats.component.html',
+  styleUrls: ['./lista-chats.component.css']
 })
 export class ListaChatsComponent implements OnInit {
   chats = signal<Chat[]>([]);
@@ -50,5 +52,34 @@ export class ListaChatsComponent implements OnInit {
   nombreOtro(chat: Chat): string {
     const o = this.otroParticipante(chat);
     return typeof o === 'object' && o?.nick ? o.nick : String(o);
+  }
+
+  idOtro(chat: Chat): string {
+    const o = this.otroParticipante(chat);
+    if (typeof o === 'object' && o && '_id' in o) {
+      return (o as User)._id;
+    }
+    return String(o);
+  }
+
+  fotoOtro(chat: Chat): string {
+    const o = this.otroParticipante(chat);
+    if (typeof o === 'object' && o && 'foto' in o && (o as User).foto) {
+      return urlFotoPerfil((o as User).foto);
+    }
+    return urlFotoPerfil();
+  }
+
+  fechaUltima(chat: Chat): string {
+    const raw = chat.ultimaActividad || chat.fechaCreacion;
+    if (!raw) return '';
+    try {
+      return new Date(raw).toLocaleDateString('es-ES', {
+        day: 'numeric',
+        month: 'short'
+      });
+    } catch {
+      return '';
+    }
   }
 }

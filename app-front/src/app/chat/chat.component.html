@@ -2,15 +2,25 @@
 <div *ngIf="error()">{{ error() }}</div>
 
 <ng-container *ngIf="!cargando() && data()">
-  <p><a routerLink="/chats">Volver a chats</a></p>
-  <h2>Chat</h2>
-  <div>
-    <div *ngFor="let m of data()!.mensajes">
-      {{ nickEmisor(m) }}: {{ m.contenido }}
-      <span *ngIf="esMio(m)"> (tú)</span>
+  <p><a routerLink="/chats">← Volver a mensajes</a></p>
+
+  <header class="chat-cabecera" *ngIf="otroEnChat() as otro">
+    <a [routerLink]="['/usuarios', otro._id]" class="link-perfil">Perfil de {{ otro.nick }}</a>
+  </header>
+
+  <h2>Conversación</h2>
+  <div class="mensajes">
+    <div *ngFor="let m of data()!.mensajes" class="linea-msg">
+      <ng-container *ngIf="esMio(m); else msgOtro">
+        <span class="yo">{{ nickEmisor(m) }} (tú): {{ m.contenido }}</span>
+      </ng-container>
+      <ng-template #msgOtro>
+        <a [routerLink]="['/usuarios', idEmisor(m)]" class="nick-link">{{ nickEmisor(m) }}</a
+        >: {{ m.contenido }}
+      </ng-template>
     </div>
   </div>
-  <p>
+  <p class="enviar-fila">
     <input type="text" [(ngModel)]="nuevoMensaje" (keyup.enter)="enviar()" placeholder="Escribe un mensaje" />
     <button (click)="enviar()" [disabled]="enviando() || !nuevoMensaje.trim()">Enviar</button>
   </p>

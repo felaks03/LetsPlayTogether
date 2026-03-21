@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { VideojuegoCardComponent } from './videojuego-card/videojuego-card.component';
-import { VideojuegosService, Videojuego } from './videojuegos.service';
-import { AuthService } from '../auth/auth.service';
+import { VideojuegosService, Videojuego } from '../videojuegos.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-videojuegos-dashboard',

@@ -1,15 +1,39 @@
+/* Estilo global: neon futurista limpio (misma línea que el perfil) — nivel 2º DAW */
+
+:root {
+  --fondo: #07070f;
+  --texto: #e4e8f5;
+  --texto-suave: #94a3b8;
+  --neon-cyan: #22d3ee;
+  --neon-rosa: #e879f9;
+  --borde-suave: rgba(34, 211, 238, 0.12);
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #0a0a0e 0%, #1a1a2e 100%);
-  color: #fff;
+  background-color: var(--fondo);
+  background-image: radial-gradient(
+      ellipse 80% 50% at 50% -20%,
+      rgba(34, 211, 238, 0.08),
+      transparent
+    ),
+    radial-gradient(ellipse 60% 40% at 100% 40%, rgba(232, 121, 249, 0.05), transparent),
+    radial-gradient(ellipse 50% 30% at 0% 60%, rgba(34, 211, 238, 0.04), transparent);
+  background-attachment: fixed;
+  color: var(--texto);
+}
+
+body {
+  min-height: 100%;
 }
 
 main {
@@ -17,21 +41,20 @@ main {
   min-height: 100vh;
 }
 
-/* Scrollbar personalizada */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a1a2e;
+  background: var(--fondo);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #7c3aed;
+  background: rgba(34, 211, 238, 0.35);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #00d4ff;
+  background: rgba(232, 121, 249, 0.4);
 }

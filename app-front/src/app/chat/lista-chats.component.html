@@ -1,9 +1,23 @@
-<h2>Mis chats</h2>
-<div *ngIf="cargando()">Cargando...</div>
-<div *ngIf="error()">{{ error() }}</div>
-<ul *ngIf="!cargando() && !error()">
-  <li *ngFor="let c of chats()">
-    <a [routerLink]="['/chats', c._id]">Chat con {{ nombreOtro(c) }}</a>
-  </li>
-</ul>
-<p *ngIf="!cargando() && !error() && !chats().length">No tienes chats. Abre uno desde el perfil de un usuario.</p>
+<div class="chats-page">
+  <header class="chats-header">
+    <h1>Mensajes</h1>
+    <p class="sub">Tus conversaciones</p>
+  </header>
+
+  <div *ngIf="cargando()" class="estado">Cargando...</div>
+  <div *ngIf="error()" class="estado error">{{ error() }}</div>
+
+  <div class="lista-ig" *ngIf="!cargando() && !error()">
+    <article *ngFor="let c of chats()" class="fila-chat">
+      <a [routerLink]="['/usuarios', idOtro(c)]" class="wrap-avatar" title="Ver perfil">
+        <img [src]="fotoOtro(c)" alt="" class="avatar-chat" />
+      </a>
+      <a [routerLink]="['/chats', c._id]" class="cuerpo-chat">
+        <span class="nombre">{{ nombreOtro(c) }}</span>
+        <span class="preview">Abrir conversación</span>
+      </a>
+      <a [routerLink]="['/chats', c._id]" class="hora">{{ fechaUltima(c) }}</a>
+    </article>
+    <p *ngIf="!chats().length" class="vacio">No tienes chats. Abre uno desde el perfil de un usuario.</p>
+  </div>
+</div>

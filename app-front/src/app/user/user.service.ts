@@ -3,8 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../auth/auth.service';
 import { Chat } from '../chat/chat.service';
+import { API_BASE } from '../shared/api-config';
 
-const API = 'http://localhost:3000/api/users';
+const API = `${API_BASE}/users`;
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -18,7 +19,7 @@ export class UserService {
     return this.http.get<User>(`${API}/${id}`);
   }
 
-  updateUser(id: string, data: Partial<User>): Observable<User> {
+  updateUser(id: string, data: Partial<User> & { password?: string }): Observable<User> {
     return this.http.put<User>(`${API}/${id}`, data);
   }
 
@@ -34,8 +35,18 @@ export class UserService {
     return this.http.delete<User>(`${API}/${userId}/amigos/${friendId}`);
   }
 
+  toggleFavoritoVideojuego(userId: string, videojuegoId: string): Observable<User> {
+    return this.http.post<User>(`${API}/${userId}/favoritos/${videojuegoId}`, {});
+  }
+
+  uploadAvatar(userId: string, file: File): Observable<User> {
+    const fd = new FormData();
+    fd.append('foto', file);
+    return this.http.post<User>(`${API}/${userId}/avatar`, fd);
+  }
+
   getOrCreateChatConUsuario(otroUsuarioId: string): Observable<Chat> {
-    return this.http.post<Chat>('http://localhost:3000/api/chats', {
+    return this.http.post<Chat>(`${API_BASE}/chats`, {
       otroUsuarioId,
     });
   }

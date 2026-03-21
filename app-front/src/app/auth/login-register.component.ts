@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
+import { AVATAR_PRESETS } from '../shared/avatar-presets';
+import { validatePassword } from '../shared/password-rules';
 
 @Component({
   selector: 'app-login-register',
@@ -17,6 +19,9 @@ export class LoginRegisterComponent implements OnInit {
   password = '';
   nick = '';
   edad = 18;
+  /** Si no eliges foto, el servidor asigna la por defecto */
+  fotoElegida = '';
+  readonly avataresRegistro = [...AVATAR_PRESETS];
   error = signal<string | null>(null);
   cargando = signal(false);
 
@@ -32,6 +37,7 @@ export class LoginRegisterComponent implements OnInit {
   toggleModo() {
     this.esLogin.update((v) => !v);
     this.error.set(null);
+    this.fotoElegida = '';
   }
 
   enviarLogin() {
@@ -40,7 +46,7 @@ export class LoginRegisterComponent implements OnInit {
     this.auth.login(this.email, this.password).subscribe({
       next: () => {
         this.cargando.set(false);
-        this.router.navigate(['/salas']);
+        this.router.navigate(['/videojuegos']);
       },
       error: (err) => {
         this.error.set(err.error?.message || 'Error al iniciar sesión');
@@ -55,13 +61,27 @@ export class LoginRegisterComponent implements OnInit {
       this.error.set('Completa todos los campos');
       return;
     }
+    const errPw = validatePassword(this.password);
+    if (errPw) {
+      this.error.set(errPw);
+      return;
+    }
     this.cargando.set(true);
-    this.auth.register({ nick: this.nick, email: this.email, password: this.password, edad: this.edad }).subscribe({
+    const body: Parameters<AuthService['register']>[0] = {
+      nick: this.nick,
+      email: this.email,
+      password: this.password,
+      edad: this.edad
+    };
+    if (this.fotoElegida) {
+      body.foto = this.fotoElegida;
+    }
+    this.auth.register(body).subscribe({
       next: () => {
         this.auth.login(this.email, this.password).subscribe({
           next: () => {
             this.cargando.set(false);
-            this.router.navigate(['/salas']);
+            this.router.navigate(['/videojuegos']);
           },
           error: () => {
             this.cargando.set(false);
