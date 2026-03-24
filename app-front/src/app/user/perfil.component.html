@@ -23,7 +23,7 @@
                   title="Editar perfil"
                   aria-label="Editar perfil"
                 >
-                  ✎
+                  <span class="mat-icon">edit</span>
                 </a>
                 <button
                   type="button"
@@ -32,7 +32,7 @@
                   title="Borrar cuenta"
                   aria-label="Borrar cuenta"
                 >
-                  🗑
+                  <span class="mat-icon">delete</span>
                 </button>
               </div>
             </div>
@@ -62,7 +62,7 @@
           <div class="amigo-celda" *ngFor="let a of u.amigos">
             <a [routerLink]="['/usuarios', idAmigo(a)]" class="amigo-tarjeta">
               <span class="amigo-nick">{{ nickAmigo(a) }}</span>
-              <span class="amigo-flecha">→</span>
+              <span class="amigo-flecha mat-icon sm">chevron_right</span>
             </a>
             <button
               *ngIf="esMiPerfil()"
@@ -84,7 +84,7 @@
         <a class="fav-cuadro" *ngFor="let j of juegosFavoritos(u)" [routerLink]="['/videojuegos', j._id]">
           <div class="fav-cuadro-thumb">
             <img *ngIf="j.imagen" [src]="j.imagen" [alt]="j.titulo" />
-            <span *ngIf="!j.imagen" class="fav-cuadro-placeholder">▶</span>
+            <span *ngIf="!j.imagen" class="fav-cuadro-placeholder"><span class="mat-icon lg">videogame_asset</span></span>
           </div>
           <span class="fav-cuadro-titulo">{{ j.titulo }}</span>
         </a>

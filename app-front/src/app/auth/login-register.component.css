@@ -7,6 +7,11 @@
 
 .auth-box h2 {
   margin: 0 0 10px;
+  font-size: 1.5em;
+  background: var(--gradiente-titulos);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .auth-box label {
@@ -20,6 +25,15 @@
   border-radius: 8px;
   background: rgba(15, 8, 28, 0.95);
   color: #faf5ff;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.auth-box input:focus {
+  border-color: #22d3ee;
+  box-shadow:
+    0 0 18px rgba(34, 211, 238, 0.35),
+    0 0 28px rgba(99, 102, 241, 0.25);
 }
 
 .actions {

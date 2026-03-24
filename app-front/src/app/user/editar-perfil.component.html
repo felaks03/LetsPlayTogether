@@ -5,7 +5,7 @@
   <ng-container *ngIf="!cargando() && user()">
     <header class="cabecera">
       <h1>Editar perfil</h1>
-      <a [routerLink]="['/usuarios', user()!._id]" class="btn-volver">← Volver al perfil</a>
+      <a [routerLink]="['/usuarios', user()!._id]" class="btn-volver"><span class="mat-icon sm">arrow_back</span> Volver al perfil</a>
     </header>
 
     <form class="form-tarjeta" (ngSubmit)="guardar()">

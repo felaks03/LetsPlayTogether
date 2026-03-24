@@ -101,3 +101,27 @@ main {
     rgba(34, 211, 238, 0.45)
   );
 }
+
+/* ---- Material Icons helpers ---- */
+.mat-icon {
+  font-family: 'Material Icons Round';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  vertical-align: middle;
+}
+
+.mat-icon.sm { font-size: 16px; }
+.mat-icon.lg { font-size: 24px; }
+.mat-icon.xl { font-size: 32px; }

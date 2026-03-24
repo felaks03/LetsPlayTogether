@@ -28,6 +28,9 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   filter: drop-shadow(0 0 14px rgba(34, 211, 238, 0.35))
     drop-shadow(0 0 22px rgba(168, 85, 247, 0.2))
     drop-shadow(0 0 28px rgba(250, 204, 21, 0.12));
@@ -46,6 +49,9 @@
   border-radius: 999px;
   font-weight: 500;
   font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   transition: color 0.2s, background 0.2s, box-shadow 0.2s;
 }
 
@@ -79,6 +85,9 @@
   color: #a5f3fc;
   text-decoration: none;
   font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .nav-user a:hover {
@@ -96,6 +105,9 @@
   padding: 8px 14px;
   cursor: pointer;
   font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   transition: background 0.2s, box-shadow 0.2s;
 }
 

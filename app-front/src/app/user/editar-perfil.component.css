@@ -23,7 +23,10 @@
 .cabecera h1 {
   margin: 0;
   font-size: 1.6rem;
-  color: #fff;
+  background: var(--gradiente-titulos);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .btn-volver {
@@ -106,15 +109,27 @@ label {
 }
 
 input[type='text'],
-input[type='number'] {
+input[type='number'],
+input[type='password'] {
   width: 100%;
   box-sizing: border-box;
   padding: 12px 14px;
   border-radius: 10px;
-  border: 1px solid #475569;
-  background: #0f172a;
+  border: 1px solid rgba(99, 102, 241, 0.45);
+  background: rgba(20, 20, 40, 0.8);
   color: #f1f5f9;
   font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type='text']:focus,
+input[type='number']:focus,
+input[type='password']:focus {
+  border-color: #22d3ee;
+  box-shadow:
+    0 0 18px rgba(34, 211, 238, 0.35),
+    0 0 28px rgba(99, 102, 241, 0.25);
 }
 
 .acciones-form {

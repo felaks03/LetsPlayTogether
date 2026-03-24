@@ -1,0 +1,129 @@
+/* ===== Lista Usuarios — consistente con Videojuegos ===== */
+
+:host {
+  display: block;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  color: #fff;
+}
+
+h2 {
+  text-align: center;
+  font-size: 2em;
+  margin: 0 0 28px;
+  background: var(--gradiente-titulos);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.buscador {
+  max-width: 500px;
+  margin: 0 auto 28px;
+}
+
+.buscador input {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 1em;
+  border: 2px solid rgba(99, 102, 241, 0.65);
+  background: rgba(20, 20, 40, 0.8);
+  color: #fff;
+  border-radius: 30px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.buscador input::placeholder {
+  color: #a0a0a0;
+}
+
+.buscador input:focus {
+  border-color: #22d3ee;
+  box-shadow:
+    0 0 18px rgba(34, 211, 238, 0.35),
+    0 0 28px rgba(99, 102, 241, 0.25);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #1e0f32 0%, #12081f 100%);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+}
+
+li:hover {
+  border-color: rgba(124, 58, 237, 0.5);
+  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.2);
+  transform: translateY(-2px);
+}
+
+li a {
+  color: #f8fafc;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1em;
+  transition: color 0.2s;
+}
+
+li a:hover {
+  color: #a5f3fc;
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
+}
+
+li button {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: none;
+  font-size: 0.85em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+li button:first-of-type {
+  background: var(--gradiente-boton);
+  color: #fff;
+  box-shadow:
+    0 0 10px rgba(34, 211, 238, 0.15),
+    0 0 16px rgba(99, 102, 241, 0.15);
+}
+
+li button:first-of-type:hover:not(:disabled) {
+  transform: scale(1.03);
+  box-shadow:
+    0 0 18px rgba(34, 211, 238, 0.3),
+    0 0 22px rgba(99, 102, 241, 0.25);
+}
+
+li button:first-of-type:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+li button:last-of-type {
+  background: rgba(34, 211, 238, 0.08);
+  color: #a5f3fc;
+  border: 1px solid rgba(34, 211, 238, 0.35);
+}
+
+li button:last-of-type:hover {
+  background: rgba(192, 132, 252, 0.2);
+  border-color: rgba(192, 132, 252, 0.5);
+}

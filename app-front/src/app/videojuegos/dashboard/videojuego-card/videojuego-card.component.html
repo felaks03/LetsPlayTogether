@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-imagen">
         <img *ngIf="videojuego.imagen" [src]="videojuego.imagen" [alt]="videojuego.titulo" />
-        <div *ngIf="!videojuego.imagen" class="placeholder-img">🎮</div>
+        <div *ngIf="!videojuego.imagen" class="placeholder-img"><span class="mat-icon xl" style="font-size:4em">sports_esports</span></div>
     </div>
 
     <div class="card-contenido">
@@ -10,7 +10,7 @@
         <h3 class="titulo">{{ videojuego.titulo }}</h3>
 
         <div class="calificacion" *ngIf="videojuego.puntuacion != null">
-            <span *ngFor="let star of obtenerEstrellas()" class="estrella">{{ star }}</span>
+            <span *ngFor="let star of obtenerEstrellas()" class="estrella mat-icon">{{ star === 'filled' ? 'star' : (star === 'half' ? 'star_half' : 'star_border') }}</span>
             <span class="puntuacion">({{ videojuego.puntuacion }}/10)</span>
         </div>
 

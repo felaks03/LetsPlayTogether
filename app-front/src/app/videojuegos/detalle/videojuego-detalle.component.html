@@ -1,5 +1,5 @@
 <div class="contenedor-detalle">
-    <button routerLink="/videojuegos" class="btn-volver">← Volver</button>
+    <button routerLink="/videojuegos" class="btn-volver"><span class="mat-icon sm">arrow_back</span> Volver</button>
 
     <div *ngIf="cargando" class="cargando">
         <p>Cargando...</p>
@@ -11,7 +11,7 @@
 
     <div *ngIf="videojuego" class="card-grande">
         <img *ngIf="videojuego.imagen" [src]="videojuego.imagen" [alt]="videojuego.titulo" class="imagen-card" />
-        <div *ngIf="!videojuego.imagen" class="placeholder-grande">🎮</div>
+        <div *ngIf="!videojuego.imagen" class="placeholder-grande"><span class="mat-icon" style="font-size:6em">sports_esports</span></div>
 
         <div class="overlay-contenido">
             <h2 class="titulo-juego">{{ videojuego.titulo }}</h2>
@@ -27,7 +27,8 @@
                 [attr.aria-label]="esFavoritoUsuario() ? 'Quitar de favoritos' : 'Añadir a favoritos'"
                 [title]="esFavoritoUsuario() ? 'Quitar de favoritos' : 'Añadir a favoritos'"
               >
-                {{ favoritoCargando ? '…' : (esFavoritoUsuario() ? '★' : '☆') }}
+                <span *ngIf="favoritoCargando">…</span>
+                <span *ngIf="!favoritoCargando" class="mat-icon" style="font-size:2rem">{{ esFavoritoUsuario() ? 'star' : 'star_border' }}</span>
               </button>
             </div>
         </div>
@@ -70,7 +71,7 @@
             <div class="info-item" *ngIf="videojuego.puntuacion != null">
                 <h3>Calificación</h3>
                 <div class="calificacion-info">
-                    <span *ngFor="let star of obtenerEstrellas()" class="estrella-info">{{ star }}</span>
+                    <span *ngFor="let star of obtenerEstrellas()" class="estrella-info mat-icon">{{ star === 'filled' ? 'star' : (star === 'half' ? 'star_half' : 'star_border') }}</span>
                     <span class="puntuacion-info">({{ videojuego.puntuacion }}/10)</span>
                 </div>
             </div>

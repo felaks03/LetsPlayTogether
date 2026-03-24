@@ -11,16 +11,21 @@
 
 .landing-left,
 .landing-right {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(192, 132, 252, 0.18);
+  background: linear-gradient(135deg, #1e0f32 0%, #12081f 100%);
+  border: 1px solid rgba(124, 58, 237, 0.3);
   border-radius: 16px;
   padding: 24px 26px;
   min-height: 500px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
 }
 
 .landing-left h1 {
   margin: 0 0 8px;
+  background: var(--gradiente-titulos);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .subtitle {
@@ -29,10 +34,16 @@
 }
 
 .news-card {
-  border: 1px solid rgba(192, 132, 252, 0.14);
+  border: 1px solid rgba(124, 58, 237, 0.25);
   border-radius: 12px;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.25);
   padding: 12px;
+  transition: all 0.3s ease;
+}
+
+.news-card:hover {
+  border-color: rgba(124, 58, 237, 0.5);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.15);
 }
 
 .news-card img {
@@ -40,11 +51,18 @@
   height: 260px;
   object-fit: cover;
   border-radius: 10px;
-  border: 1px solid rgba(250, 204, 21, 0.12);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.news-card:hover img {
+  transform: scale(1.02);
 }
 
 .news-card h3 {
   margin: 12px 0 8px;
+  color: #f5d0fe;
+  text-shadow: 0 0 12px rgba(192, 132, 252, 0.4);
 }
 
 .news-card p {
@@ -61,12 +79,24 @@
 }
 
 .news-controls button {
-  border: 1px solid rgba(168, 85, 247, 0.45);
-  background: rgba(30, 15, 45, 0.9);
-  color: #faf5ff;
-  border-radius: 8px;
-  padding: 8px 12px;
+  border: 1px solid rgba(34, 211, 238, 0.4);
+  background: rgba(20, 20, 40, 0.8);
+  color: #a5f3fc;
+  border-radius: 10px;
+  padding: 10px 16px;
   cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.news-controls button:hover {
+  background: rgba(192, 132, 252, 0.2);
+  border-color: rgba(192, 132, 252, 0.5);
+  box-shadow: 0 0 16px rgba(34, 211, 238, 0.2);
 }
 
 .news-controls span {

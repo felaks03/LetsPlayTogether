@@ -2,7 +2,7 @@
 <div *ngIf="error()">{{ error() }}</div>
 
 <ng-container *ngIf="!cargando() && data()">
-  <p><a routerLink="/chats">← Volver a mensajes</a></p>
+  <p><a routerLink="/chats"><span class="mat-icon sm">arrow_back</span> Volver a mensajes</a></p>
 
   <header class="chat-cabecera" *ngIf="otroEnChat() as otro">
     <a [routerLink]="['/usuarios', otro._id]" class="link-perfil">Perfil de {{ otro.nick }}</a>
