@@ -16,7 +16,7 @@
 
     <div *ngIf="error" class="error-msg">
         {{ error }}
-        <button class="btn-cerrar-error" (click)="error = null">✕</button>
+        <button class="btn-cerrar-error" (click)="error = null"><span class="mat-icon sm">close</span></button>
     </div>
 
     <div *ngIf="cargando" class="cargando">
@@ -27,8 +27,8 @@
         <div *ngFor="let vj of videojuegosFiltrados" class="card-wrapper">
             <app-videojuego-card [videojuego]="vj"></app-videojuego-card>
             <div *ngIf="esAdmin" class="admin-acciones">
-                <button class="btn-admin btn-editar" (click)="abrirModalEditar(vj)">✏️ Editar</button>
-                <button class="btn-admin btn-eliminar" (click)="confirmarEliminar(vj)">🗑️ Eliminar</button>
+                <button class="btn-admin btn-editar" (click)="abrirModalEditar(vj)"><span class="mat-icon sm">edit</span> Editar</button>
+                <button class="btn-admin btn-eliminar" (click)="confirmarEliminar(vj)"><span class="mat-icon sm">delete</span> Eliminar</button>
             </div>
         </div>
     </div>

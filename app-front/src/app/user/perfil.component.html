@@ -23,7 +23,7 @@
                   title="Editar perfil"
                   aria-label="Editar perfil"
                 >
-                  ✎
+                  <span class="mat-icon">edit</span>
                 </a>
                 <button
                   type="button"
@@ -32,7 +32,7 @@
                   title="Borrar cuenta"
                   aria-label="Borrar cuenta"
                 >
-                  🗑
+                  <span class="mat-icon">delete</span>
                 </button>
               </div>
             </div>
@@ -41,9 +41,6 @@
               <a *ngIf="u.redes.twitter" [href]="u.redes.twitter" target="_blank" rel="noopener">Twitter</a>
               <a *ngIf="u.redes.discord" [href]="u.redes.discord" target="_blank" rel="noopener">Discord</a>
               <a *ngIf="u.redes.twitch" [href]="u.redes.twitch" target="_blank" rel="noopener">Twitch</a>
-            </div>
-            <div class="acciones-perfil" *ngIf="esMiPerfil()">
-              <a routerLink="/chats" class="link-neon">Mensajes</a>
             </div>
             <div class="acciones-perfil" *ngIf="!esMiPerfil() && auth.currentUser()">
               <button *ngIf="!yaEsAmigo(u._id)" type="button" class="btn-neon" (click)="anadirAmigo()">
@@ -62,7 +59,7 @@
           <div class="amigo-celda" *ngFor="let a of u.amigos">
             <a [routerLink]="['/usuarios', idAmigo(a)]" class="amigo-tarjeta">
               <span class="amigo-nick">{{ nickAmigo(a) }}</span>
-              <span class="amigo-flecha">→</span>
+              <span class="amigo-flecha mat-icon sm">chevron_right</span>
             </a>
             <button
               *ngIf="esMiPerfil()"
@@ -84,7 +81,7 @@
         <a class="fav-cuadro" *ngFor="let j of juegosFavoritos(u)" [routerLink]="['/videojuegos', j._id]">
           <div class="fav-cuadro-thumb">
             <img *ngIf="j.imagen" [src]="j.imagen" [alt]="j.titulo" />
-            <span *ngIf="!j.imagen" class="fav-cuadro-placeholder">▶</span>
+            <span *ngIf="!j.imagen" class="fav-cuadro-placeholder"><span class="mat-icon lg">videogame_asset</span></span>
           </div>
           <span class="fav-cuadro-titulo">{{ j.titulo }}</span>
         </a>

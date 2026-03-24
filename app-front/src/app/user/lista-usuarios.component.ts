@@ -10,7 +10,8 @@ import { AuthService } from '../auth/auth.service';
   selector: 'app-lista-usuarios',
   standalone: true,
   imports: [CommonModule, RouterLink, FormsModule],
-  templateUrl: './lista-usuarios.component.html'
+  templateUrl: './lista-usuarios.component.html',
+  styleUrls: ['./lista-usuarios.component.css']
 })
 export class ListaUsuariosComponent implements OnInit {
   usuarios = signal<User[]>([]);

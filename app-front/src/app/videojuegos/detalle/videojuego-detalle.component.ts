@@ -47,14 +47,14 @@ export class VideojuegoDetalleComponent implements OnInit {
   }
 
   obtenerEstrella(index: number): string {
-    if (!this.videojuego) return '☆';
+    if (!this.videojuego) return 'empty';
     const puntuacion = this.puntuacionSobre5;
     if (index < Math.floor(puntuacion)) {
-      return '★';
+      return 'filled';
     } else if (index < puntuacion) {
-      return '☆';
+      return 'half';
     }
-    return '☆';
+    return 'empty';
   }
 
   obtenerEstrellas(): string[] {

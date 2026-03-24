@@ -10,9 +10,9 @@
     </div>
 
     <div class="news-controls">
-      <button type="button" (click)="anterior()">&#8592; Anterior</button>
+      <button type="button" (click)="anterior()"><span class="mat-icon sm">chevron_left</span> Anterior</button>
       <span>{{ indiceActual() + 1 }} / {{ noticias.length }}</span>
-      <button type="button" (click)="siguiente()">Siguiente &#8594;</button>
+      <button type="button" (click)="siguiente()">Siguiente <span class="mat-icon sm">chevron_right</span></button>
     </div>
   </div>
 
