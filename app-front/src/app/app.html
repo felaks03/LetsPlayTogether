@@ -7,6 +7,9 @@
     <a routerLink="/usuarios" routerLinkActive="active" *ngIf="auth.isLoggedIn()">
       <span class="mat-icon sm">person_add</span> Añadir amigos
     </a>
+    <a routerLink="/chats" routerLinkActive="active" *ngIf="auth.isLoggedIn()">
+      <span class="mat-icon sm">chat</span> Mensajes
+    </a>
   </div>
 
   <div class="nav-user" *ngIf="auth.isLoggedIn()">

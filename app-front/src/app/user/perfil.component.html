@@ -42,9 +42,6 @@
               <a *ngIf="u.redes.discord" [href]="u.redes.discord" target="_blank" rel="noopener">Discord</a>
               <a *ngIf="u.redes.twitch" [href]="u.redes.twitch" target="_blank" rel="noopener">Twitch</a>
             </div>
-            <div class="acciones-perfil" *ngIf="esMiPerfil()">
-              <a routerLink="/chats" class="link-neon">Mensajes</a>
-            </div>
             <div class="acciones-perfil" *ngIf="!esMiPerfil() && auth.currentUser()">
               <button *ngIf="!yaEsAmigo(u._id)" type="button" class="btn-neon" (click)="anadirAmigo()">
                 Añadir amigo
