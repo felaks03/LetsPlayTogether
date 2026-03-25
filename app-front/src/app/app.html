@@ -2,18 +2,39 @@
   <a class="nav-brand" href="/"><span class="mat-icon lg">sports_esports</span> LetsPlayTogether</a>
 
   <div class="nav-links">
-    <a routerLink="/videojuegos" routerLinkActive="active" *ngIf="auth.isLoggedIn()"><span class="mat-icon sm">videogame_asset</span> Videojuegos</a>
+    <a
+      routerLink="/videojuegos"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      *ngIf="auth.isLoggedIn()"
+      ><span class="mat-icon sm">videogame_asset</span> Videojuegos</a
+    >
     <a routerLink="/salas" routerLinkActive="active" *ngIf="auth.isLoggedIn()"><span class="mat-icon sm">meeting_room</span> Salas</a>
-    <a routerLink="/usuarios" routerLinkActive="active" *ngIf="auth.isLoggedIn()">
+    <a
+      routerLink="/usuarios"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      *ngIf="auth.isLoggedIn()"
+    >
       <span class="mat-icon sm">person_add</span> Añadir amigos
     </a>
-    <a routerLink="/chats" routerLinkActive="active" *ngIf="auth.isLoggedIn()">
+    <a
+      routerLink="/chats"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      *ngIf="auth.isLoggedIn()"
+    >
       <span class="mat-icon sm">chat</span> Mensajes
     </a>
   </div>
 
   <div class="nav-user" *ngIf="auth.isLoggedIn()">
-    <a routerLink="/perfil"><span class="mat-icon sm">account_circle</span> Mi perfil</a>
+    <a
+      *ngIf="auth.currentUser() as yo"
+      [routerLink]="['/usuarios', yo._id]"
+      routerLinkActive="active"
+      ><span class="mat-icon sm">account_circle</span> Mi perfil</a
+    >
     <button type="button" (click)="cerrarSesion()"><span class="mat-icon sm">logout</span> Cerrar sesión</button>
   </div>
 </nav>

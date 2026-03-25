@@ -1,9 +1,12 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, DestroyRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter, map, switchMap, tap, distinctUntilChanged } from 'rxjs';
 import { ChatService, ChatConMensajes, Mensaje } from './chat.service';
 import { AuthService, User } from '../auth/auth.service';
+import { urlFotoPerfil } from '../shared/foto-url';
 
 @Component({
   selector: 'app-chat',
@@ -18,6 +21,7 @@ export class ChatComponent implements OnInit {
   error = signal<string | null>(null);
   nuevoMensaje = '';
   enviando = signal(false);
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private route: ActivatedRoute,
@@ -26,22 +30,30 @@ export class ChatComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (!id) {
-      this.error.set('ID no válido');
-      this.cargando.set(false);
-      return;
-    }
-    this.chatService.getChatById(id).subscribe({
-      next: (d) => {
-        this.data.set(d);
-        this.cargando.set(false);
-      },
-      error: (err) => {
-        this.error.set(err.error?.message || 'Error al cargar chat');
-        this.cargando.set(false);
-      }
-    });
+    this.route.paramMap
+      .pipe(
+        map((p) => p.get('id')),
+        filter((id): id is string => !!id),
+        distinctUntilChanged(),
+        tap(() => {
+          this.cargando.set(true);
+          this.error.set(null);
+          this.data.set(null);
+          this.nuevoMensaje = '';
+        }),
+        switchMap((id) => this.chatService.getChatById(id)),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: (d) => {
+          this.data.set(d);
+          this.cargando.set(false);
+        },
+        error: (err) => {
+          this.error.set(err.error?.message || 'Error al cargar chat');
+          this.cargando.set(false);
+        }
+      });
   }
 
   enviar() {
@@ -89,5 +101,9 @@ export class ChatComponent implements OnInit {
     const u2 = typeof p2 === 'object' ? (p2 as User) : null;
     if (!u1 || !u2) return null;
     return u1._id === me ? u2 : u1;
+  }
+
+  urlFoto(foto?: string): string {
+    return urlFotoPerfil(foto);
   }
 }

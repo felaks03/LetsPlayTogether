@@ -10,6 +10,18 @@
   height: 100%;
 }
 
+.card-enlace {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  outline-offset: 3px;
+}
+
+.card-enlace:focus-visible {
+  outline: 2px solid rgba(34, 211, 238, 0.85);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.25);
+}
+
 .card:hover {
   transform: translateY(-8px);
   box-shadow: 0 15px 40px rgba(124, 58, 237, 0.4);
@@ -124,24 +136,16 @@
   font-style: italic;
 }
 
-.btn-detalles {
-  padding: 8px 16px;
-  background: transparent;
-  color: #a5f3fc;
-  border: 1px solid rgba(34, 211, 238, 0.55);
-  border-radius: 18px;
+.pie-hint {
   font-size: 0.85em;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 500;
+  font-weight: 600;
+  color: #a5f3fc;
+  white-space: nowrap;
 }
 
-.btn-detalles:hover {
-  background: linear-gradient(135deg, rgba(34, 211, 238, 0.12), rgba(99, 102, 241, 0.15));
-  box-shadow:
-    0 0 12px rgba(34, 211, 238, 0.2),
-    0 0 16px rgba(250, 204, 21, 0.1);
-  transform: translateX(2px);
+.card-enlace:hover .pie-hint {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 @media (max-width: 768px) {

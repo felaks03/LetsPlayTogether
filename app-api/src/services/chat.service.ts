@@ -2,6 +2,13 @@ import Chat from "../models/chat.model";
 import Mensaje from "../models/mensaje.model";
 import { Types } from "mongoose";
 
+function idParticipante(populated: unknown): string {
+    if (populated && typeof populated === "object" && "_id" in populated) {
+        return String((populated as { _id: Types.ObjectId })._id);
+    }
+    return String(populated);
+}
+
 export const getChatsByUserId = async (userId: string) => {
     if (!Types.ObjectId.isValid(userId)) return [];
     return await Chat.find({
@@ -23,8 +30,8 @@ export const getChatById = async (chatId: string, userId: string) => {
         .populate("participante1", "nick foto")
         .populate("participante2", "nick foto");
     if (!chat) return null;
-    const p1 = (chat.participante1 as any)._id.toString();
-    const p2 = (chat.participante2 as any)._id.toString();
+    const p1 = idParticipante(chat.participante1);
+    const p2 = idParticipante(chat.participante2);
     if (p1 !== userId && p2 !== userId) return null;
     const mensajes = await Mensaje.find({ chat: chatId })
         .populate("emisor", "nick foto")

@@ -1,6 +1,8 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, DestroyRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter, map, switchMap, tap, distinctUntilChanged } from 'rxjs';
 import { UserService } from './user.service';
 import { AuthService, User, VideojuegoFavorito } from '../auth/auth.service';
 import { ChatService } from '../chat/chat.service';
@@ -20,6 +22,7 @@ export class PerfilComponent implements OnInit {
   modalBorrar = signal(false);
   borrando = signal(false);
   private idPerfil = '';
+  private destroyRef = inject(DestroyRef);
 
   esMiPerfil = computed(() => {
     const u = this.user();
@@ -36,28 +39,30 @@ export class PerfilComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (!id) {
-      this.error.set('ID no válido');
-      this.cargando.set(false);
-      return;
-    }
-    this.idPerfil = id;
-    this.cargarPerfil();
-  }
-
-  cargarPerfil() {
-    this.cargando.set(true);
-    this.userService.getUserById(this.idPerfil).subscribe({
-      next: (data) => {
-        this.user.set(data);
-        this.cargando.set(false);
-      },
-      error: (err) => {
-        this.error.set(err.error?.message || 'Error al cargar perfil');
-        this.cargando.set(false);
-      }
-    });
+    this.route.paramMap
+      .pipe(
+        map((p) => p.get('id')),
+        filter((id): id is string => !!id),
+        distinctUntilChanged(),
+        tap((id) => {
+          this.idPerfil = id;
+          this.cargando.set(true);
+          this.error.set(null);
+          this.modalBorrar.set(false);
+        }),
+        switchMap((id) => this.userService.getUserById(id)),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: (data) => {
+          this.user.set(data);
+          this.cargando.set(false);
+        },
+        error: (err) => {
+          this.error.set(err.error?.message || 'Error al cargar perfil');
+          this.cargando.set(false);
+        }
+      });
   }
 
   /** Tras quitar amigo: recarga datos sin pantalla de carga completa */

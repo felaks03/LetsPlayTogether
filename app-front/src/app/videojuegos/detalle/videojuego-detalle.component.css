@@ -1,14 +1,12 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
 .contenedor-detalle {
   padding: 30px 20px;
-  background: linear-gradient(
-    125deg,
-    #0a1628 0%,
-    #1a0a2e 28%,
-    #12081f 55%,
-    #0c1028 78%,
-    #0f172a 100%
-  );
-  min-height: 100vh;
+  background: transparent;
+  min-height: 100dvh;
   color: #fff;
   display: flex;
   flex-direction: column;

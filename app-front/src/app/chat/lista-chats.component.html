@@ -1,7 +1,6 @@
 <div class="chats-page">
   <header class="chats-header">
     <h1>Mensajes</h1>
-    <p class="sub">Tus conversaciones</p>
   </header>
 
   <div *ngIf="cargando()" class="estado">Cargando...</div>
@@ -14,7 +13,6 @@
       </a>
       <a [routerLink]="['/chats', c._id]" class="cuerpo-chat">
         <span class="nombre">{{ nombreOtro(c) }}</span>
-        <span class="preview">Abrir conversación</span>
       </a>
       <a [routerLink]="['/chats', c._id]" class="hora">{{ fechaUltima(c) }}</a>
     </article>

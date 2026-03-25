@@ -1,4 +1,8 @@
-<div class="card">
+<a
+  class="card card-enlace"
+  [routerLink]="['/videojuegos', videojuego._id]"
+  [attr.aria-label]="'Ver ficha de ' + videojuego.titulo"
+>
     <div class="card-imagen">
         <img *ngIf="videojuego.imagen" [src]="videojuego.imagen" [alt]="videojuego.titulo" />
         <div *ngIf="!videojuego.imagen" class="placeholder-img"><span class="mat-icon xl" style="font-size:4em">sports_esports</span></div>
@@ -22,7 +26,7 @@
 
         <div class="pie-card">
             <span class="jugadores-activos">Jugadores activos: por hacer</span>
-            <a [routerLink]="['/videojuegos', videojuego._id]" class="btn-detalles">Ver Detalles</a>
+            <span class="pie-hint">Ver ficha</span>
         </div>
     </div>
-</div>
+</a>

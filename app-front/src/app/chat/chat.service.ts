@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../auth/auth.service';
+import { API_BASE } from '../shared/api-config';
 
-const API = 'http://localhost:3000/api/chats';
+const API = `${API_BASE}/chats`;
 
 export interface Chat {
   _id: string;
