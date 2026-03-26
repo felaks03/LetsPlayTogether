@@ -26,6 +26,14 @@
     >
       <span class="mat-icon sm">chat</span> Mensajes
     </a>
+    <a
+      routerLink="/admin"
+      routerLinkActive="active"
+      *ngIf="auth.isAdmin()"
+      class="admin-link"
+    >
+      <span class="mat-icon sm">admin_panel_settings</span> Admin
+    </a>
   </div>
 
   <div class="nav-user" *ngIf="auth.isLoggedIn()">

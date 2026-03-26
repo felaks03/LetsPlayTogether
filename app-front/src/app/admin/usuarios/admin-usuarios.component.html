@@ -1,0 +1,224 @@
+<div class="admin-page">
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="page-header">
+    <div class="header-title">
+      <span class="mat-icon lg">group</span>
+      <h1>Gestión de Usuarios</h1>
+    </div>
+    <span class="badge-count" *ngIf="!cargando()">{{ usuarios().length }} usuarios</span>
+  </header>
+
+  <!-- ═══ LISTA ═══ -->
+  <ng-container *ngIf="vista() === 'lista'">
+
+    <!-- Buscador -->
+    <div class="search-bar">
+      <span class="mat-icon sm search-icon">search</span>
+      <input
+        type="text"
+        placeholder="Buscar por nick, email o rol…"
+        [ngModel]="busqueda()"
+        (ngModelChange)="busqueda.set($event)"
+      />
+    </div>
+
+    <!-- Cargando -->
+    <div class="status-msg" *ngIf="cargando()">
+      <span class="mat-icon spin">sync</span> Cargando usuarios…
+    </div>
+
+    <!-- Error -->
+    <div class="status-msg error" *ngIf="error()">
+      <span class="mat-icon sm">error</span> {{ error() }}
+    </div>
+
+    <!-- Tabla -->
+    <div class="table-wrapper" *ngIf="!cargando() && !error()">
+      <table>
+        <thead>
+          <tr>
+            <th>Avatar</th>
+            <th>Nick</th>
+            <th>Email</th>
+            <th>Edad</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of usuariosFiltrados()" class="user-row">
+            <td>
+              <img [src]="urlFoto(u.foto)" [alt]="u.nick" class="avatar-mini" />
+            </td>
+            <td class="nick-cell">{{ u.nick }}</td>
+            <td class="email-cell">{{ u.email }}</td>
+            <td>{{ u.edad }}</td>
+            <td>
+              <span class="role-badge" [class.admin]="u.role === 'admin'">
+                {{ u.role ?? 'user' }}
+              </span>
+            </td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-view" title="Ver detalle" (click)="verDetalle(u)">
+                <span class="mat-icon sm">visibility</span>
+              </button>
+              <button class="btn-icon btn-edit" title="Editar" (click)="abrirEditar(u)">
+                <span class="mat-icon sm">edit</span>
+              </button>
+              <button class="btn-icon btn-delete" title="Eliminar" (click)="pedirConfirmacion(u)">
+                <span class="mat-icon sm">delete</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="empty-msg" *ngIf="usuariosFiltrados().length === 0">
+        No se encontraron usuarios.
+      </p>
+    </div>
+  </ng-container>
+
+  <!-- ═══ DETALLE ═══ -->
+  <ng-container *ngIf="vista() === 'detalle' && usuarioSeleccionado() as u">
+    <button class="btn-back" (click)="volver()">
+      <span class="mat-icon sm">arrow_back</span> Volver a lista
+    </button>
+
+    <div class="detail-card">
+      <div class="detail-header">
+        <img [src]="urlFoto(u.foto)" [alt]="u.nick" class="avatar-big" />
+        <div>
+          <h2>{{ u.nick }}</h2>
+          <span class="role-badge big" [class.admin]="u.role === 'admin'">{{ u.role ?? 'user' }}</span>
+        </div>
+      </div>
+
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span class="label"><span class="mat-icon sm">email</span> Email</span>
+          <span class="value">{{ u.email }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label"><span class="mat-icon sm">cake</span> Edad</span>
+          <span class="value">{{ u.edad }} años</span>
+        </div>
+        <div class="detail-item" *ngIf="u.redes?.twitter">
+          <span class="label"><span class="mat-icon sm">tag</span> Twitter</span>
+          <span class="value">{{ u.redes!.twitter }}</span>
+        </div>
+        <div class="detail-item" *ngIf="u.redes?.discord">
+          <span class="label"><span class="mat-icon sm">forum</span> Discord</span>
+          <span class="value">{{ u.redes!.discord }}</span>
+        </div>
+        <div class="detail-item" *ngIf="u.redes?.twitch">
+          <span class="label"><span class="mat-icon sm">live_tv</span> Twitch</span>
+          <span class="value">{{ u.redes!.twitch }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label"><span class="mat-icon sm">star</span> Favoritos</span>
+          <span class="value">{{ u.favoritos?.length ?? 0 }} videojuegos</span>
+        </div>
+        <div class="detail-item">
+          <span class="label"><span class="mat-icon sm">people</span> Amigos</span>
+          <span class="value">{{ u.amigos?.length ?? 0 }}</span>
+        </div>
+      </div>
+
+      <div class="detail-actions">
+        <button class="btn btn-primary" (click)="abrirEditar(u)">
+          <span class="mat-icon sm">edit</span> Editar usuario
+        </button>
+        <button class="btn btn-danger" (click)="pedirConfirmacion(u)">
+          <span class="mat-icon sm">delete</span> Eliminar usuario
+        </button>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- ═══ EDITAR ═══ -->
+  <ng-container *ngIf="vista() === 'editar' && usuarioSeleccionado() as u">
+    <button class="btn-back" (click)="volver()">
+      <span class="mat-icon sm">arrow_back</span> Volver a lista
+    </button>
+
+    <div class="edit-card">
+      <h2><span class="mat-icon lg">edit</span> Editar: {{ u.nick }}</h2>
+
+      <div class="edit-form">
+        <label>
+          Nick
+          <input type="text" [ngModel]="editForm().nick" (ngModelChange)="updateEditField('nick', $event)" />
+        </label>
+
+        <label>
+          Email
+          <input type="email" [ngModel]="editForm().email" (ngModelChange)="updateEditField('email', $event)" />
+        </label>
+
+        <label>
+          Edad
+          <input type="number" [ngModel]="editForm().edad" (ngModelChange)="updateEditField('edad', +$event)" min="1" />
+        </label>
+
+        <label>
+          Rol
+          <select [ngModel]="editForm().role" (ngModelChange)="updateEditField('role', $event)">
+            <option value="user">user</option>
+            <option value="admin">admin</option>
+          </select>
+        </label>
+
+        <label>
+          Nueva contraseña <small>(dejar vacío para no cambiar)</small>
+          <input type="text" [ngModel]="editForm().password" (ngModelChange)="updateEditField('password', $event)" placeholder="••••••••" />
+        </label>
+
+        <fieldset>
+          <legend>Redes sociales</legend>
+          <label>
+            Twitter
+            <input type="text" [ngModel]="editForm().redes?.twitter ?? ''" (ngModelChange)="updateEditRed('twitter', $event)" />
+          </label>
+          <label>
+            Discord
+            <input type="text" [ngModel]="editForm().redes?.discord ?? ''" (ngModelChange)="updateEditRed('discord', $event)" />
+          </label>
+          <label>
+            Twitch
+            <input type="text" [ngModel]="editForm().redes?.twitch ?? ''" (ngModelChange)="updateEditRed('twitch', $event)" />
+          </label>
+        </fieldset>
+
+        <div class="error-box" *ngIf="errorEditar()">{{ errorEditar() }}</div>
+
+        <div class="form-actions">
+          <button class="btn btn-ghost" (click)="volver()" [disabled]="guardando()">Cancelar</button>
+          <button class="btn btn-primary" (click)="guardarEdicion()" [disabled]="guardando()">
+            <span class="mat-icon sm" *ngIf="!guardando()">save</span>
+            <span class="mat-icon sm spin" *ngIf="guardando()">sync</span>
+            {{ guardando() ? 'Guardando…' : 'Guardar cambios' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- ═══ MODAL CONFIRMAR BORRAR ═══ -->
+  <div class="modal-overlay" *ngIf="confirmarBorrar()" (click)="cancelarBorrar()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <span class="mat-icon xl modal-warn-icon">warning</span>
+      <h3>¿Eliminar usuario?</h3>
+      <p>Estás a punto de eliminar a <strong>{{ usuarioSeleccionado()?.nick }}</strong>. Esta acción no se puede deshacer.</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" (click)="cancelarBorrar()" [disabled]="borrando()">Cancelar</button>
+        <button class="btn btn-danger" (click)="borrarUsuario()" [disabled]="borrando()">
+          <span class="mat-icon sm" *ngIf="!borrando()">delete</span>
+          <span class="mat-icon sm spin" *ngIf="borrando()">sync</span>
+          {{ borrando() ? 'Eliminando…' : 'Sí, eliminar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
