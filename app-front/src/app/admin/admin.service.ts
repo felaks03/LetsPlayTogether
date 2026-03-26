@@ -21,6 +21,10 @@ export class AdminService {
     return this.http.get<User>(`${this.usersUrl}/${id}`);
   }
 
+  createUser(data: Partial<User> & { password: string }): Observable<User> {
+    return this.http.post<User>(this.usersUrl, data);
+  }
+
   updateUser(id: string, data: Partial<User>): Observable<User> {
     return this.http.put<User>(`${this.usersUrl}/${id}`, data);
   }

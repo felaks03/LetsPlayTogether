@@ -21,6 +21,9 @@
         [ngModel]="busqueda()"
         (ngModelChange)="busqueda.set($event)"
       />
+      <button class="btn btn-primary" (click)="abrirCrear()" style="margin-left: auto;">
+        <span class="mat-icon sm">add</span> Crear usuario
+      </button>
     </div>
 
     <!-- Cargando -->
@@ -199,6 +202,74 @@
             <span class="mat-icon sm" *ngIf="!guardando()">save</span>
             <span class="mat-icon sm spin" *ngIf="guardando()">sync</span>
             {{ guardando() ? 'Guardando…' : 'Guardar cambios' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- ═══ CREAR ═══ -->
+  <ng-container *ngIf="vista() === 'crear'">
+    <button class="btn-back" (click)="volver()">
+      <span class="mat-icon sm">arrow_back</span> Volver a lista
+    </button>
+
+    <div class="edit-card">
+      <h2><span class="mat-icon lg">person_add</span> Crear nuevo usuario</h2>
+
+      <div class="edit-form">
+        <label>
+          Nick
+          <input type="text" [ngModel]="createForm().nick" (ngModelChange)="updateCreateField('nick', $event)" placeholder="Nombre de usuario" />
+        </label>
+
+        <label>
+          Email
+          <input type="email" [ngModel]="createForm().email" (ngModelChange)="updateCreateField('email', $event)" placeholder="usuario@ejemplo.com" />
+        </label>
+
+        <label>
+          Contraseña
+          <input type="text" [ngModel]="createForm().password" (ngModelChange)="updateCreateField('password', $event)" placeholder="••••••••" />
+        </label>
+
+        <label>
+          Edad
+          <input type="number" [ngModel]="createForm().edad" (ngModelChange)="updateCreateField('edad', +$event)" min="1" />
+        </label>
+
+        <label>
+          Rol
+          <select [ngModel]="createForm().role" (ngModelChange)="updateCreateField('role', $event)">
+            <option value="user">user</option>
+            <option value="admin">admin</option>
+          </select>
+        </label>
+
+        <fieldset>
+          <legend>Redes sociales (opcional)</legend>
+          <label>
+            Twitter
+            <input type="text" [ngModel]="createForm().redes?.twitter ?? ''" (ngModelChange)="updateCreateRed('twitter', $event)" />
+          </label>
+          <label>
+            Discord
+            <input type="text" [ngModel]="createForm().redes?.discord ?? ''" (ngModelChange)="updateCreateRed('discord', $event)" />
+          </label>
+          <label>
+            Twitch
+            <input type="text" [ngModel]="createForm().redes?.twitch ?? ''" (ngModelChange)="updateCreateRed('twitch', $event)" />
+          </label>
+        </fieldset>
+
+        <div class="error-box" *ngIf="errorCrear()">{{ errorCrear() }}</div>
+
+        <div class="form-actions">
+          <button class="btn btn-ghost" (click)="volver()" [disabled]="creando()">Cancelar</button>
+          <button class="btn btn-primary" (click)="crearUsuario()" [disabled]="creando()">
+            <span class="mat-icon sm" *ngIf="!creando()">person_add</span>
+            <span class="mat-icon sm spin" *ngIf="creando()">sync</span>
+            {{ creando() ? 'Creando…' : 'Crear usuario' }}
           </button>
         </div>
       </div>

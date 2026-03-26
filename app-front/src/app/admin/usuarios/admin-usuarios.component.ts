@@ -5,7 +5,7 @@ import { AdminService } from '../admin.service';
 import { User } from '../../auth/auth.service';
 import { urlFotoPerfil } from '../../shared/foto-url';
 
-type Vista = 'lista' | 'detalle' | 'editar';
+type Vista = 'lista' | 'detalle' | 'editar' | 'crear';
 
 @Component({
   selector: 'app-admin-usuarios',
@@ -27,6 +27,15 @@ export class AdminUsuariosComponent implements OnInit {
   editForm = signal<Partial<User & { password?: string }>>({});
   guardando = signal(false);
   errorEditar = signal('');
+
+  // Creación
+  createForm = signal<Partial<User & { password?: string }>>({
+    edad: 18,
+    role: 'user',
+    redes: { twitter: '', discord: '', twitch: '' },
+  });
+  creando = signal(false);
+  errorCrear = signal('');
 
   // Confirmación borrar
   confirmarBorrar = signal(false);
@@ -87,6 +96,53 @@ export class AdminUsuariosComponent implements OnInit {
     });
     this.errorEditar.set('');
     this.vista.set('editar');
+  }
+
+  // ─── Crear ───
+  abrirCrear(): void {
+    this.createForm.set({
+      nick: '',
+      email: '',
+      password: '',
+      edad: 18,
+      role: 'user',
+      redes: { twitter: '', discord: '', twitch: '' },
+    });
+    this.errorCrear.set('');
+    this.vista.set('crear');
+  }
+
+  crearUsuario(): void {
+    const form = this.createForm();
+
+    if (!form.nick || !form.email || !form.password) {
+      this.errorCrear.set('Nick, email y contraseña son obligatorios');
+      return;
+    }
+
+    const payload: any = {
+      nick: form.nick,
+      email: form.email,
+      password: form.password,
+      edad: form.edad || 18,
+      role: form.role || 'user',
+      redes: form.redes || { twitter: '', discord: '', twitch: '' },
+    };
+
+    this.creando.set(true);
+    this.errorCrear.set('');
+
+    this.adminService.createUser(payload).subscribe({
+      next: (nuevoUsuario) => {
+        this.usuarios.update((list) => [...list, nuevoUsuario]);
+        this.creando.set(false);
+        this.vista.set('lista');
+      },
+      error: (err) => {
+        this.errorCrear.set(err.error?.message || 'Error al crear usuario');
+        this.creando.set(false);
+      },
+    });
   }
 
   guardarEdicion(): void {
@@ -162,5 +218,13 @@ export class AdminUsuariosComponent implements OnInit {
 
   updateEditRed(red: string, value: string): void {
     this.editForm.update((f) => ({ ...f, redes: { ...f.redes, [red]: value } }));
+  }
+
+  updateCreateField(field: string, value: any): void {
+    this.createForm.update((f) => ({ ...f, [field]: value }));
+  }
+
+  updateCreateRed(red: string, value: string): void {
+    this.createForm.update((f) => ({ ...f, redes: { ...f.redes, [red]: value } }));
   }
 }

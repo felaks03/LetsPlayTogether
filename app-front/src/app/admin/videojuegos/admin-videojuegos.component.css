@@ -60,32 +60,35 @@
 
 .search-bar input {
   width: 100%;
-  padding: 12px 16px 12px 42px;
-  border-radius: 12px;
-  border: 1px solid var(--borde-suave);
-  background: rgba(15, 10, 30, 0.7);
+  padding: 14px 20px 14px 46px;
+  border-radius: 30px;
+  border: 2px solid rgba(99, 102, 241, 0.65);
+  background: rgba(20, 20, 40, 0.8);
   color: var(--texto);
-  font-size: 0.92rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s ease;
 }
 
 .search-bar input::placeholder {
-  color: var(--texto-suave);
-  opacity: 0.6;
+  color: #a0a0a0;
 }
 
 .search-bar input:focus {
-  outline: none;
-  border-color: var(--color-morado);
-  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.12), 0 0 20px rgba(99, 102, 241, 0.1);
+  border-color: #22d3ee;
+  background: rgba(20, 20, 40, 0.95);
+  box-shadow:
+    0 0 18px rgba(34, 211, 238, 0.35),
+    0 0 28px rgba(99, 102, 241, 0.25),
+    0 0 36px rgba(250, 204, 21, 0.08);
 }
 
 .search-icon {
   position: absolute;
-  left: 14px;
+  left: 18px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--texto-suave);
+  color: #a0a0a0;
   pointer-events: none;
 }
 
@@ -113,18 +116,19 @@
 }
 
 .game-card {
-  background: rgba(12, 8, 24, 0.7);
-  border: 1px solid var(--borde-suave);
-  border-radius: 16px;
+  background: linear-gradient(135deg, #1e0f32 0%, #12081f 100%);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  border-radius: 12px;
   overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
 }
 
 .game-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 36px rgba(0, 0, 0, 0.3), 0 0 30px rgba(99, 102, 241, 0.08);
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(124, 58, 237, 0.4);
+  border-color: rgba(124, 58, 237, 0.6);
 }
 
 .game-img-wrap {
@@ -197,13 +201,13 @@
 }
 
 .plat-badge {
-  background: rgba(99, 102, 241, 0.1);
-  color: var(--color-cyan);
-  padding: 3px 10px;
-  border-radius: 999px;
+  background: rgba(168, 85, 247, 0.22);
+  color: #fde68a;
+  padding: 4px 10px;
+  border-radius: 12px;
   font-size: 0.72rem;
   font-weight: 500;
-  border: 1px solid rgba(34, 211, 238, 0.15);
+  border: 1px solid rgba(250, 204, 21, 0.28);
 }
 
 .game-flags {
@@ -232,7 +236,7 @@
   display: flex;
   gap: 6px;
   padding: 12px 16px;
-  border-top: 1px solid rgba(99, 102, 241, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   justify-content: flex-end;
 }
 
@@ -298,12 +302,12 @@
 
 /* ─── Edit card ─── */
 .edit-card {
-  background: rgba(12, 8, 24, 0.7);
-  border: 1px solid var(--borde-suave);
-  border-radius: 16px;
+  background: linear-gradient(135deg, #1e0f32 0%, #12081f 100%);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  border-radius: 12px;
   padding: 28px;
   max-width: 700px;
-  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .edit-card h2 {
@@ -334,14 +338,14 @@
 .edit-form input,
 .edit-form select,
 .edit-form textarea {
-  padding: 10px 14px;
+  padding: 12px 16px;
   border-radius: 10px;
-  border: 1px solid var(--borde-suave);
-  background: rgba(15, 10, 30, 0.7);
+  border: 1px solid rgba(99, 102, 241, 0.45);
+  background: rgba(20, 20, 40, 0.8);
   color: var(--texto);
   font-size: 0.92rem;
   font-family: inherit;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.3s, box-shadow 0.3s;
   resize: vertical;
 }
 
@@ -349,8 +353,10 @@
 .edit-form select:focus,
 .edit-form textarea:focus {
   outline: none;
-  border-color: var(--color-morado);
-  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.12);
+  border-color: #22d3ee;
+  box-shadow:
+    0 0 18px rgba(34, 211, 238, 0.35),
+    0 0 28px rgba(99, 102, 241, 0.25);
 }
 
 .form-row {
@@ -373,7 +379,7 @@
 
 /* ─── Plataformas ─── */
 .plat-fieldset {
-  border: 1px solid rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(124, 58, 237, 0.2);
   border-radius: 12px;
   padding: 16px;
 }
@@ -397,12 +403,12 @@
   gap: 6px;
   padding: 8px 14px;
   border-radius: 999px;
-  border: 1px solid var(--borde-suave);
-  background: rgba(15, 10, 30, 0.5);
+  border: 1px solid rgba(99, 102, 241, 0.45);
+  background: rgba(20, 20, 40, 0.6);
   cursor: pointer;
   font-size: 0.82rem !important;
   font-weight: 500 !important;
-  color: var(--texto-suave) !important;
+  color: #a0a0a0 !important;
   transition: all 0.2s;
   flex-direction: row !important;
 }
@@ -412,10 +418,10 @@
 }
 
 .plat-check.checked {
-  background: rgba(168, 85, 247, 0.12);
-  border-color: rgba(168, 85, 247, 0.35);
-  color: var(--color-lila) !important;
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.1);
+  background: rgba(168, 85, 247, 0.22);
+  border-color: rgba(250, 204, 21, 0.5);
+  color: #fde68a !important;
+  box-shadow: 0 0 12px rgba(250, 204, 21, 0.1);
 }
 
 /* ─── Toggle ─── */
@@ -540,14 +546,14 @@
 }
 
 .modal-box {
-  background: rgba(18, 12, 32, 0.97);
-  border: 1px solid var(--borde-suave);
+  background: linear-gradient(135deg, #1e0f32 0%, #12081f 100%);
+  border: 1px solid rgba(124, 58, 237, 0.4);
   border-radius: 18px;
   padding: 32px;
   max-width: 420px;
   width: 90%;
   text-align: center;
-  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5), 0 0 60px rgba(99, 102, 241, 0.08);
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5), 0 0 60px rgba(124, 58, 237, 0.15);
 }
 
 .modal-warn-icon {

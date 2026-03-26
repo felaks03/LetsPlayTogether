@@ -58,7 +58,7 @@
               <span class="mat-icon sm">calendar_today</span> {{ formatFecha(v.fechaLanzamiento) }}
             </span>
           </div>
-          <div class="plat-badges" *ngIf="v.plataformas?.length">
+          <div class="plat-badges" *ngIf="v.plataformas.length">
             <span class="plat-badge" *ngFor="let p of v.plataformas">{{ p }}</span>
           </div>
           <div class="game-flags">

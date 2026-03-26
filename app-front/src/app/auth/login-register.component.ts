@@ -46,7 +46,8 @@ export class LoginRegisterComponent implements OnInit {
     this.auth.login(this.email, this.password).subscribe({
       next: () => {
         this.cargando.set(false);
-        this.router.navigate(['/videojuegos']);
+        const destino = this.auth.isAdmin() ? '/admin/usuarios' : '/videojuegos';
+        this.router.navigate([destino]);
       },
       error: (err) => {
         this.error.set(err.error?.message || 'Error al iniciar sesión');
@@ -81,7 +82,8 @@ export class LoginRegisterComponent implements OnInit {
         this.auth.login(this.email, this.password).subscribe({
           next: () => {
             this.cargando.set(false);
-            this.router.navigate(['/videojuegos']);
+            const destino = this.auth.isAdmin() ? '/admin/usuarios' : '/videojuegos';
+            this.router.navigate([destino]);
           },
           error: () => {
             this.cargando.set(false);
