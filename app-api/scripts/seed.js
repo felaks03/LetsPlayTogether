@@ -1,72 +1,82 @@
-const mongoose = require("mongoose");
-const Videojuego = require("../src/models/videojuego.model");
+const { MongoClient, ObjectId } = require("mongodb");
+const fs = require("fs");
+const path = require("path");
 
 require("dotenv").config();
 
-const mockData = [
-  {
-    titulo: "The Legend of Zelda: Breath of the Wild",
-    genero: "Aventura",
-    desarrollador: "Nintendo",
-    fechaLanzamiento: new Date("2017-03-03"),
-    plataformas: ["Nintendo Switch"],
-    puntuacion: 9.5,
-    multijugador: false,
-  },
-  {
-    titulo: "Super Mario Odyssey",
-    genero: "Plataformas",
-    desarrollador: "Nintendo",
-    fechaLanzamiento: new Date("2017-10-27"),
-    plataformas: ["Nintendo Switch"],
-    puntuacion: 9.2,
-    multijugador: false,
-  },
-  {
-    titulo: "FIFA 23",
-    genero: "Deportes",
-    desarrollador: "EA Sports",
-    fechaLanzamiento: new Date("2022-09-30"),
-    plataformas: ["PlayStation 5", "Xbox Series X", "PC"],
-    puntuacion: 7.8,
-    multijugador: true,
-  },
-  {
-    titulo: "Minecraft",
-    genero: "Sandbox",
-    desarrollador: "Mojang",
-    fechaLanzamiento: new Date("2011-11-18"),
-    plataformas: ["PC", "PlayStation", "Xbox", "Nintendo Switch", "Mobile"],
-    puntuacion: 9.0,
-    multijugador: true,
-  },
-  {
-    titulo: "The Witcher 3: Wild Hunt",
-    genero: "RPG",
-    desarrollador: "CD Projekt Red",
-    fechaLanzamiento: new Date("2015-05-19"),
-    plataformas: ["PC", "PlayStation 4", "Xbox One", "Nintendo Switch"],
-    puntuacion: 9.7,
-    multijugador: false,
-  },
-];
+/**
+ * Convierte los { $oid: "..." } y { $date: "..." } del JSON extendido de Mongo
+ * a ObjectId y Date nativos.
+ */
+function convertExtendedJSON(obj) {
+  if (obj === null || typeof obj !== "object") return obj;
+  if (obj.$oid) return new ObjectId(obj.$oid);
+  if (obj.$date) return new Date(obj.$date);
+  if (Array.isArray(obj)) return obj.map(convertExtendedJSON);
+  const out = {};
+  for (const [k, v] of Object.entries(obj)) {
+    out[k] = convertExtendedJSON(v);
+  }
+  return out;
+}
+
+function loadJSON(file) {
+  const raw = fs.readFileSync(path.join(__dirname, "../data/seed", file), "utf-8");
+  return JSON.parse(raw).map(convertExtendedJSON);
+}
+
+// Usuario admin adicional con credenciales admin@gmail.com / admin
+const adminUser = {
+  _id: new ObjectId(),
+  nick: "admin",
+  email: "admin@gmail.com",
+  password: "admin",
+  edad: 35,
+  foto: "/avatars/default.svg",
+  redes: { twitter: "", discord: "", twitch: "" },
+  favoritos: [],
+  amigos: [],
+  role: "admin",
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
 
 async function seedDatabase() {
+  const uri = process.env.MONGO_URI;
+  if (!uri) {
+    console.error("MONGO_URI no definida en .env");
+    process.exit(1);
+  }
+
+  const client = new MongoClient(uri);
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    await client.connect();
+    const db = client.db();
     console.log("Conectado a MongoDB");
 
-    await Videojuego.deleteMany();
-    console.log("Datos existentes eliminados");
+    // ── Videojuegos ──
+    const videojuegos = loadJSON("videojuegos.json");
+    await db.collection("videojuegos").deleteMany({});
+    if (videojuegos.length) {
+      await db.collection("videojuegos").insertMany(videojuegos);
+    }
+    console.log(`Insertados ${videojuegos.length} videojuegos`);
 
-    await Videojuego.insertMany(mockData);
-    console.log("Datos mock insertados correctamente");
+    // ── Usuarios ──
+    const usuarios = loadJSON("usuarios.json");
+    usuarios.push(adminUser);
+    await db.collection("users").deleteMany({});
+    await db.collection("users").insertMany(usuarios);
+    console.log(`Insertados ${usuarios.length} usuarios (incluye admin/admin@gmail.com)`);
 
-    mongoose.connection.close();
-    console.log("Conexión cerrada");
+    console.log("\n✓ Seed completado");
+    console.log("  Admin → email: admin@gmail.com  password: admin");
   } catch (error) {
     console.error("Error:", error);
     process.exit(1);
+  } finally {
+    await client.close();
+    console.log("Conexión cerrada");
   }
 }
 

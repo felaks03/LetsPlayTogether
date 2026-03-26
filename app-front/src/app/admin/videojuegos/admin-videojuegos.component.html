@@ -1,0 +1,196 @@
+<div class="admin-page">
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="page-header">
+    <div class="header-title">
+      <span class="mat-icon lg">videogame_asset</span>
+      <h1>Gestión de Videojuegos</h1>
+    </div>
+    <div class="header-right">
+      <span class="badge-count" *ngIf="!cargando()">{{ videojuegos().length }} videojuegos</span>
+      <button class="btn btn-primary" (click)="abrirCrear()" *ngIf="vista() === 'lista'">
+        <span class="mat-icon sm">add</span> Nuevo videojuego
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══ LISTA ═══ -->
+  <ng-container *ngIf="vista() === 'lista'">
+
+    <!-- Buscador -->
+    <div class="search-bar">
+      <span class="mat-icon sm search-icon">search</span>
+      <input
+        type="text"
+        placeholder="Buscar por título, género o desarrollador…"
+        [ngModel]="busqueda()"
+        (ngModelChange)="busqueda.set($event)"
+      />
+    </div>
+
+    <!-- Cargando -->
+    <div class="status-msg" *ngIf="cargando()">
+      <span class="mat-icon spin">sync</span> Cargando videojuegos…
+    </div>
+
+    <!-- Error -->
+    <div class="status-msg error" *ngIf="error()">
+      <span class="mat-icon sm">error</span> {{ error() }}
+    </div>
+
+    <!-- Grid de cards -->
+    <div class="games-grid" *ngIf="!cargando() && !error()">
+      <div class="game-card" *ngFor="let v of videojuegosFiltrados()">
+        <div class="game-img-wrap">
+          <img [src]="v.imagen || 'https://placehold.co/400x220/1a0a2e/a855f7?text=Sin+imagen'" [alt]="v.titulo" />
+          <span class="genre-tag" *ngIf="v.genero">{{ v.genero }}</span>
+        </div>
+        <div class="game-info">
+          <h3>{{ v.titulo }}</h3>
+          <div class="game-meta">
+            <span *ngIf="v.desarrollador" class="meta-item">
+              <span class="mat-icon sm">business</span> {{ v.desarrollador }}
+            </span>
+            <span class="meta-item" *ngIf="v.puntuacion != null">
+              <span class="mat-icon sm">star</span> {{ v.puntuacion }}/10
+            </span>
+            <span class="meta-item">
+              <span class="mat-icon sm">calendar_today</span> {{ formatFecha(v.fechaLanzamiento) }}
+            </span>
+          </div>
+          <div class="plat-badges" *ngIf="v.plataformas.length">
+            <span class="plat-badge" *ngFor="let p of v.plataformas">{{ p }}</span>
+          </div>
+          <div class="game-flags">
+            <span class="flag-badge" [class.on]="v.multijugador">
+              <span class="mat-icon sm">{{ v.multijugador ? 'groups' : 'person' }}</span>
+              {{ v.multijugador ? 'Multijugador' : 'Un jugador' }}
+            </span>
+          </div>
+        </div>
+        <div class="game-actions">
+          <button class="btn-icon btn-edit" title="Editar" (click)="abrirEditar(v)">
+            <span class="mat-icon sm">edit</span>
+          </button>
+          <button class="btn-icon btn-delete" title="Eliminar" (click)="pedirConfirmacion(v)">
+            <span class="mat-icon sm">delete</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <p class="empty-msg" *ngIf="!cargando() && videojuegosFiltrados().length === 0">
+      No se encontraron videojuegos.
+    </p>
+  </ng-container>
+
+  <!-- ═══ CREAR / EDITAR ═══ -->
+  <ng-container *ngIf="vista() === 'crear' || vista() === 'editar'">
+    <button class="btn-back" (click)="volver()">
+      <span class="mat-icon sm">arrow_back</span> Volver a lista
+    </button>
+
+    <div class="edit-card">
+      <h2>
+        <span class="mat-icon lg">{{ vista() === 'crear' ? 'add_circle' : 'edit' }}</span>
+        {{ vista() === 'crear' ? 'Nuevo videojuego' : 'Editar: ' + juegoSeleccionado()?.titulo }}
+      </h2>
+
+      <div class="edit-form">
+        <label>
+          Título *
+          <input type="text" [ngModel]="form().titulo" (ngModelChange)="updateField('titulo', $event)" placeholder="Nombre del videojuego" />
+        </label>
+
+        <label>
+          Descripción
+          <textarea rows="3" [ngModel]="form().descripcion" (ngModelChange)="updateField('descripcion', $event)" placeholder="Descripción breve…"></textarea>
+        </label>
+
+        <label>
+          URL de imagen
+          <input type="text" [ngModel]="form().imagen" (ngModelChange)="updateField('imagen', $event)" placeholder="https://…" />
+        </label>
+
+        <!-- Preview imagen -->
+        <div class="img-preview" *ngIf="form().imagen">
+          <img [src]="form().imagen" alt="Preview" />
+        </div>
+
+        <div class="form-row">
+          <label>
+            Género
+            <select [ngModel]="form().genero" (ngModelChange)="updateField('genero', $event)">
+              <option value="">Seleccionar…</option>
+              <option *ngFor="let g of generos" [value]="g">{{ g }}</option>
+            </select>
+          </label>
+
+          <label>
+            Desarrollador
+            <input type="text" [ngModel]="form().desarrollador" (ngModelChange)="updateField('desarrollador', $event)" placeholder="Estudio" />
+          </label>
+        </div>
+
+        <div class="form-row">
+          <label>
+            Fecha de lanzamiento
+            <input type="date" [ngModel]="form().fechaLanzamiento" (ngModelChange)="updateField('fechaLanzamiento', $event)" />
+          </label>
+
+          <label>
+            Puntuación (0-10)
+            <input type="number" [ngModel]="form().puntuacion" (ngModelChange)="updateField('puntuacion', +$event)" min="0" max="10" step="0.1" />
+          </label>
+        </div>
+
+        <!-- Plataformas -->
+        <fieldset class="plat-fieldset">
+          <legend>Plataformas</legend>
+          <div class="plat-checks">
+            <label class="plat-check" *ngFor="let p of plataformasDisponibles" [class.checked]="form().plataformasSeleccionadas[p]">
+              <input type="checkbox" [checked]="form().plataformasSeleccionadas[p]" (change)="togglePlataforma(p)" />
+              {{ p }}
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- Multijugador -->
+        <label class="toggle-label">
+          <span>Multijugador</span>
+          <button type="button" class="toggle-btn" [class.on]="form().multijugador" (click)="toggleMultijugador()">
+            <span class="toggle-knob"></span>
+          </button>
+        </label>
+
+        <div class="error-box" *ngIf="errorForm()">{{ errorForm() }}</div>
+
+        <div class="form-actions">
+          <button class="btn btn-ghost" (click)="volver()" [disabled]="guardando()">Cancelar</button>
+          <button class="btn btn-primary" (click)="guardar()" [disabled]="guardando()">
+            <span class="mat-icon sm" *ngIf="!guardando()">save</span>
+            <span class="mat-icon sm spin" *ngIf="guardando()">sync</span>
+            {{ guardando() ? 'Guardando…' : (vista() === 'crear' ? 'Crear videojuego' : 'Guardar cambios') }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- ═══ MODAL CONFIRMAR BORRAR ═══ -->
+  <div class="modal-overlay" *ngIf="confirmarBorrar()" (click)="cancelarBorrar()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <span class="mat-icon xl modal-warn-icon">warning</span>
+      <h3>¿Eliminar videojuego?</h3>
+      <p>Estás a punto de eliminar <strong>{{ juegoSeleccionado()?.titulo }}</strong>. Esta acción no se puede deshacer.</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" (click)="cancelarBorrar()" [disabled]="borrando()">Cancelar</button>
+        <button class="btn btn-danger" (click)="borrarVideojuego()" [disabled]="borrando()">
+          <span class="mat-icon sm" *ngIf="!borrando()">delete</span>
+          <span class="mat-icon sm spin" *ngIf="borrando()">sync</span>
+          {{ borrando() ? 'Eliminando…' : 'Sí, eliminar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

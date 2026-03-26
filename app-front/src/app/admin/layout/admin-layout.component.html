@@ -1,0 +1,32 @@
+<div class="admin-shell">
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <span class="mat-icon xl">admin_panel_settings</span>
+      <h2>Panel Admin</h2>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/admin/usuarios" routerLinkActive="active">
+        <span class="mat-icon sm">group</span>
+        <span>Usuarios</span>
+      </a>
+      <a routerLink="/admin/videojuegos" routerLinkActive="active">
+        <span class="mat-icon sm">videogame_asset</span>
+        <span>Videojuegos</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a routerLink="/videojuegos" class="back-link">
+        <span class="mat-icon sm">arrow_back</span>
+        <span>Volver a la app</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Content -->
+  <section class="admin-content">
+    <router-outlet></router-outlet>
+  </section>
+</div>

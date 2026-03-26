@@ -3,32 +3,15 @@
 
   <div class="nav-links">
     <a
-      routerLink="/videojuegos"
+      routerLink="/admin"
       routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      *ngIf="auth.isLoggedIn()"
-      ><span class="mat-icon sm">videogame_asset</span> Videojuegos</a
+      *ngIf="auth.isAdmin()"
     >
-    <a routerLink="/salas" routerLinkActive="active" *ngIf="auth.isLoggedIn()"><span class="mat-icon sm">meeting_room</span> Salas</a>
-    <a
-      routerLink="/usuarios"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      *ngIf="auth.isLoggedIn()"
-    >
-      <span class="mat-icon sm">person_add</span> Añadir amigos
-    </a>
-    <a
-      routerLink="/chats"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      *ngIf="auth.isLoggedIn()"
-    >
-      <span class="mat-icon sm">chat</span> Mensajes
+      <span class="mat-icon sm">admin_panel_settings</span> Admin
     </a>
   </div>
 
-  <div class="nav-user" *ngIf="auth.isLoggedIn()">
+  <div class="nav-user" *ngIf="auth.isLoggedIn() && !auth.isAdmin()">
     <a
       *ngIf="auth.currentUser() as yo"
       [routerLink]="['/usuarios', yo._id]"
