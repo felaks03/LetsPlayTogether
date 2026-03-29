@@ -109,6 +109,44 @@
   transform: translateY(-2px);
 }
 
+a.btn-entrar-sala,
+a.btn-crear-sala {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.btn-crear-sala {
+  background: rgba(15, 23, 42, 0.65);
+  color: #e0e7ff;
+  border: 1px solid rgba(34, 211, 238, 0.45);
+  padding: 12px 28px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  width: fit-content;
+}
+
+.btn-crear-sala:hover {
+  background: rgba(34, 211, 238, 0.15);
+  border-color: rgba(250, 204, 21, 0.35);
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.25);
+  transform: translateY(-2px);
+}
+
+.btn-salas-invite {
+  opacity: 0.85;
+  cursor: pointer;
+}
+
+.btn-salas-invite:hover {
+  opacity: 1;
+}
+
 .fila-acciones-juego {
   display: flex;
   gap: 16px;

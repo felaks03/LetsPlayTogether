@@ -54,6 +54,11 @@ const userSchema = new Schema(
             enum: ["user", "admin"],
             default: "user",
         },
+        salaActual: {
+            type: Types.ObjectId,
+            ref: "Sala",
+            default: null,
+        },
     },
     { timestamps: true }
 );

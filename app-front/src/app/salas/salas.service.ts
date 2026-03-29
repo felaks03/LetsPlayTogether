@@ -2,13 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export type SalaUsuarioRef = { _id: string; nick: string };
+export type SalaVideojuegoRef = { _id: string; titulo: string; imagen?: string };
+
 export interface Sala {
   _id: string;
   nombre: string;
   estado: 'OPEN' | 'IN_GAME' | 'FULL' | 'CLOSED';
-  videojuego: string;
-  host: string;
-  usuarios: string[];
+  videojuego: string | SalaVideojuegoRef;
+  host: string | SalaUsuarioRef;
+  usuarios: (string | SalaUsuarioRef)[];
   maxUsuarios: number;
   creadoEn: string;
   expiraEn?: string;
@@ -17,6 +20,7 @@ export interface Sala {
 export interface Videojuego {
   _id: string;
   titulo: string;
+  imagen?: string;
   genero?: string;
   plataformas: string[];
 }
@@ -48,6 +52,10 @@ export class SalasService {
 
   leaveSala(salaId: string, userId: string): Observable<Sala> {
     return this.http.post<Sala>(`${this.apiUrl}/leave`, { salaId, userId });
+  }
+
+  kickUsuario(salaId: string, userId: string): Observable<Sala> {
+    return this.http.post<Sala>(`${this.apiUrl}/kick`, { salaId, userId });
   }
 
   updateEstadoSala(salaId: string, estado: Sala['estado']): Observable<Sala> {

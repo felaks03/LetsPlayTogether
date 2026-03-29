@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import * as SalaService from "../services/salas.service";
-import { ISala } from "../models/salas.model";
 import { Types } from "mongoose";
 import { AppError } from "../middleware/AppError";
 
@@ -12,6 +11,11 @@ interface SalaUserBody {
 interface SalaEstadoBody {
   salaId: string;
   estado: "OPEN" | "IN_GAME" | "FULL" | "CLOSED";
+}
+
+interface SalaKickBody {
+  salaId: string;
+  userId: string;
 }
 
 interface SalaCreateBody {
@@ -28,7 +32,7 @@ export async function getSalas(
   next: NextFunction
 ) {
   try {
-    const salas: ISala[] = await SalaService.getSalas();
+    const salas = await SalaService.getSalas();
     res.json(salas);
   } catch (err: any) {
     next(err);
@@ -96,6 +100,30 @@ export async function leaveSala(
   try {
     const { salaId, userId } = req.body;
     const sala = await SalaService.leaveSala(salaId, userId);
+    res.json(sala);
+  } catch (err: any) {
+    next(new AppError(400, err.message));
+  }
+}
+
+export async function kickUsuario(
+  req: Request<{}, {}, SalaKickBody>,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const hostId = (req as Request & { user?: { id: string } }).user?.id;
+    if (!hostId || !Types.ObjectId.isValid(hostId)) {
+      return next(new AppError(401, "Sesión no válida"));
+    }
+    const { salaId, userId } = req.body;
+    if (!salaId || !Types.ObjectId.isValid(salaId)) {
+      return next(new AppError(400, "salaId inválido"));
+    }
+    if (!userId || !Types.ObjectId.isValid(userId)) {
+      return next(new AppError(400, "userId inválido"));
+    }
+    const sala = await SalaService.kickUsuarioFromSala(salaId, hostId, userId);
     res.json(sala);
   } catch (err: any) {
     next(new AppError(400, err.message));

@@ -34,7 +34,7 @@ export const login = async (email: string, password: string) => {
       role: user.role,
     },
     process.env.JWT_SECRET as string,
-    { expiresIn: "1h" },
+    { expiresIn: "5h" },
   );
 
   // Devolver usuario sin password

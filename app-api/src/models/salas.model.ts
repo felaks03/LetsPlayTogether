@@ -32,14 +32,14 @@ const SalaSchema = new Schema<ISala>({
 
   host: {
     type: Types.ObjectId,
-    ref: "Usuario",
+    ref: "User",
     required: true,
   },
 
   usuarios: [
     {
       type: Types.ObjectId,
-      ref: "Usuario",
+      ref: "User",
     },
   ],
 

@@ -16,7 +16,34 @@
         <div class="overlay-contenido">
             <h2 class="titulo-juego">{{ videojuego.titulo }}</h2>
             <div class="fila-acciones-juego">
-              <button class="btn-entrar-sala">Entrar a sala</button>
+              <a
+                *ngIf="auth.isLoggedIn() && videojuego"
+                [routerLink]="['/salas']"
+                [queryParams]="{ videojuego: videojuego._id }"
+                class="btn-entrar-sala">
+                Entrar a sala
+              </a>
+              <a
+                *ngIf="!auth.isLoggedIn()"
+                routerLink="/"
+                class="btn-entrar-sala btn-salas-invite"
+                title="Inicia sesión desde el inicio para usar salas">
+                Entrar a sala
+              </a>
+              <a
+                *ngIf="auth.isLoggedIn() && videojuego"
+                [routerLink]="['/salas']"
+                [queryParams]="{ crear: '1', videojuego: videojuego._id }"
+                class="btn-crear-sala">
+                Crear sala
+              </a>
+              <a
+                *ngIf="!auth.isLoggedIn()"
+                routerLink="/"
+                class="btn-crear-sala btn-salas-invite"
+                title="Inicia sesión desde el inicio para crear salas">
+                Crear sala
+              </a>
               <button
                 *ngIf="auth.isLoggedIn()"
                 type="button"

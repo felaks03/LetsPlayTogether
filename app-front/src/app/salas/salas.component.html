@@ -1,107 +1,108 @@
 <div class="salas-container">
 
-  <!-- ========================= -->
-  <!-- VISTA LISTADO -->
-  <!-- ========================= -->
-  <div *ngIf="vistaActual() === 'listado'" class="vista-listado">
+  <!-- Navegación: explorar / crear (no en vista sala) -->
+  <nav class="salas-nav" *ngIf="vistaPrincipal() !== 'sala'">
+    <button
+      type="button"
+      class="nav-tab"
+      [class.active]="vistaPrincipal() === 'listado'"
+      (click)="irAExplorar()">
+      Explorar salas
+    </button>
+    <button
+      type="button"
+      class="nav-tab"
+      [class.active]="vistaPrincipal() === 'crear'"
+      (click)="irACrear()">
+      Crear sala
+    </button>
+  </nav>
+
+  <!-- ========== LISTADO ========== -->
+  <div *ngIf="vistaPrincipal() === 'listado'" class="vista-listado">
 
     <h2 class="titulo-seccion">Salas disponibles</h2>
 
-    <!-- Mensajes -->
     <div *ngIf="cargando()" class="info-box">Cargando salas...</div>
 
     <div *ngIf="error()" class="error-box">
       {{ error() }}
     </div>
 
-    <!-- Crear sala -->
-    <div class="card crear-sala-card">
-      <h3>Crear sala</h3>
+    <div class="busqueda-salas" *ngIf="hostId">
+      <input
+        type="search"
+        class="input-busqueda"
+        placeholder="Buscar por nombre de sala o videojuego…"
+        [ngModel]="filtroBusqueda()"
+        (ngModelChange)="filtroBusqueda.set($event)"
+      />
+    </div>
 
-      <div class="form-group">
-        <input
-          type="text"
-          placeholder="Nombre de la sala"
-          [(ngModel)]="nuevaSalaNombre"
-        />
-      </div>
-
-      <div class="form-group">
-        <select [(ngModel)]="nuevaSalaVideojuegoId">
-
-          <option value="" disabled selected>
-            Selecciona un videojuego
-          </option>
-
-          <option 
-            *ngFor="let juego of videojuegos()" 
-            [value]="juego._id">
-            {{ juego.titulo }}
-          </option>
-
-        </select>
-      </div>  
-
-      <div class="form-group">
-        <input
-          type="number"
-          placeholder="Máx usuarios"
-          [(ngModel)]="nuevaSalaMaxUsuarios"
-        />
-      </div>
-
-      <button class="btn-primary" (click)="crearSala()">
-        Crear sala
+    <div *ngIf="hostId && filtroVideojuegoId()" class="filtro-juego-banner">
+      <span>
+        Mostrando salas de <strong>{{ tituloFiltroJuegoActivo() }}</strong>
+      </span>
+      <button type="button" class="btn-link-filtro" (click)="limpiarFiltroJuego()">
+        Ver todas las salas
       </button>
     </div>
 
-    <div class="card filtros-card">
+    <div
+      *ngIf="estaEnAlgunaSala() && hostId"
+      class="info-box aviso-sala-activa banner-mi-sala">
+      <p>
+        Ya estás en una sala activa. No puedes unirte a otra hasta salir de la actual.
+      </p>
+      <button type="button" class="btn-primary btn-compact" (click)="irAMiSala()">
+        Ir a mi sala
+      </button>
+    </div>
 
-      <h4>Filtros</h4>
-
-      <div class="filtros-grid">
-
-        <input
-          type="text"
-          placeholder="Buscar por nombre..."
-          [ngModel]="filtroNombre()"
-          (ngModelChange)="filtroNombre.set($event)"
-        />
-
-        <select
-          [ngModel]="filtroEstado()"
-          (ngModelChange)="filtroEstado.set($event)">
-
-          <option value="ALL">Todos los estados</option>
-          <option value="OPEN">OPEN</option>
-          <option value="IN_GAME">IN_GAME</option>
-          <option value="FULL">FULL</option>
-          <option value="CLOSED">CLOSED</option>
-        </select>
-
-        <!-- Aviso si ya está en una sala -->
-        <div 
-          *ngIf="estaEnAlgunaSala() && vistaActual() === 'listado'"
-          class="info-box aviso-sala-activa">
-          Ya estás dentro de una sala activa.
-          Debes salir de ella antes de unirte a otra.
-        </div>
-
-      </div>
-
-  </div>
-
-
-    <!-- Lista de salas -->
-    <div class="lista-salas" *ngIf="!cargando() && !error()">
+    <div class="lista-salas" *ngIf="!cargando() && hostId">
 
       <div class="card sala-card" *ngFor="let sala of salasFiltradas">
 
-        <div class="sala-header">
-          <strong class="sala-nombre">{{ sala.nombre }}</strong>
+        <div class="sala-card-top">
+          <a
+            *ngIf="idVideojuego(sala)"
+            [routerLink]="['/videojuegos', idVideojuego(sala)]"
+            class="sala-card-thumb-wrap"
+            [title]="'Ver ' + tituloJuego(sala)">
+            <img
+              *ngIf="urlImagenVideojuego(sala) as thumb"
+              [src]="thumb"
+              class="sala-card-thumb"
+              alt=""
+            />
+            <div *ngIf="!urlImagenVideojuego(sala)" class="sala-card-thumb-placeholder">
+              <span class="mat-icon sm" aria-hidden="true">sports_esports</span>
+            </div>
+          </a>
+          <div *ngIf="!idVideojuego(sala)" class="sala-card-thumb-wrap sala-card-thumb-sin-link">
+            <div class="sala-card-thumb-placeholder">
+              <span class="mat-icon sm" aria-hidden="true">sports_esports</span>
+            </div>
+          </div>
 
-          <span 
-            class="badge"
+          <div class="sala-card-main">
+            <strong class="sala-nombre">{{ sala.nombre }}</strong>
+            <div class="sala-linea-juego">
+              <a
+                *ngIf="idVideojuego(sala)"
+                [routerLink]="['/videojuegos', idVideojuego(sala)]"
+                class="enlace-sala-info">
+                {{ tituloJuego(sala) }}
+              </a>
+              <span *ngIf="!idVideojuego(sala)" class="sala-info-texto">{{ tituloJuego(sala) }}</span>
+            </div>
+            <div class="sala-meta-line">
+              {{ sala.usuarios.length }}/{{ sala.maxUsuarios }} jugadores
+            </div>
+          </div>
+
+          <span
+            class="badge sala-card-badge"
             [ngClass]="{
               'badge-open': sala.estado === 'OPEN',
               'badge-full': sala.estado === 'FULL',
@@ -112,13 +113,10 @@
           </span>
         </div>
 
-        <div class="sala-info">
-          Usuarios: {{ sala.usuarios.length }}/{{ sala.maxUsuarios }}
-        </div>
-
         <div class="sala-actions">
 
           <button
+            type="button"
             class="btn-secondary"
             (click)="unirseSala(sala)"
             [disabled]="
@@ -131,6 +129,7 @@
           </button>
 
           <button
+            type="button"
             class="btn-secondary"
             (click)="salirSala(sala)"
             [disabled]="!esUsuarioEnSala(sala)">
@@ -139,6 +138,7 @@
 
           <button
             *ngIf="esHost(sala)"
+            type="button"
             class="btn-danger"
             (click)="eliminarSala(sala)">
             Eliminar
@@ -161,18 +161,57 @@
     </div>
   </div>
 
+  <!-- ========== CREAR SALA ========== -->
+  <div *ngIf="vistaPrincipal() === 'crear'" class="vista-crear">
 
-  <!-- ========================= -->
-  <!-- VISTA DENTRO DE SALA -->
-  <!-- ========================= -->
-  <div *ngIf="vistaActual() === 'sala' && salaActiva() as sala" class="vista-sala">
+    <h2 class="titulo-seccion">Crear sala</h2>
 
-    <div class="card sala-activa-card">
+    <div *ngIf="error()" class="error-box">{{ error() }}</div>
+
+    <div class="crear-sala-panel" *ngIf="hostId">
+      <div class="form-group">
+        <input
+          type="text"
+          placeholder="Nombre de la sala"
+          [(ngModel)]="nuevaSalaNombre"
+        />
+      </div>
+
+      <div class="form-group">
+        <select [(ngModel)]="nuevaSalaVideojuegoId">
+          <option value="" disabled selected>Selecciona un videojuego</option>
+          <option *ngFor="let juego of videojuegos()" [value]="juego._id">
+            {{ juego.titulo }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="number"
+          placeholder="Máx. jugadores"
+          [(ngModel)]="nuevaSalaMaxUsuarios"
+          min="2"
+        />
+      </div>
+
+      <button type="button" class="btn-primary" (click)="crearSala()">
+        Crear sala
+      </button>
+    </div>
+  </div>
+
+  <!-- ========== VISTA SALA ========== -->
+  <div *ngIf="vistaPrincipal() === 'sala' && salaActiva() as sala" class="vista-sala">
+
+    <div class="sala-vista-minimal">
+
+      <div *ngIf="error()" class="error-box error-sala">{{ error() }}</div>
 
       <div class="sala-activa-header">
         <h2>{{ sala.nombre }}</h2>
 
-        <span 
+        <span
           class="badge"
           [ngClass]="{
             'badge-open': sala.estado === 'OPEN',
@@ -182,174 +221,179 @@
           }">
           {{ sala.estado }}
         </span>
-    </div>
+      </div>
 
-    <div *ngIf="esHost(sala)" class="host-indicator">
+      <div *ngIf="esHost(sala)" class="host-indicator">
         Eres el host de esta sala
-    </div>
-
+      </div>
 
       <div class="sala-activa-info">
         <p><strong>Jugadores:</strong> {{ sala.usuarios.length }}/{{ sala.maxUsuarios }}</p>
-        <p><strong>ID Videojuego:</strong> {{ sala.videojuego }}</p>
+      </div>
+
+      <div class="sala-juego-block">
+        <a
+          *ngIf="idVideojuego(sala) as gid"
+          [routerLink]="['/videojuegos', gid]"
+          class="sala-juego-enlace">
+          <ng-container *ngIf="urlImagenVideojuego(sala) as imgSrc">
+            <img
+              class="sala-juego-imagen"
+              [src]="imgSrc"
+              [alt]="tituloJuego(sala)"
+            />
+          </ng-container>
+          <div *ngIf="!urlImagenVideojuego(sala)" class="sala-juego-placeholder">
+            <span class="mat-icon xl sala-juego-icon" aria-hidden="true">sports_esports</span>
+          </div>
+          <p class="sala-juego-titulo">{{ tituloJuego(sala) }}</p>
+        </a>
+        <div *ngIf="!idVideojuego(sala)" class="sala-juego-sin-enlace">
+          <ng-container *ngIf="urlImagenVideojuego(sala) as imgSrc2">
+            <img
+              class="sala-juego-imagen"
+              [src]="imgSrc2"
+              [alt]="tituloJuego(sala)"
+            />
+          </ng-container>
+          <div *ngIf="!urlImagenVideojuego(sala)" class="sala-juego-placeholder">
+            <span class="mat-icon xl sala-juego-icon" aria-hidden="true">sports_esports</span>
+          </div>
+          <p class="sala-juego-titulo">{{ tituloJuego(sala) }}</p>
+        </div>
       </div>
 
       <div class="jugadores-lista">
         <h4>Jugadores en la sala</h4>
         <ul class="jugadores-ul">
-          <li 
+          <li
             *ngFor="let jugador of sala.usuarios"
             class="jugador-item"
             [ngClass]="{
-              'jugador-host': jugador.toString() === sala.host.toString(),
-              'jugador-yo': esUsuarioActual(jugador)
+              'jugador-host': idRef(jugador) === idRef(sala.host),
+              'jugador-yo': esUsuarioActual(idRef(jugador))
             }">
 
-            <span>
-              {{ jugador }}
-            </span>
+            <a
+              class="jugador-nick enlace-perfil"
+              [routerLink]="['/usuarios', idRef(jugador)]">
+              {{ nickEnSala(sala, idRef(jugador)) }}
+            </a>
 
-            <span *ngIf="jugador.toString() === sala.host.toString()">
-              Host
+            <span class="jugador-tags">
+              <span *ngIf="idRef(jugador) === idRef(sala.host)" class="tag-host">Host</span>
+              <span *ngIf="esUsuarioActual(idRef(jugador))" class="tag-yo">Tú</span>
+              <button
+                *ngIf="puedeExpulsar(sala, jugador)"
+                type="button"
+                class="btn-expulsar"
+                (click)="expulsarJugador(sala, jugador); $event.stopPropagation()">
+                Expulsar
+              </button>
             </span>
-
-            <span *ngIf="esUsuarioActual(jugador)">
-              (Tú)
-            </span>
-
           </li>
-          
-          <div 
-            class="estado-banner"
-            [ngClass]="{
-              'banner-open': sala.estado === 'OPEN',
-              'banner-game': sala.estado === 'IN_GAME',
-              'banner-full': sala.estado === 'FULL',
-              'banner-closed': sala.estado === 'CLOSED'
-            }">
-
-            <span *ngIf="sala.estado === 'OPEN'">
-              Sala abierta esperando jugadores
-            </span>
-
-            <span *ngIf="sala.estado === 'IN_GAME'">
-              Partida en curso
-            </span>
-
-            <span *ngIf="sala.estado === 'FULL'">
-              Sala completa
-            </span>
-
-            <span *ngIf="sala.estado === 'CLOSED'">
-              Sala cerrada por el host
-            </span>
-
-          </div>
-
-
         </ul>
 
+        <div
+          class="estado-banner"
+          [ngClass]="{
+            'banner-open': sala.estado === 'OPEN',
+            'banner-game': sala.estado === 'IN_GAME',
+            'banner-full': sala.estado === 'FULL',
+            'banner-closed': sala.estado === 'CLOSED'
+          }">
+
+          <span *ngIf="sala.estado === 'OPEN'">Sala abierta esperando jugadores</span>
+          <span *ngIf="sala.estado === 'IN_GAME'">Partida en curso</span>
+          <span *ngIf="sala.estado === 'FULL'">Sala completa</span>
+          <span *ngIf="sala.estado === 'CLOSED'">Sala cerrada por el host</span>
+        </div>
       </div>
 
       <div class="sala-activa-actions">
 
-          <!-- Controles del host -->
-          <div *ngIf="esHost(sala)" class="host-controls">
+        <div *ngIf="esHost(sala)" class="host-controls">
 
-            <h4>Controles del host</h4>
+          <h4>Controles del host</h4>
 
-            <button 
-              class="btn-primary"
-              *ngIf="sala.estado === 'OPEN'"
-              (click)="cambiarEstadoSala(sala, 'IN_GAME')">
-              Iniciar partida
-            </button>
+          <button
+            type="button"
+            class="btn-primary"
+            *ngIf="sala.estado === 'OPEN'"
+            (click)="cambiarEstadoSala(sala, 'IN_GAME')">
+            Iniciar partida
+          </button>
 
-            <select
-              class="estado-select"
-              [value]="sala.estado"
-              (change)="cambiarEstadoSala(sala, $any($event.target).value)">
-              <option value="OPEN">OPEN</option>
-              <option value="IN_GAME">IN_GAME</option>
-              <option value="CLOSED">CLOSED</option>
-            </select>
+          <select
+            class="estado-select"
+            [value]="sala.estado"
+            (change)="cambiarEstadoSala(sala, $any($event.target).value)">
+            <option value="OPEN">OPEN</option>
+            <option value="IN_GAME">IN_GAME</option>
+            <option value="CLOSED">CLOSED</option>
+          </select>
 
-            <button 
-              class="btn-secondary"
-              *ngIf="sala.estado === 'CLOSED'"
-              (click)="cambiarEstadoSala(sala, 'OPEN')">
-              Reabrir sala
-            </button>
+          <button
+            type="button"
+            class="btn-secondary"
+            *ngIf="sala.estado === 'CLOSED'"
+            (click)="cambiarEstadoSala(sala, 'OPEN')">
+            Reabrir sala
+          </button>
 
-            <button 
-              class="btn-danger"
-              (click)="eliminarSala(sala)">
-              Eliminar sala
-            </button>
+          <button type="button" class="btn-danger" (click)="eliminarSala(sala)">
+            Eliminar sala
+          </button>
 
-          </div>
+        </div>
 
-          <!-- Botones generales -->
-          <button 
-            class="btn-secondary" 
-            (click)="salirSala(sala)">
+        <div class="sala-footer-secundarios">
+          <button type="button" class="btn-secondary btn-sala-igual" (click)="salirSala(sala)">
             Salir de la sala
           </button>
 
-          <button 
-            class="btn-primary" 
-            (click)="volverAlListado()">
+          <button type="button" class="btn-primary btn-outline btn-sala-igual" (click)="volverAlListado()">
             Volver al listado
           </button>
-
         </div>
 
-        <div class="chat-container">
+      </div>
 
-          <h4>Chat de la sala</h4>
+      <div class="chat-container">
 
-          <div class="chat-mensajes" #chatScroll>
+        <h4>Chat de la sala</h4>
 
-            <div 
-              *ngFor="let mensaje of mensajes()"
-              class="chat-mensaje"
-              [ngClass]="{
-                'mensaje-propio': mensaje.emisor === hostId,
-                'mensaje-ajeno': mensaje.emisor !== hostId
-              }">
+        <div class="chat-mensajes" #chatScroll>
 
-              <div class="mensaje-contenido">
-                {{ mensaje.contenido }}
-              </div>
+          <div
+            *ngFor="let mensaje of mensajes()"
+            class="chat-mensaje"
+            [ngClass]="{
+              'mensaje-propio': mensaje.emisorId === hostId,
+              'mensaje-ajeno': mensaje.emisorId !== hostId
+            }">
 
-              <div class="mensaje-fecha">
-                {{ mensaje.fecha | date:'shortTime' }}
-              </div>
-
-            </div>
-
-          </div>
-
-          <div class="chat-input">
-
-            <input
-              type="text"
-              placeholder="Escribe un mensaje..."
-              [(ngModel)]="nuevoMensaje"
-              (keyup.enter)="enviarMensaje()"
-            />
-
-            <button 
-              class="btn-primary"
-              (click)="enviarMensaje()">
-              Enviar
-            </button>
+            <div class="mensaje-emisor">{{ mensaje.emisorNick }}</div>
+            <div class="mensaje-contenido">{{ mensaje.contenido }}</div>
+            <div class="mensaje-fecha">{{ mensaje.fecha | date:'shortTime' }}</div>
 
           </div>
 
         </div>
 
+        <div class="chat-input">
+          <input
+            type="text"
+            placeholder="Escribe un mensaje…"
+            [(ngModel)]="nuevoMensaje"
+            (keyup.enter)="enviarMensaje()"
+          />
+          <button type="button" class="btn-primary" (click)="enviarMensaje()">
+            Enviar
+          </button>
+        </div>
 
+      </div>
 
     </div>
 
