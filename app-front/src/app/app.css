@@ -75,6 +75,29 @@
     0 0 20px rgba(250, 204, 21, 0.06);
 }
 
+.nav-links a.admin-link {
+  color: var(--color-rosa);
+  border: 1px solid rgba(236, 72, 153, 0.2);
+}
+
+.nav-links a.admin-link:hover {
+  background: rgba(236, 72, 153, 0.08);
+  border-color: rgba(236, 72, 153, 0.35);
+  box-shadow: 0 0 16px rgba(236, 72, 153, 0.15);
+}
+
+.nav-links a.admin-link.active {
+  background: linear-gradient(
+    135deg,
+    rgba(236, 72, 153, 0.12),
+    rgba(168, 85, 247, 0.14)
+  );
+  border-color: rgba(236, 72, 153, 0.4);
+  box-shadow:
+    0 0 0 1px rgba(236, 72, 153, 0.3),
+    0 0 18px rgba(236, 72, 153, 0.1);
+}
+
 .nav-user {
   display: flex;
   align-items: center;
