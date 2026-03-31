@@ -1,6 +1,7 @@
 import Sala from "../models/salas.model";
 import User from "../models/user.model";
 import Videojuego from "../models/videojuego.model";
+import Chat from "../models/chat.model";
 import { Types } from "mongoose";
 
 const POPULATE_SALA = [
@@ -151,14 +152,27 @@ interface CreateSalaData {
 }
 
 export async function createSala(data: CreateSalaData) {
+  const usuarioConSala = await User.findById(data.host);
+
+  if (usuarioConSala?.salaActual) {
+    throw new Error("Ya estás en una sala activa");
+  }
+
+  const chat = await Chat.create({
+    participante1: data.host,
+    participante2: data.host,
+  });
+
   const sala = new Sala({
     ...data,
     usuarios: [data.host],
     estado: "OPEN",
+    chat: chat._id,
   });
 
   await sala.save();
   await User.findByIdAndUpdate(data.host, { salaActual: sala._id });
+
   return salaPopuladaPorId(sala._id);
 }
 
@@ -193,6 +207,12 @@ export async function joinSala(salaId: string, userId: string) {
     throw new Error("IDs inválidos");
   }
 
+  const usuario = await User.findById(userId);
+
+  if (usuario?.salaActual && usuario.salaActual.toString() !== salaId) {
+    throw new Error("Ya estás en una sala activa");
+  }
+
   const sala = await Sala.findById(salaId);
   if (!sala) throw new Error("Sala no encontrada");
 
@@ -214,8 +234,21 @@ export async function joinSala(salaId: string, userId: string) {
 
   sala.usuarios.push(userObjectId);
 
-  await User.findByIdAndUpdate(userId, { salaActual: sala._id });
+    await User.findByIdAndUpdate(userId, { salaActual: sala._id });
 
+    if (sala.chat) {
+      const chat = await Chat.findById(sala.chat);
+
+      if (chat) {
+        if (
+          !chat.participante1.equals(userObjectId) &&
+          !chat.participante2.equals(userObjectId)
+        ) {
+          chat.participante2 = userObjectId;
+          await chat.save();
+        }
+      }
+    }
   if (sala.usuarios.length >= sala.maxUsuarios) {
     sala.estado = "FULL";
   }

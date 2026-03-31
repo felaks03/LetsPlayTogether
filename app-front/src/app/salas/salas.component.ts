@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { SalasService, Sala, SalaUsuarioRef, Videojuego } from './salas.service';
 import { AuthService } from '../auth/auth.service';
 import { API_ORIGIN } from '../shared/api-config';
+import { ChatService } from '../chat/chat.service';
 
 interface MensajeLocal {
   id: string;
@@ -60,6 +61,7 @@ export class SalasComponent implements OnInit, OnDestroy {
 
   constructor(
     private salasService: SalasService,
+    private chatService: ChatService,
     public auth: AuthService,
     private router: Router,
     private route: ActivatedRoute
@@ -225,6 +227,11 @@ export class SalasComponent implements OnInit, OnDestroy {
       next: (up) => {
         if (this.salaActiva()?._id === up._id) {
           this.salaActiva.set(up);
+
+          const chatId = (up as any).chat;
+          if (chatId) {
+            this.cargarMensajes(chatId); // 💥 CLAVE
+          }
         }
       },
       error: () => {
@@ -239,6 +246,25 @@ export class SalasComponent implements OnInit, OnDestroy {
     this.salasService.getVideojuegos().subscribe({
       next: (data) => this.videojuegos.set(data),
       error: (err) => console.error('Error cargando videojuegos', err),
+    });
+  }
+
+  cargarMensajes(chatId: string) {
+    this.chatService.getChatById(chatId).subscribe({
+      next: (data) => {
+        const mensajesMapeados = data.mensajes.map((m) => ({
+          id: m._id,
+          emisorId: typeof m.emisor === 'string' ? m.emisor : m.emisor._id,
+          emisorNick:
+            typeof m.emisor === 'object' ? m.emisor.nick : 'Usuario',
+          contenido: m.contenido,
+          fecha: new Date(m.fecha),
+        }));
+
+        this.mensajes.set(mensajesMapeados);
+        this.scrollAlFinal();
+      },
+      error: (err) => console.error(err),
     });
   }
 
@@ -426,11 +452,22 @@ export class SalasComponent implements OnInit, OnDestroy {
   entrarEnSala(sala: Sala) {
     this.salaActiva.set(sala);
     this.vistaPrincipal.set('sala');
+
+    this.mensajes.set([]);
+
+    const chatId = (sala as any).chat;
+    if (chatId) {
+      this.cargarMensajes(chatId);
+    }
   }
 
   volverAlListado() {
     this.salaActiva.set(null);
+
+    this.mensajes.set([]);
+
     this.vistaPrincipal.set('listado');
+
     const vj = this.filtroVideojuegoId();
     this.router.navigate(['/salas'], {
       queryParams: vj ? { videojuego: vj } : {},
@@ -457,19 +494,19 @@ export class SalasComponent implements OnInit, OnDestroy {
   }
 
   enviarMensaje() {
-    if (!this.nuevoMensaje.trim() || !this.hostId) return;
+    const sala = this.salaActiva();
+    if (!this.nuevoMensaje.trim() || !this.hostId || !sala) return;
 
-    const mensaje: MensajeLocal = {
-      id: crypto.randomUUID(),
-      emisorId: this.hostId,
-      emisorNick: this.miNick,
-      contenido: this.nuevoMensaje.trim(),
-      fecha: new Date(),
-    };
+    const chatId = (sala as any).chat;
+    if (!chatId) return;
 
-    this.mensajes.update((m) => [...m, mensaje]);
-    this.nuevoMensaje = '';
-    this.scrollAlFinal();
+    this.chatService.enviarMensaje(chatId, this.nuevoMensaje).subscribe({
+      next: () => {
+        this.nuevoMensaje = '';
+        this.cargarMensajes(chatId);
+      },
+      error: (err) => console.error(err),
+    });
   }
 
   scrollAlFinal() {

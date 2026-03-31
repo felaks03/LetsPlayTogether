@@ -182,7 +182,7 @@ export const uploadAvatarController = async (
     if (String(currentUser.id) !== String(id)) {
         return next(new AppError(403, "Solo puedes cambiar tu foto"));
     }
-    const file = req.file;
+    const file = (req as any).file;
     if (!file) {
         return next(
             new AppError(400, "Selecciona una imagen (JPG, PNG, WebP o GIF)")

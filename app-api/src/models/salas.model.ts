@@ -10,6 +10,7 @@ export interface ISala extends Document {
   maxUsuarios: number;
   creadoEn: Date;
   expiraEn?: Date;
+  chat?: Types.ObjectId
 }
 
 const SalaSchema = new Schema<ISala>({
@@ -56,6 +57,11 @@ const SalaSchema = new Schema<ISala>({
   expiraEn: {
     type: Date,
   },
+
+  chat: {
+  type: Types.ObjectId,
+  ref: "Chat",
+},
 });
 
 export default model<ISala>("Sala", SalaSchema);
