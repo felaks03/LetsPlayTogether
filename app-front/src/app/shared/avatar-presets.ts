@@ -1,4 +1,4 @@
-/** Misma lista que en app-api (constants/avatars.ts) — archivos en app-front/public/avatars */
+// mismos paths que en la API y archivos en public/avatars
 export const AVATAR_DEFAULT = '/avatars/2169.jpg';
 
 export const AVATAR_PRESETS = [

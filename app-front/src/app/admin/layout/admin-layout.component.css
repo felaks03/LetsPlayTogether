@@ -7,7 +7,6 @@
   box-sizing: border-box;
 }
 
-/* ─── Sidebar ─── */
 .admin-sidebar {
   width: 240px;
   min-width: 240px;
@@ -42,7 +41,6 @@
   filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.4));
 }
 
-/* ─── Navigation ─── */
 .sidebar-nav {
   display: flex;
   flex-direction: column;
@@ -103,7 +101,6 @@
   filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.35));
 }
 
-/* ─── Footer ─── */
 .sidebar-footer {
   padding: 16px 12px;
   border-top: 1px solid rgba(99, 102, 241, 0.15);
@@ -167,7 +164,6 @@
   height: 18px;
 }
 
-/* ─── Content ─── */
 .admin-content {
   flex: 1;
   padding: 28px 32px;
@@ -176,7 +172,6 @@
   min-width: 0;
 }
 
-/* ─── Responsive (tablet / móvil): barra apilada, sin fila horizontal que desborde ─── */
 @media (max-width: 900px) {
   .admin-shell {
     flex-direction: column;

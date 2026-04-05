@@ -37,10 +37,50 @@
               </div>
             </div>
             <p class="meta">{{ u.edad }} años</p>
-            <div class="redes" *ngIf="u.redes && (u.redes.twitter || u.redes.discord || u.redes.twitch)">
-              <a *ngIf="u.redes.twitter" [href]="u.redes.twitter" target="_blank" rel="noopener">Twitter</a>
-              <a *ngIf="u.redes.discord" [href]="u.redes.discord" target="_blank" rel="noopener">Discord</a>
-              <a *ngIf="u.redes.twitch" [href]="u.redes.twitch" target="_blank" rel="noopener">Twitch</a>
+            <div
+              class="redes"
+              *ngIf="u.redes && (u.redes.twitter || u.redes.discord || u.redes.twitch || u.redes.steam)"
+            >
+              <a
+                *ngIf="u.redes.twitter"
+                [href]="u.redes.twitter"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="red-social-img red-social-img--original"
+                aria-label="X (Twitter)"
+                title="X (Twitter)"
+                ><img src="/avatars/logotipos.png" alt="" width="24" height="24"
+              /></a>
+              <a
+                *ngIf="u.redes.discord"
+                [href]="u.redes.discord"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="red-social-img"
+                aria-label="Discord"
+                title="Discord"
+                ><img src="/avatars/discordia.png" alt="" width="24" height="24"
+              /></a>
+              <a
+                *ngIf="u.redes.twitch"
+                [href]="u.redes.twitch"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="red-social-img"
+                aria-label="Twitch"
+                title="Twitch"
+                ><img src="/avatars/twitch.png" alt="" width="24" height="24"
+              /></a>
+              <a
+                *ngIf="u.redes.steam"
+                [href]="u.redes.steam"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="red-social-img"
+                aria-label="Steam"
+                title="Steam"
+                ><img src="/avatars/logotipo-de-steam.png" alt="" width="24" height="24"
+              /></a>
             </div>
             <div class="acciones-perfil" *ngIf="!esMiPerfil() && auth.currentUser()">
               <button *ngIf="!yaEsAmigo(u._id)" type="button" class="btn-neon" (click)="anadirAmigo()">

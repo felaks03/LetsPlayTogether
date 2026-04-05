@@ -83,7 +83,6 @@ export class AdminVideojuegosComponent implements OnInit {
     });
   }
 
-  // ─── Crear ───
   abrirCrear(): void {
     this.juegoSeleccionado.set(null);
     this.form.set(videojuegoVacio());
@@ -91,7 +90,6 @@ export class AdminVideojuegosComponent implements OnInit {
     this.vista.set('crear');
   }
 
-  // ─── Editar ───
   abrirEditar(v: Videojuego): void {
     this.juegoSeleccionado.set(v);
     const platSel: Record<string, boolean> = {};
@@ -188,7 +186,6 @@ export class AdminVideojuegosComponent implements OnInit {
     }
   }
 
-  // ─── Borrar ───
   pedirConfirmacion(v: Videojuego): void {
     this.juegoSeleccionado.set(v);
     this.confirmarBorrar.set(true);

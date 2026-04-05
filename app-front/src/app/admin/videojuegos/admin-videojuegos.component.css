@@ -1,11 +1,9 @@
-/* ─── Page ─── */
 .admin-page {
   max-width: 1100px;
   margin: 0 auto;
   width: 100%;
 }
 
-/* ─── Header ─── */
 .page-header {
   display: flex;
   align-items: center;
@@ -52,7 +50,6 @@
   border: 1px solid rgba(192, 132, 252, 0.2);
 }
 
-/* ─── Search ─── */
 .search-bar {
   position: relative;
   margin-bottom: 20px;
@@ -92,7 +89,6 @@
   pointer-events: none;
 }
 
-/* ─── Status ─── */
 .status-msg {
   text-align: center;
   padding: 32px;
@@ -108,7 +104,6 @@
   color: #f87171;
 }
 
-/* ─── Games grid ─── */
 .games-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -240,7 +235,6 @@
   justify-content: flex-end;
 }
 
-/* ─── Action buttons ─── */
 .btn-icon {
   width: 34px;
   height: 34px;
@@ -279,7 +273,6 @@
   font-size: 0.95rem;
 }
 
-/* ─── Back button ─── */
 .btn-back {
   background: none;
   border: none;
@@ -300,7 +293,6 @@
   background: rgba(34, 211, 238, 0.06);
 }
 
-/* ─── Edit card ─── */
 .edit-card {
   background: linear-gradient(135deg, #1e0f32 0%, #12081f 100%);
   border: 1px solid rgba(124, 58, 237, 0.3);
@@ -377,7 +369,6 @@
   display: block;
 }
 
-/* ─── Plataformas ─── */
 .plat-fieldset {
   border: 1px solid rgba(124, 58, 237, 0.2);
   border-radius: 12px;
@@ -424,7 +415,6 @@
   box-shadow: 0 0 12px rgba(250, 204, 21, 0.1);
 }
 
-/* ─── Toggle ─── */
 .toggle-label {
   display: flex !important;
   flex-direction: row !important;
@@ -480,7 +470,6 @@
   padding-top: 8px;
 }
 
-/* ─── Buttons ─── */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -532,7 +521,6 @@
   color: var(--texto);
 }
 
-/* ─── Modal ─── */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -582,7 +570,6 @@
   justify-content: center;
 }
 
-/* ─── Animations ─── */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -597,7 +584,6 @@
   animation: spin 0.8s linear infinite;
 }
 
-/* ─── Responsive ─── */
 @media (max-width: 768px) {
   .games-grid {
     grid-template-columns: 1fr;

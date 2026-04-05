@@ -10,7 +10,7 @@ const POPULATE_SALA = [
   { path: "usuarios", select: "nick" },
 ];
 
-/** Id estable para comparar ObjectId, string o subdocumento lean */
+// el populate a veces devuelve id suelto u objeto; lo pasamos a string
 function rawId(x: unknown): string {
   if (x == null) return "";
   if (typeof x === "string") return x;
@@ -25,7 +25,7 @@ function sameId(a: unknown, b: unknown): boolean {
   return rawId(a) === rawId(b) && rawId(a) !== "";
 }
 
-/** OPEN ↔ FULL según cupo; no toca CLOSED ni IN_GAME */
+// si hay sitio OPEN si no FULL (no cambia cerrada o en partida)
 function recalcularEstadoPorCapacidad(sala: {
   estado: string;
   usuarios: unknown[];
@@ -140,9 +140,6 @@ async function salaPopuladaPorId(id: Types.ObjectId | string) {
   return normalizeSalaPayload(raw);
 }
 
-/**
- * Crear una sala
- */
 interface CreateSalaData {
   nombre: string;
   videojuego: Types.ObjectId;
@@ -176,9 +173,6 @@ export async function createSala(data: CreateSalaData) {
   return salaPopuladaPorId(sala._id);
 }
 
-/**
- * Obtener todas las salas
- */
 export async function getSalas() {
   const rows = await Sala.find()
     .populate(POPULATE_SALA)
@@ -189,9 +183,6 @@ export async function getSalas() {
   );
 }
 
-/**
- * Obtener una sala por ID
- */
 export async function getSalaById(id: string) {
   if (!Types.ObjectId.isValid(id)) return null;
   const raw = await Sala.findById(id).populate(POPULATE_SALA).lean();
@@ -199,9 +190,6 @@ export async function getSalaById(id: string) {
   return normalizeSalaPayload(raw);
 }
 
-/**
- * Unirse a una sala
- */
 export async function joinSala(salaId: string, userId: string) {
   if (!Types.ObjectId.isValid(salaId) || !Types.ObjectId.isValid(userId)) {
     throw new Error("IDs inválidos");
@@ -258,9 +246,6 @@ export async function joinSala(salaId: string, userId: string) {
   return salaPopuladaPorId(sala._id);
 }
 
-/**
- * Salir de una sala
- */
 export async function leaveSala(salaId: string, userId: string) {
   if (!Types.ObjectId.isValid(salaId) || !Types.ObjectId.isValid(userId)) {
     throw new Error("IDs inválidos");
@@ -280,9 +265,6 @@ export async function leaveSala(salaId: string, userId: string) {
   return salaPopuladaPorId(sala._id);
 }
 
-/**
- * El host expulsa a un usuario (no puede expulsarse a sí mismo ni "expulsar" al host).
- */
 export async function kickUsuarioFromSala(
   salaId: string,
   hostUserId: string,
@@ -325,9 +307,6 @@ export async function kickUsuarioFromSala(
   return salaPopuladaPorId(sala._id);
 }
 
-/**
- * Actualizar el estado de una sala
- */
 export async function updateEstadoSala(
   salaId: string,
   estado: "OPEN" | "IN_GAME" | "FULL" | "CLOSED"
@@ -344,9 +323,6 @@ export async function updateEstadoSala(
   return salaPopuladaPorId(sala._id);
 }
 
-/**
- * Eliminar una sala y limpiar referencias de los usuarios
- */
 export async function deleteSala(salaId: string) {
   if (!Types.ObjectId.isValid(salaId)) return null;
 

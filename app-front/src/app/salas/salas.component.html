@@ -18,7 +18,6 @@
     </button>
   </nav>
 
-  <!-- ========== LISTADO ========== -->
   <div *ngIf="vistaPrincipal() === 'listado'" class="vista-listado">
 
     <h2 class="titulo-seccion">Salas disponibles</h2>
@@ -161,7 +160,6 @@
     </div>
   </div>
 
-  <!-- ========== CREAR SALA ========== -->
   <div *ngIf="vistaPrincipal() === 'crear'" class="vista-crear">
 
     <h2 class="titulo-seccion">Crear sala</h2>
@@ -201,7 +199,6 @@
     </div>
   </div>
 
-  <!-- ========== VISTA SALA ========== -->
   <div *ngIf="vistaPrincipal() === 'sala' && salaActiva() as sala" class="vista-sala">
 
     <div class="sala-vista-minimal">
@@ -361,7 +358,7 @@
 
       <div class="chat-container">
 
-        <h4>Chat de la sala</h4>
+        <h4>Chat</h4>
 
         <div class="chat-mensajes" #chatScroll>
 

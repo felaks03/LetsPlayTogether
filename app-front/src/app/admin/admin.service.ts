@@ -12,7 +12,6 @@ export class AdminService {
 
   constructor(private http: HttpClient) {}
 
-  // ─── Usuarios ───
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.usersUrl);
   }
@@ -33,7 +32,6 @@ export class AdminService {
     return this.http.delete(`${this.usersUrl}/${id}`);
   }
 
-  // ─── Videojuegos ───
   getVideojuegos(): Observable<Videojuego[]> {
     return this.http.get<Videojuego[]>(this.videojuegosUrl);
   }

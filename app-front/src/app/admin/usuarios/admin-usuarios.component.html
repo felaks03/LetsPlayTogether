@@ -1,6 +1,5 @@
 <div class="admin-page">
 
-  <!-- ═══ HEADER ═══ -->
   <header class="page-header">
     <div class="header-title">
       <span class="mat-icon lg">group</span>
@@ -9,7 +8,6 @@
     <span class="badge-count" *ngIf="!cargando()">{{ usuarios().length }} usuarios</span>
   </header>
 
-  <!-- ═══ LISTA ═══ -->
   <ng-container *ngIf="vista() === 'lista'">
 
     <!-- Buscador -->
@@ -83,7 +81,6 @@
     </div>
   </ng-container>
 
-  <!-- ═══ DETALLE ═══ -->
   <ng-container *ngIf="vista() === 'detalle' && usuarioSeleccionado() as u">
     <button class="btn-back" (click)="volver()">
       <span class="mat-icon sm">arrow_back</span> Volver a lista
@@ -119,6 +116,10 @@
           <span class="label"><span class="mat-icon sm">live_tv</span> Twitch</span>
           <span class="value">{{ u.redes!.twitch }}</span>
         </div>
+        <div class="detail-item" *ngIf="u.redes?.steam">
+          <span class="label"><span class="mat-icon sm">sports_esports</span> Steam</span>
+          <span class="value">{{ u.redes!.steam }}</span>
+        </div>
         <div class="detail-item">
           <span class="label"><span class="mat-icon sm">star</span> Favoritos</span>
           <span class="value">{{ u.favoritos?.length ?? 0 }} videojuegos</span>
@@ -140,7 +141,6 @@
     </div>
   </ng-container>
 
-  <!-- ═══ EDITAR ═══ -->
   <ng-container *ngIf="vista() === 'editar' && usuarioSeleccionado() as u">
     <button class="btn-back" (click)="volver()">
       <span class="mat-icon sm">arrow_back</span> Volver a lista
@@ -192,6 +192,10 @@
             Twitch
             <input type="text" [ngModel]="editForm().redes?.twitch ?? ''" (ngModelChange)="updateEditRed('twitch', $event)" />
           </label>
+          <label>
+            Steam
+            <input type="text" [ngModel]="editForm().redes?.steam ?? ''" (ngModelChange)="updateEditRed('steam', $event)" />
+          </label>
         </fieldset>
 
         <div class="error-box" *ngIf="errorEditar()">{{ errorEditar() }}</div>
@@ -208,7 +212,6 @@
     </div>
   </ng-container>
 
-  <!-- ═══ CREAR ═══ -->
   <ng-container *ngIf="vista() === 'crear'">
     <button class="btn-back" (click)="volver()">
       <span class="mat-icon sm">arrow_back</span> Volver a lista
@@ -260,6 +263,10 @@
             Twitch
             <input type="text" [ngModel]="createForm().redes?.twitch ?? ''" (ngModelChange)="updateCreateRed('twitch', $event)" />
           </label>
+          <label>
+            Steam
+            <input type="text" [ngModel]="createForm().redes?.steam ?? ''" (ngModelChange)="updateCreateRed('steam', $event)" />
+          </label>
         </fieldset>
 
         <div class="error-box" *ngIf="errorCrear()">{{ errorCrear() }}</div>
@@ -276,7 +283,6 @@
     </div>
   </ng-container>
 
-  <!-- ═══ MODAL CONFIRMAR BORRAR ═══ -->
   <div class="modal-overlay" *ngIf="confirmarBorrar()" (click)="cancelarBorrar()">
     <div class="modal-box" (click)="$event.stopPropagation()">
       <span class="mat-icon xl modal-warn-icon">warning</span>

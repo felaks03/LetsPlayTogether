@@ -36,6 +36,7 @@ const userSchema = new Schema(
             twitter: { type: String, default: "" },
             discord: { type: String, default: "" },
             twitch: { type: String, default: "" },
+            steam: { type: String, default: "" },
         },
         favoritos: [
             {

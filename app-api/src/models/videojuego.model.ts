@@ -1,8 +1,5 @@
 import { Schema, model, Document } from "mongoose";
 
-/**
- * Interface para tipado del documento Videojuego
- */
 export interface IVideojuego extends Document {
   titulo: string;
   descripcion?: string;

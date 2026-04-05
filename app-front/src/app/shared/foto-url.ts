@@ -1,7 +1,7 @@
 import { AVATAR_DEFAULT } from './avatar-presets';
 import { API_ORIGIN } from './api-config';
 
-/** Codifica el nombre de archivo tras /avatars/ (espacios, paréntesis, etc.) */
+// encodear nombre de archivo (espacios, paréntesis...)
 function encodePublicAvatarPath(foto: string): string {
   if (!foto.startsWith('/avatars/')) return foto;
   const rest = foto.slice('/avatars/'.length);
@@ -9,7 +9,7 @@ function encodePublicAvatarPath(foto: string): string {
   return '/avatars/' + rest.split('/').map(encodeURIComponent).join('/');
 }
 
-/** URL para mostrar avatar (local /avatars, subida /uploads o absoluta) */
+// devuelve la URL lista para poner en el src del avatar
 export function urlFotoPerfil(foto?: string | null): string {
   if (!foto) return encodePublicAvatarPath(AVATAR_DEFAULT);
   if (foto.startsWith('/uploads/')) return `${API_ORIGIN}${foto}`;

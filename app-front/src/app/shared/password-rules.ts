@@ -1,4 +1,4 @@
-/** Mismas reglas que el backend */
+// misma idea que en app-api (passwordPolicy)
 
 const ESPECIALES = '!?@#$%^&*()_+-=[]{}|;:,.<>/\\·=`"';
 

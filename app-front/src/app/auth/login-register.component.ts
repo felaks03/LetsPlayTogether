@@ -20,7 +20,7 @@ export class LoginRegisterComponent implements OnInit {
   password = '';
   nick = '';
   edad = 18;
-  /** Si no eliges foto, el servidor asigna la por defecto */
+  // sin foto el back pone la default
   fotoElegida = '';
   readonly avataresRegistro = [...AVATAR_PRESETS];
   readonly urlAvatarPreset = (src: string) => urlFotoPerfil(src);

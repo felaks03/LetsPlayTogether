@@ -18,7 +18,7 @@ export class VideojuegosDashboardComponent implements OnInit {
   cargando = false;
   error: string | null = null;
 
-  // Admin modal
+  // modal crear / editar juego (solo admin)
   mostrarModal = false;
   modoEdicion = false;
   videojuegoEditando: Partial<Videojuego> = {};

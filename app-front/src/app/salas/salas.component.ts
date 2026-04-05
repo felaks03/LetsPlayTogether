@@ -35,11 +35,10 @@ export class SalasComponent implements OnInit, OnDestroy {
   videojuegos = signal<Videojuego[]>([]);
   cargando = signal(true);
   error = signal<string | null>(null);
-  /** listado | crear | sala */
   vistaPrincipal = signal<'listado' | 'crear' | 'sala'>('listado');
   salaActiva = signal<Sala | null>(null);
   filtroBusqueda = signal('');
-  /** Filtro estricto por id de videojuego (query ?videojuego=) */
+  // filtro por ?videojuego= en la URL
   filtroVideojuegoId = signal<string | null>(null);
   mensajes = signal<MensajeLocal[]>([]);
   nuevoMensaje = '';
@@ -53,7 +52,7 @@ export class SalasComponent implements OnInit, OnDestroy {
   private pollHandle?: ReturnType<typeof setInterval>;
   private querySub?: Subscription;
 
-  /** Al volver a la pestaña, un tick inmediato evita datos muy viejos mientras el polling estaba en pausa. */
+  // si cambias de pestaña y vuelves, refrescamos por si el polling se quedó atrás
   private readonly onVisibilidad = () => {
     if (typeof document === 'undefined' || document.hidden) return;
     this.refrescarSalaSiActiva();
@@ -111,7 +110,6 @@ export class SalasComponent implements OnInit, OnDestroy {
     if (this.pollHandle) clearInterval(this.pollHandle);
   }
 
-  /** ObjectId o documento poblado */
   idRef(r: string | { _id: string }): string {
     return typeof r === 'string' ? r : r._id;
   }
@@ -124,7 +122,7 @@ export class SalasComponent implements OnInit, OnDestroy {
     return r.nick?.trim() ? r.nick : r._id;
   }
 
-  /** Nick en el contexto de una sala (API devuelve {_id, nick} por usuario). */
+  // nick de un usuario dentro de esa sala
   nickEnSala(sala: Sala, userId: string): string {
     if (!userId) return '—';
     const row = sala.usuarios.find((u) => this.idRef(u) === userId);
@@ -143,7 +141,6 @@ export class SalasComponent implements OnInit, OnDestroy {
     return '—';
   }
 
-  /** Id del videojuego asociado a la sala (para cruzar con el catálogo). */
   idVideojuego(sala: Sala): string {
     const v = sala.videojuego;
     if (typeof v === 'string') return v;
@@ -161,7 +158,7 @@ export class SalasComponent implements OnInit, OnDestroy {
     return this.catalogoJuegoPorId(id)?.titulo ?? this.tituloPorIdDesdeSalas(id);
   }
 
-  /** Si el catálogo aún no tiene el juego, intenta título desde alguna sala */
+  // por si el listado de juegos aún no ha cargado
   private tituloPorIdDesdeSalas(id: string): string {
     const sala = this.salas().find((s) => this.idVideojuego(s) === id);
     return sala ? this.tituloJuego(sala) : '—';
@@ -186,7 +183,7 @@ export class SalasComponent implements OnInit, OnDestroy {
     return id ? '—' : '—';
   }
 
-  /** URL absoluta de la carátula o null si no hay imagen. */
+  // para el <img> (añade localhost si hace falta)
   urlImagenVideojuego(sala: Sala): string | null {
     const id = this.idVideojuego(sala);
     const cat = this.catalogoJuegoPorId(id);

@@ -32,7 +32,7 @@ export class AdminUsuariosComponent implements OnInit {
   createForm = signal<Partial<User & { password?: string }>>({
     edad: 18,
     role: 'user',
-    redes: { twitter: '', discord: '', twitch: '' },
+    redes: { twitter: '', discord: '', twitch: '', steam: '' },
   });
   creando = signal(false);
   errorCrear = signal('');
@@ -76,14 +76,12 @@ export class AdminUsuariosComponent implements OnInit {
     });
   }
 
-  // ─── Detalle ───
   verDetalle(u: User): void {
     this.usuarioSeleccionado.set(u);
     this.vista.set('detalle');
     this.confirmarBorrar.set(false);
   }
 
-  // ─── Editar ───
   abrirEditar(u: User): void {
     this.usuarioSeleccionado.set(u);
     this.editForm.set({
@@ -91,14 +89,19 @@ export class AdminUsuariosComponent implements OnInit {
       email: u.email,
       edad: u.edad,
       role: u.role,
-      redes: { ...u.redes },
+      redes: {
+        twitter: '',
+        discord: '',
+        twitch: '',
+        steam: '',
+        ...(u.redes || {}),
+      },
       password: '',
     });
     this.errorEditar.set('');
     this.vista.set('editar');
   }
 
-  // ─── Crear ───
   abrirCrear(): void {
     this.createForm.set({
       nick: '',
@@ -106,7 +109,7 @@ export class AdminUsuariosComponent implements OnInit {
       password: '',
       edad: 18,
       role: 'user',
-      redes: { twitter: '', discord: '', twitch: '' },
+      redes: { twitter: '', discord: '', twitch: '', steam: '' },
     });
     this.errorCrear.set('');
     this.vista.set('crear');
@@ -126,7 +129,7 @@ export class AdminUsuariosComponent implements OnInit {
       password: form.password,
       edad: form.edad || 18,
       role: form.role || 'user',
-      redes: form.redes || { twitter: '', discord: '', twitch: '' },
+      redes: form.redes || { twitter: '', discord: '', twitch: '', steam: '' },
     };
 
     this.creando.set(true);
@@ -179,7 +182,6 @@ export class AdminUsuariosComponent implements OnInit {
     });
   }
 
-  // ─── Borrar ───
   pedirConfirmacion(u: User): void {
     this.usuarioSeleccionado.set(u);
     this.confirmarBorrar.set(true);

@@ -370,31 +370,26 @@ main.main-with-fixed-footer {
 
 .social-links {
   display: flex;
-  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  font-size: 13px;
 }
 
 .social-links a {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid rgba(192, 132, 252, 0.28);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #f5d0fe;
+  color: #c4b5fd;
   text-decoration: none;
-  font-weight: 700;
-  font-size: 0.7rem;
-  background: rgba(255, 255, 255, 0.04);
-  transition: box-shadow 0.2s, border-color 0.2s;
+  font-weight: 500;
 }
 
 .social-links a:hover {
-  border-color: rgba(236, 72, 153, 0.45);
-  box-shadow:
-    0 0 14px rgba(34, 211, 238, 0.2),
-    0 0 20px rgba(168, 85, 247, 0.2),
-    0 0 24px rgba(250, 204, 21, 0.1);
+  color: #f5d0fe;
+  text-decoration: underline;
+}
+
+.social-sep {
+  color: rgba(192, 132, 252, 0.45);
+  user-select: none;
 }
 
 @media (max-width: 760px) {

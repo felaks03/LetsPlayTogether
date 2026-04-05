@@ -1,4 +1,4 @@
-/** Reglas de contraseña (2º DAW): mayúscula, número, especial, mínimo 8 */
+// registro: mínimo 8, mayúscula, número y un carácter especial
 
 const ESPECIALES = '!?@#$%^&*()_+-=[]{}|;:,.<>/\\·=`"';
 

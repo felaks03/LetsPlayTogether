@@ -159,6 +159,35 @@
   text-shadow: 0 0 12px rgba(192, 132, 252, 0.5);
 }
 
+.redes .red-social-img {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  border-radius: 10px;
+  padding: 4px;
+  border: 1px solid rgba(192, 132, 252, 0.25);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.redes .red-social-img img {
+  display: block;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+/* X/Twitter: el PNG original no convierte bien con el filtro (queda un cuadrado blanco) */
+.redes .red-social-img--original img {
+  filter: none;
+}
+
+.redes .red-social-img:hover {
+  border-color: rgba(34, 211, 238, 0.45);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
+}
+
 .acciones-perfil {
   display: flex;
   flex-wrap: wrap;

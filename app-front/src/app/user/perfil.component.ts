@@ -65,7 +65,7 @@ export class PerfilComponent implements OnInit {
       });
   }
 
-  /** Tras quitar amigo: recarga datos sin pantalla de carga completa */
+  // recargar sin poner toda la pantalla en "cargando"
   refrescarPerfil() {
     this.userService.getUserById(this.idPerfil).subscribe({
       next: (d) => this.user.set(d),

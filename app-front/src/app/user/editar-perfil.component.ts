@@ -25,6 +25,7 @@ export class EditarPerfilComponent implements OnInit, OnDestroy {
   twitter = '';
   discord = '';
   twitch = '';
+  steam = '';
   passwordNueva = '';
   passwordRepite = '';
 
@@ -58,6 +59,7 @@ export class EditarPerfilComponent implements OnInit, OnDestroy {
         this.twitter = data.redes?.twitter || '';
         this.discord = data.redes?.discord || '';
         this.twitch = data.redes?.twitch || '';
+        this.steam = data.redes?.steam || '';
         this.cargando.set(false);
       },
       error: (err) => {
@@ -116,7 +118,7 @@ export class EditarPerfilComponent implements OnInit, OnDestroy {
     const body: Record<string, unknown> = {
       nick: this.nick,
       edad: this.edad,
-      redes: { twitter: this.twitter, discord: this.discord, twitch: this.twitch }
+      redes: { twitter: this.twitter, discord: this.discord, twitch: this.twitch, steam: this.steam }
     };
     if (this.passwordNueva.trim()) {
       body['password'] = this.passwordNueva;

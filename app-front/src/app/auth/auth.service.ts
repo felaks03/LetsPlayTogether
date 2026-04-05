@@ -16,7 +16,7 @@ export interface User {
   email: string;
   edad: number;
   foto?: string;
-  redes?: { twitter?: string; discord?: string; twitch?: string };
+  redes?: { twitter?: string; discord?: string; twitch?: string; steam?: string };
   favoritos?: (VideojuegoFavorito | string)[];
   amigos?: unknown[];
   role?: string;
@@ -71,7 +71,7 @@ export class AuthService {
     sessionStorage.removeItem(this.userKey);
   }
 
-  /** Tras editar perfil o favoritos: guarda usuario en memoria y sessionStorage */
+  // actualizar usuario en memoria y sessionStorage (perfil, favoritos...)
   syncCurrentUser(user: User): void {
     this.currentUser.set(user);
     sessionStorage.setItem(this.userKey, JSON.stringify(user));

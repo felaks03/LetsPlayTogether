@@ -42,14 +42,18 @@
 
       <div class="bloque">
         <h2>Redes (opcional)</h2>
+        <p class="ayuda">Puedes pegar la URL principal de cada red (por ejemplo https://x.com/).</p>
         <label>Twitter / X</label>
-        <input type="text" [(ngModel)]="twitter" name="twitter" placeholder="URL o usuario" />
+        <input type="url" [(ngModel)]="twitter" name="twitter" placeholder="https://x.com/" />
 
         <label>Discord</label>
-        <input type="text" [(ngModel)]="discord" name="discord" />
+        <input type="url" [(ngModel)]="discord" name="discord" placeholder="https://discord.com/" />
 
         <label>Twitch</label>
-        <input type="text" [(ngModel)]="twitch" name="twitch" />
+        <input type="url" [(ngModel)]="twitch" name="twitch" placeholder="https://www.twitch.tv/" />
+
+        <label>Steam</label>
+        <input type="url" [(ngModel)]="steam" name="steam" placeholder="https://store.steampowered.com/" />
       </div>
 
       <div class="acciones-form">

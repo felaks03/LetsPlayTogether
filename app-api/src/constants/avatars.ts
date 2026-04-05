@@ -1,4 +1,4 @@
-/** Rutas válidas de avatar (coinciden con archivos en app-front/public/avatars) */
+// avatares que tenemos en public/avatars (whitelist)
 export const ALLOWED_AVATAR_PATHS = [
     "/avatars/2169.jpg",
     "/avatars/3be3a7c1-2d8d-4007-9e47-1a4b0ab4f83f.jpg",

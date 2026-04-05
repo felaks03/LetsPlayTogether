@@ -4,10 +4,7 @@ const path = require("path");
 
 require("dotenv").config();
 
-/**
- * Convierte los { $oid: "..." } y { $date: "..." } del JSON extendido de Mongo
- * a ObjectId y Date nativos.
- */
+// el json del seed trae $oid y $date; lo pasamos a ObjectId/Date de verdad
 function convertExtendedJSON(obj) {
   if (obj === null || typeof obj !== "object") return obj;
   if (obj.$oid) return new ObjectId(obj.$oid);

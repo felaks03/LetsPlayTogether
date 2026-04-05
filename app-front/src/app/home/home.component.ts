@@ -11,20 +11,36 @@ import { LoginRegisterComponent } from '../auth/login-register.component';
 export class HomeComponent implements OnInit, OnDestroy {
   noticias = [
     {
-      titulo: 'Entra en salas para jugar',
-      texto: 'Encuentra jugadores de tu nivel, crea una sala en segundos y organiza partidas rapidas.',
+      titulo: 'Deja de jugar siempre solo',
+      texto:
+        'La web te ayuda a conocer gente con tus mismos juegos e intereses, para que organices partidas y no vuelvas a quedarte sin equipo.',
+      foto:
+        'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?auto=format&fit=crop&w=900&q=80'
+    },
+    {
+      titulo: 'Chat en Stream',
+      texto:
+        'Habla con quien va a jugar contigo: mensajes claros, tono de comunidad gamer y coordinación antes de entrar a la partida.',
+      foto: '/avatars/chat.png'
+    },
+    {
+      titulo: 'Conoce más sobre tus videojuegos favoritos',
+      texto:
+        'Fichas con descripción, género y detalles para descubrir juegos afines y encontrar jugadores que aman lo mismo que tú.',
+      foto:
+        'https://sm.ign.com/t/ign_es/feature/t/the-top-10/the-top-100-video-games-of-all-time_53uq.1200.jpg'
+    },
+    {
+      titulo: 'Salas listas en segundos',
+      texto:
+        'Crea o únete a una sala ligada al juego que quieras: filtra, entra y empieza sin complicaciones.',
       foto:
         'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80'
     },
     {
-      titulo: 'Chat directo estilo Steam',
-      texto: 'Habla con tus amigos antes de jugar, comparte ideas y coordina la estrategia del equipo.',
-      foto:
-        'https://images.unsplash.com/photo-1542751110-97427bbecf20?auto=format&fit=crop&w=900&q=80'
-    },
-    {
-      titulo: 'Fichas de videojuegos',
-      texto: 'Consulta informacion de juegos, descubre novedades y encuentra a quien le guste lo mismo.',
+      titulo: 'Amigos, perfil y favoritos',
+      texto:
+        'Añade amigos, muestra tu perfil con avatar y guarda tus videojuegos favoritos para que otros sepan con qué te gusta jugar.',
       foto:
         'https://images.unsplash.com/photo-1560253023-3ec5d502959f?auto=format&fit=crop&w=900&q=80'
     }
