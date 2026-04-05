@@ -32,7 +32,7 @@ const adminUser = {
   email: "admin@gmail.com",
   password: "admin",
   edad: 35,
-  foto: "/avatars/default.svg",
+  foto: "/avatars/2169.jpg",
   redes: { twitter: "", discord: "", twitch: "" },
   favoritos: [],
   amigos: [],

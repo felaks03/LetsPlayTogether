@@ -1,26 +1,136 @@
-<nav class="navbar">
-  <a class="nav-brand" href="/"><span class="mat-icon lg">sports_esports</span> LetsPlayTogether</a>
+<nav
+  class="navbar"
+  [class.navbar--movil-menu]="auth.isLoggedIn()"
+>
+  <a class="nav-brand" routerLink="/"><span class="mat-icon lg">sports_esports</span> LetsPlayTogether</a>
 
-  <div class="nav-links">
-    <a
-      routerLink="/admin"
-      routerLinkActive="active"
-      *ngIf="auth.isAdmin()"
-    >
-      <span class="mat-icon sm">admin_panel_settings</span> Admin
-    </a>
+  <div
+    class="nav-center"
+    [class.nav-inline--authed]="auth.isLoggedIn()"
+    [class.nav-inline--empty]="!auth.isLoggedIn()"
+  >
+    <div class="nav-links" *ngIf="auth.isAdmin()">
+      <a
+        routerLink="/admin"
+        routerLinkActive="active"
+        class="admin-link"
+      >
+        <span class="mat-icon sm">admin_panel_settings</span> Admin
+      </a>
+    </div>
+
+    <div class="nav-links" *ngIf="auth.isLoggedIn() && !auth.isAdmin()">
+      <a routerLink="/videojuegos" routerLinkActive="active">
+        <span class="mat-icon sm">videogame_asset</span> Videojuegos
+      </a>
+      <a routerLink="/salas" routerLinkActive="active">
+        <span class="mat-icon sm">meeting_room</span> Salas
+      </a>
+      <a
+        routerLink="/usuarios"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="mat-icon sm">person_add</span> Añadir amigos
+      </a>
+    </div>
   </div>
 
-  <div class="nav-user" *ngIf="auth.isLoggedIn() && !auth.isAdmin()">
-    <a
-      *ngIf="auth.currentUser() as yo"
-      [routerLink]="['/usuarios', yo._id]"
-      routerLinkActive="active"
-      ><span class="mat-icon sm">account_circle</span> Mi perfil</a
+  <div
+    class="navbar-end"
+    [class.nav-inline--authed]="auth.isLoggedIn()"
+    [class.nav-inline--empty]="!auth.isLoggedIn()"
+  >
+    <div class="nav-user" *ngIf="auth.isLoggedIn() && !auth.isAdmin()">
+      <a
+        *ngIf="auth.currentUser() as yo"
+        [routerLink]="['/usuarios', yo._id]"
+        routerLinkActive="active"
+        ><span class="mat-icon sm">account_circle</span> Mi perfil</a
+      >
+      <button type="button" (click)="cerrarSesion()">
+        <span class="mat-icon sm">logout</span> Cerrar sesión
+      </button>
+    </div>
+  </div>
+
+  <div class="nav-hamburger-slot" *ngIf="auth.isLoggedIn()">
+    <button
+      type="button"
+      class="nav-hamburger-btn"
+      (click)="toggleMenuJuego()"
+      [attr.aria-expanded]="menuJuegoAbierto()"
+      aria-controls="nav-menu-movil"
+      aria-label="Menú de navegación"
     >
-    <button type="button" (click)="cerrarSesion()"><span class="mat-icon sm">logout</span> Cerrar sesión</button>
+      <span class="mat-icon lg">{{ menuJuegoAbierto() ? 'close' : 'menu' }}</span>
+    </button>
   </div>
 </nav>
+
+<div
+  class="nav-juego-drawer"
+  *ngIf="auth.isLoggedIn() && menuJuegoAbierto()"
+  id="nav-menu-movil"
+>
+  <div class="nav-juego-backdrop" (click)="cerrarMenuJuego()" aria-hidden="true"></div>
+  <div class="nav-juego-panel" role="navigation" aria-label="Menú principal">
+    <ng-container *ngIf="auth.isAdmin()">
+      <a
+        routerLink="/admin/usuarios"
+        routerLinkActive="active"
+        class="nav-juego-link admin-link"
+        (click)="cerrarMenuJuego()"
+      >
+        <span class="mat-icon sm">group</span> Usuarios
+      </a>
+      <a
+        routerLink="/admin/videojuegos"
+        routerLinkActive="active"
+        class="nav-juego-link admin-link"
+        (click)="cerrarMenuJuego()"
+      >
+        <span class="mat-icon sm">videogame_asset</span> Videojuegos
+      </a>
+      <a routerLink="/videojuegos" class="nav-juego-link" (click)="cerrarMenuJuego()">
+        <span class="mat-icon sm">arrow_back</span> Volver a la app
+      </a>
+      <button type="button" class="nav-juego-link nav-juego-btn-cerrar" (click)="cerrarSesion()">
+        <span class="mat-icon sm">logout</span> Cerrar sesión
+      </button>
+    </ng-container>
+
+    <ng-container *ngIf="!auth.isAdmin()">
+      <a routerLink="/videojuegos" routerLinkActive="active" class="nav-juego-link" (click)="cerrarMenuJuego()">
+        <span class="mat-icon sm">videogame_asset</span> Videojuegos
+      </a>
+      <a routerLink="/salas" routerLinkActive="active" class="nav-juego-link" (click)="cerrarMenuJuego()">
+        <span class="mat-icon sm">meeting_room</span> Salas
+      </a>
+      <a
+        routerLink="/usuarios"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-juego-link"
+        (click)="cerrarMenuJuego()"
+      >
+        <span class="mat-icon sm">person_add</span> Añadir amigos
+      </a>
+      <a
+        *ngIf="auth.currentUser() as yo"
+        [routerLink]="['/usuarios', yo._id]"
+        routerLinkActive="active"
+        class="nav-juego-link"
+        (click)="cerrarMenuJuego()"
+      >
+        <span class="mat-icon sm">account_circle</span> Mi perfil
+      </a>
+      <button type="button" class="nav-juego-link nav-juego-btn-cerrar" (click)="cerrarSesion()">
+        <span class="mat-icon sm">logout</span> Cerrar sesión
+      </button>
+    </ng-container>
+  </div>
+</div>
 
 <main [class.main-with-fixed-footer]="esMain()">
   <router-outlet></router-outlet>

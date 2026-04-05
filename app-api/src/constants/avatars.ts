@@ -1,13 +1,13 @@
 /** Rutas válidas de avatar (coinciden con archivos en app-front/public/avatars) */
 export const ALLOWED_AVATAR_PATHS = [
-    "/avatars/default.svg",
-    "/avatars/avatar-1.svg",
-    "/avatars/avatar-2.svg",
-    "/avatars/avatar-3.svg",
-    "/avatars/avatar-4.svg",
+    "/avatars/2169.jpg",
+    "/avatars/3be3a7c1-2d8d-4007-9e47-1a4b0ab4f83f.jpg",
+    "/avatars/8300_8_03.jpg",
+    "/avatars/descarga.jpg",
+    "/avatars/descarga (1).jpg",
 ] as const;
 
-export const DEFAULT_AVATAR_PATH = "/avatars/default.svg";
+export const DEFAULT_AVATAR_PATH = "/avatars/2169.jpg";
 
 const UPLOAD_AVATAR_REGEX = /^\/uploads\/avatars\/[a-zA-Z0-9._-]+$/;
 

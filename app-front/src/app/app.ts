@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { filter } from 'rxjs/operators';
+import { NavigationEnd, Router, RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from './auth/auth.service';
 
 @Component({
@@ -10,13 +11,35 @@ import { AuthService } from './auth/auth.service';
   styleUrls: ['./app.css'],
 })
 export class App {
-  constructor(public auth: AuthService, private router: Router) {}
+  menuJuegoAbierto = signal(false);
+
+  constructor(public auth: AuthService, private router: Router) {
+    this.router.events
+      .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
+      .subscribe(() => this.menuJuegoAbierto.set(false));
+  }
 
   esMain(): boolean {
     return this.router.url === '/';
   }
 
-  cerrarSesion() {
+  toggleMenuJuego(): void {
+    this.menuJuegoAbierto.update((v) => !v);
+  }
+
+  cerrarMenuJuego(): void {
+    this.menuJuegoAbierto.set(false);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.menuJuegoAbierto()) {
+      this.cerrarMenuJuego();
+    }
+  }
+
+  cerrarSesion(): void {
+    this.cerrarMenuJuego();
     this.auth.logout();
     this.router.navigate(['/']);
   }

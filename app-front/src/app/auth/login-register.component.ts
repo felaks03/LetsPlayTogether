@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { AVATAR_PRESETS } from '../shared/avatar-presets';
+import { urlFotoPerfil } from '../shared/foto-url';
 import { validatePassword } from '../shared/password-rules';
 
 @Component({
@@ -22,6 +23,7 @@ export class LoginRegisterComponent implements OnInit {
   /** Si no eliges foto, el servidor asigna la por defecto */
   fotoElegida = '';
   readonly avataresRegistro = [...AVATAR_PRESETS];
+  readonly urlAvatarPreset = (src: string) => urlFotoPerfil(src);
   error = signal<string | null>(null);
   cargando = signal(false);
 

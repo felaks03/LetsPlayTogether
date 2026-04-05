@@ -43,14 +43,14 @@
         [class.pick]="fotoElegida === src"
         (click)="fotoElegida = fotoElegida === src ? '' : src"
       >
-        <img [src]="src" alt="" />
+        <img [src]="urlAvatarPreset(src)" alt="" />
       </button>
     </div>
 
     <div class="actions">
       <button (click)="enviarRegister()" [disabled]="cargando()">Crear cuenta</button>
       <button type="button" class="secondary" (click)="toggleModo()" [disabled]="cargando()">
-        Logearse
+        Iniciar sesión
       </button>
     </div>
   </ng-container>

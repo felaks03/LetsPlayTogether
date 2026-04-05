@@ -5,7 +5,7 @@
     "email": "luna@ejemplo.com",
     "password": "Prueba123!",
     "edad": 22,
-    "foto": "/avatars/avatar-1.svg",
+    "foto": "/avatars/2169.jpg",
     "redes": {
       "twitter": "@lunagamer",
       "discord": "luna#1234",
@@ -30,7 +30,7 @@
     "email": "kai@ejemplo.com",
     "password": "Prueba123!",
     "edad": 27,
-    "foto": "/avatars/avatar-2.svg",
+    "foto": "/avatars/3be3a7c1-2d8d-4007-9e47-1a4b0ab4f83f.jpg",
     "redes": {
       "twitter": "",
       "discord": "kaipro",
@@ -57,7 +57,7 @@
     "email": "admin@ejemplo.com",
     "password": "Prueba123!",
     "edad": 30,
-    "foto": "/avatars/default.svg",
+    "foto": "/avatars/8300_8_03.jpg",
     "redes": {
       "twitter": "",
       "discord": "",
@@ -78,7 +78,7 @@
     "email": "nox@ejemplo.com",
     "password": "Prueba123!",
     "edad": 19,
-    "foto": "/avatars/avatar-3.svg",
+    "foto": "/avatars/descarga.jpg",
     "redes": {
       "twitter": "@noxfps",
       "discord": "noxfps",
@@ -103,7 +103,7 @@
     "email": "mika@ejemplo.com",
     "password": "Prueba123!",
     "edad": 24,
-    "foto": "/avatars/avatar-4.svg",
+    "foto": "/avatars/descarga (1).jpg",
     "redes": {
       "twitter": "",
       "discord": "mikarpg",
@@ -128,7 +128,7 @@
     "email": "sole@ejemplo.com",
     "password": "Prueba123!",
     "edad": 17,
-    "foto": "/avatars/avatar-1.svg",
+    "foto": "/avatars/2169.jpg",
     "redes": {
       "twitter": "@solecraft",
       "discord": "",
@@ -153,7 +153,7 @@
     "email": "dani@ejemplo.com",
     "password": "Prueba123!",
     "edad": 26,
-    "foto": "/avatars/avatar-2.svg",
+    "foto": "/avatars/3be3a7c1-2d8d-4007-9e47-1a4b0ab4f83f.jpg",
     "redes": {
       "twitter": "",
       "discord": "danicoop",
@@ -178,7 +178,7 @@
     "email": "iris@ejemplo.com",
     "password": "Prueba123!",
     "edad": 21,
-    "foto": "/avatars/avatar-3.svg",
+    "foto": "/avatars/descarga.jpg",
     "redes": {
       "twitter": "@irisindie",
       "discord": "iris#8821",
@@ -203,7 +203,7 @@
     "email": "leo@ejemplo.com",
     "password": "Prueba123!",
     "edad": 23,
-    "foto": "/avatars/avatar-4.svg",
+    "foto": "/avatars/descarga (1).jpg",
     "redes": {
       "twitter": "",
       "discord": "leospeed",
@@ -228,7 +228,7 @@
     "email": "rafa@ejemplo.com",
     "password": "Prueba123!",
     "edad": 29,
-    "foto": "/avatars/default.svg",
+    "foto": "/avatars/8300_8_03.jpg",
     "redes": {
       "twitter": "",
       "discord": "",

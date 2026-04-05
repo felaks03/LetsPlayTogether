@@ -110,10 +110,22 @@
   justify-content: center;
 }
 
+/* Pantallas estrechas: solo login / registro (sin carrusel de noticias) */
 @media (max-width: 900px) {
   .landing {
     grid-template-columns: 1fr;
     min-height: auto;
+    padding: 16px 14px 28px;
     padding-top: 24px;
+    gap: 0;
+  }
+
+  .landing-left {
+    display: none !important;
+  }
+
+  .landing-right {
+    min-height: auto;
+    padding: 20px 18px;
   }
 }

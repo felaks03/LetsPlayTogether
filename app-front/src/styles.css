@@ -131,3 +131,10 @@ main {
 .mat-icon.sm { font-size: 16px; }
 .mat-icon.lg { font-size: 24px; }
 .mat-icon.xl { font-size: 32px; }
+
+/* Home invitado: ocultar noticias en pantallas estrechas (refuerzo fuera del componente) */
+@media (max-width: 900px) {
+  app-home .landing-left {
+    display: none !important;
+  }
+}

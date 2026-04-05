@@ -30,7 +30,7 @@ const userSchema = new Schema(
         },
         foto: {
             type: String,
-            default: "/avatars/default.svg",
+            default: "/avatars/2169.jpg",
         },
         redes: {
             twitter: { type: String, default: "" },
