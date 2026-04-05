@@ -1,4 +1,11 @@
+# Node
 node_modules/
+
+# Env
 .env
+.env.local
+.env.development
+.env.production
+
+# Build
 dist/
-package-lock.json
