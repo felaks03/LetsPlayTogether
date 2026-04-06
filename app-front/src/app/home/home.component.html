@@ -1,0 +1,22 @@
+<section class="landing">
+  <div class="landing-left">
+    <h1>LetsPlayTogether</h1>
+    <p class="subtitle">Juega en compañía, chatea y saca más partido a tus juegos.</p>
+
+    <div class="news-card">
+      <img [src]="noticiaActual.foto" [alt]="noticiaActual.titulo" />
+      <h3>{{ noticiaActual.titulo }}</h3>
+      <p>{{ noticiaActual.texto }}</p>
+    </div>
+
+    <div class="news-controls">
+      <button type="button" (click)="anterior()"><span class="mat-icon sm">chevron_left</span> Anterior</button>
+      <span>{{ indiceActual() + 1 }} / {{ noticias.length }}</span>
+      <button type="button" (click)="siguiente()">Siguiente <span class="mat-icon sm">chevron_right</span></button>
+    </div>
+  </div>
+
+  <div class="landing-right">
+    <app-login-register></app-login-register>
+  </div>
+</section>

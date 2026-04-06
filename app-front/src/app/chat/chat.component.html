@@ -1,0 +1,48 @@
+<div *ngIf="cargando()" class="estado">Cargando chat...</div>
+<div *ngIf="error()" class="estado error">{{ error() }}</div>
+
+<ng-container *ngIf="!cargando() && data()">
+  <div class="volver-row">
+    <a routerLink="/chats" class="back-link"
+      ><span class="mat-icon sm">arrow_back</span> Volver a mensajes</a
+    >
+  </div>
+
+  <a
+    *ngIf="otroEnChat() as otro"
+    [routerLink]="['/usuarios', otro._id]"
+    class="interlocutor-cabecera"
+    title="Ver perfil de {{ otro.nick }}"
+  >
+    <img class="interlocutor-avatar" [src]="urlFoto(otro.foto)" [alt]="'Avatar de ' + otro.nick" />
+    <div class="interlocutor-datos">
+      <span class="interlocutor-nombre">{{ otro.nick }}</span>
+      <span class="interlocutor-sub">Ver perfil</span>
+    </div>
+  </a>
+
+  <div class="mensajes" role="log" aria-live="polite" aria-relevant="additions">
+    <div *ngFor="let m of data()!.mensajes" class="linea-msg">
+      <ng-container *ngIf="esMio(m); else msgOtro">
+        <span class="yo">{{ nickEmisor(m) }} (tú): {{ m.contenido }}</span>
+      </ng-container>
+      <ng-template #msgOtro>
+        <a [routerLink]="['/usuarios', idEmisor(m)]" class="nick-link">{{ nickEmisor(m) }}</a
+        >: {{ m.contenido }}
+      </ng-template>
+    </div>
+  </div>
+
+  <p class="enviar-fila">
+    <input
+      type="text"
+      [(ngModel)]="nuevoMensaje"
+      (keyup.enter)="enviar()"
+      placeholder="Escribe un mensaje"
+      [attr.aria-label]="'Mensaje para ' + (otroEnChat()?.nick || 'usuario')"
+    />
+    <button type="button" (click)="enviar()" [disabled]="enviando() || !nuevoMensaje.trim()">
+      Enviar
+    </button>
+  </p>
+</ng-container>

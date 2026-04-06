@@ -1,0 +1,121 @@
+.auth-box {
+  max-width: 420px;
+  margin: 0 auto;
+  display: grid;
+  gap: 8px;
+}
+
+.auth-box h2 {
+  margin: 0 0 10px;
+  font-size: 1.5em;
+  background: var(--gradiente-titulos);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.auth-box label {
+  font-size: 14px;
+  color: #d8b4fe;
+}
+
+.auth-box input {
+  padding: 10px;
+  border: 1px solid rgba(168, 85, 247, 0.45);
+  border-radius: 8px;
+  background: rgba(15, 8, 28, 0.95);
+  color: #faf5ff;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.auth-box input:focus {
+  border-color: #22d3ee;
+  box-shadow:
+    0 0 18px rgba(34, 211, 238, 0.35),
+    0 0 28px rgba(99, 102, 241, 0.25);
+}
+
+.actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.actions button {
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--gradiente-boton);
+  color: #fff;
+  cursor: pointer;
+  box-shadow:
+    0 0 14px rgba(34, 211, 238, 0.2),
+    0 0 22px rgba(99, 102, 241, 0.2),
+    0 0 28px rgba(250, 204, 21, 0.08);
+}
+
+.actions button.secondary {
+  background: rgba(45, 20, 65, 0.9);
+  border: 1px solid rgba(250, 204, 21, 0.2);
+}
+
+.actions button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #ff9aa2;
+}
+
+.loading {
+  color: #fde047;
+}
+
+.avatar-hint {
+  margin: 16px 0 4px;
+  font-size: 14px;
+  color: #e9d5ff;
+}
+
+.avatar-sub {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: #a78bfa;
+}
+
+.reg-avatars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.reg-avatar-btn {
+  padding: 3px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: rgba(15, 8, 28, 0.95);
+  cursor: pointer;
+  line-height: 0;
+}
+
+.reg-avatar-btn.pick {
+  border-color: #fde047;
+  box-shadow: 0 0 10px rgba(250, 204, 21, 0.35);
+}
+
+.reg-avatar-btn img {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: block;
+}
+
+.pw-hint {
+  margin: -4px 0 8px;
+  font-size: 11px;
+  color: #c4b5fd;
+  line-height: 1.35;
+}

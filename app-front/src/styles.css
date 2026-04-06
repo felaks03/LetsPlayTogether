@@ -1,0 +1,140 @@
+/* Paleta principal: morado · rosa · lila · azul · cyan · amarillo */
+
+:root {
+  --fondo: #080a18;
+  --texto: #f4f0fb;
+  --texto-suave: #b8b0d4;
+
+  --color-cyan: #22d3ee;
+  --color-azul: #6366f1;
+  --color-morado: #a855f7;
+  --color-lila: #c084fc;
+  --color-rosa: #ec4899;
+  --color-amarillo: #fde047;
+
+  /* Alias / compatibilidad con nombres anteriores */
+  --neon-cyan: var(--color-cyan);
+  --neon-rosa: var(--color-rosa);
+  --neon-morado: var(--color-morado);
+  --neon-lila: var(--color-lila);
+  --neon-azul: var(--color-azul);
+  --acento-amarillo: var(--color-amarillo);
+
+  --borde-suave: rgba(99, 102, 241, 0.22);
+
+  /* Títulos y textos con clip (cyan → azul → morado → lila → rosa → amarillo) */
+  --gradiente-titulos: linear-gradient(
+    105deg,
+    #22d3ee 0%,
+    #6366f1 20%,
+    #8b5cf6 40%,
+    #c084fc 55%,
+    #ec4899 75%,
+    #fde047 100%
+  );
+
+  /* Botones / acentos fuertes */
+  --gradiente-boton: linear-gradient(135deg, #06b6d4, #3b82f6, #7c3aed, #db2777);
+  --gradiente-boton-suave: linear-gradient(135deg, #22d3ee, #6366f1, #a855f7, #f472b6);
+
+  /* Fondo único de toda la app (mismo que el listado de videojuegos), pantalla completa */
+  --fondo-app-gradient: linear-gradient(
+    125deg,
+    #0a1628 0%,
+    #1a0a2e 28%,
+    #12081f 55%,
+    #0c1028 78%,
+    #0f172a 100%
+  );
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100%;
+  min-height: 100dvh;
+  width: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #0a1628;
+  background-image: var(--fondo-app-gradient);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center top;
+  color: var(--texto);
+}
+
+main {
+  width: 100%;
+  min-height: 0;
+  flex: 1;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a1628;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(34, 211, 238, 0.55),
+    rgba(99, 102, 241, 0.55),
+    rgba(168, 85, 247, 0.5)
+  );
+  border-radius: 5px;
+  box-shadow: 0 0 8px rgba(250, 204, 21, 0.12);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(236, 72, 153, 0.55),
+    rgba(192, 132, 252, 0.55),
+    rgba(34, 211, 238, 0.45)
+  );
+}
+
+/* ---- Material Icons helpers ---- */
+.mat-icon {
+  font-family: 'Material Icons Round';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  vertical-align: middle;
+}
+
+.mat-icon.sm { font-size: 16px; }
+.mat-icon.lg { font-size: 24px; }
+.mat-icon.xl { font-size: 32px; }
+
+/* Home invitado: ocultar noticias en pantallas estrechas (refuerzo fuera del componente) */
+@media (max-width: 900px) {
+  app-home .landing-left {
+    display: none !important;
+  }
+}

@@ -1,0 +1,57 @@
+<div class="auth-box">
+  <h2>{{ esLogin() ? 'Iniciar sesión' : 'Registro' }}</h2>
+
+  <p class="error" *ngIf="error()">{{ error() }}</p>
+  <p class="loading" *ngIf="cargando()">Cargando...</p>
+
+  <ng-container *ngIf="esLogin()">
+    <label>Email</label>
+    <input type="email" [(ngModel)]="email" />
+
+    <label>Contraseña</label>
+    <input type="password" [(ngModel)]="password" />
+
+    <div class="actions">
+      <button (click)="enviarLogin()" [disabled]="cargando()">Iniciar sesión</button>
+      <button type="button" class="secondary" (click)="toggleModo()" [disabled]="cargando()">
+        Registrarse
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!esLogin()">
+    <label>Nick</label>
+    <input type="text" [(ngModel)]="nick" />
+
+    <label>Email</label>
+    <input type="email" [(ngModel)]="email" />
+
+    <label>Contraseña</label>
+    <input type="password" [(ngModel)]="password" autocomplete="new-password" />
+    <p class="pw-hint">8+ caracteres, mayúscula, número y un símbolo (! ? = · $…)</p>
+
+    <label>Edad</label>
+    <input type="number" [(ngModel)]="edad" min="13" />
+
+    <p class="avatar-hint">Foto de perfil (opcional)</p>
+    <p class="avatar-sub">Si no eliges ninguna, se usará la foto por defecto.</p>
+    <div class="reg-avatars">
+      <button
+        type="button"
+        *ngFor="let src of avataresRegistro"
+        class="reg-avatar-btn"
+        [class.pick]="fotoElegida === src"
+        (click)="fotoElegida = fotoElegida === src ? '' : src"
+      >
+        <img [src]="urlAvatarPreset(src)" alt="" />
+      </button>
+    </div>
+
+    <div class="actions">
+      <button (click)="enviarRegister()" [disabled]="cargando()">Crear cuenta</button>
+      <button type="button" class="secondary" (click)="toggleModo()" [disabled]="cargando()">
+        Iniciar sesión
+      </button>
+    </div>
+  </ng-container>
+</div>

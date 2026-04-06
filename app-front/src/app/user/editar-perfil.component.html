@@ -1,0 +1,67 @@
+<div class="editar-page">
+  <div *ngIf="cargando()">Cargando...</div>
+  <div *ngIf="error()" class="msg-error">{{ error() }}</div>
+
+  <ng-container *ngIf="!cargando() && user()">
+    <header class="cabecera">
+      <h1>Editar perfil</h1>
+      <a [routerLink]="['/usuarios', user()!._id]" class="btn-volver"><span class="mat-icon sm">arrow_back</span> Volver al perfil</a>
+    </header>
+
+    <form class="form-tarjeta" (ngSubmit)="guardar()">
+      <div class="bloque">
+        <h2>Foto de perfil</h2>
+        <p class="ayuda">Sube una imagen desde tu ordenador (máx. 2 MB, JPG, PNG, WebP o GIF).</p>
+        <div class="foto-fila">
+          <img class="preview" [src]="vistaPreviaFoto()" alt="Vista previa" />
+          <label class="file-label">
+            Elegir archivo
+            <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" (change)="onArchivo($event)" hidden />
+          </label>
+        </div>
+      </div>
+
+      <div class="bloque">
+        <h2>Datos</h2>
+        <label>Nick</label>
+        <input type="text" [(ngModel)]="nick" name="nick" required />
+
+        <label>Edad</label>
+        <input type="number" [(ngModel)]="edad" name="edad" min="1" />
+      </div>
+
+      <div class="bloque">
+        <h2>Nueva contraseña (opcional)</h2>
+        <p class="ayuda">Mínimo 8 caracteres, una mayúscula, un número y un carácter especial.</p>
+        <label>Nueva contraseña</label>
+        <input type="password" [(ngModel)]="passwordNueva" name="pw1" autocomplete="new-password" />
+
+        <label>Repetir contraseña</label>
+        <input type="password" [(ngModel)]="passwordRepite" name="pw2" autocomplete="new-password" />
+      </div>
+
+      <div class="bloque">
+        <h2>Redes (opcional)</h2>
+        <p class="ayuda">Puedes pegar la URL principal de cada red (por ejemplo https://x.com/).</p>
+        <label>Twitter / X</label>
+        <input type="url" [(ngModel)]="twitter" name="twitter" placeholder="https://x.com/" />
+
+        <label>Discord</label>
+        <input type="url" [(ngModel)]="discord" name="discord" placeholder="https://discord.com/" />
+
+        <label>Twitch</label>
+        <input type="url" [(ngModel)]="twitch" name="twitch" placeholder="https://www.twitch.tv/" />
+
+        <label>Steam</label>
+        <input type="url" [(ngModel)]="steam" name="steam" placeholder="https://store.steampowered.com/" />
+      </div>
+
+      <div class="acciones-form">
+        <a [routerLink]="['/usuarios', user()!._id]" class="btn-ghost">Cancelar</a>
+        <button type="submit" class="btn-guardar" [disabled]="guardando()">
+          {{ guardando() ? 'Guardando...' : 'Guardar cambios' }}
+        </button>
+      </div>
+    </form>
+  </ng-container>
+</div>

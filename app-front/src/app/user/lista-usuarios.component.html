@@ -1,0 +1,31 @@
+<h2>Buscar y añade amigos</h2>
+
+<div *ngIf="cargando()">Cargando...</div>
+<div *ngIf="error()">{{ error() }}</div>
+
+<div class="buscador" *ngIf="!cargando() && !error()">
+  <input
+    type="text"
+    placeholder="Buscar por nick..."
+    [(ngModel)]="filtroNickValue"
+  />
+</div>
+
+<ul *ngIf="!cargando() && !error()">
+  <li *ngFor="let u of usuariosFiltrados">
+    <a [routerLink]="['/usuarios', u._id]">{{ u.nick }}</a> ({{ u.email }})
+    <button
+      type="button"
+      (click)="agregarAmigo(u)"
+      [disabled]="!puedeAgregar(u)"
+    >
+      Añadir amigo
+    </button>
+    <button
+      type="button"
+      (click)="iniciarChat(u)"
+    >
+      Mensajes
+    </button>
+  </li>
+</ul>

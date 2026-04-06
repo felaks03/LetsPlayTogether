@@ -1,0 +1,146 @@
+<div class="perfil-page">
+  <div *ngIf="cargando()" class="estado">Cargando perfil...</div>
+  <div *ngIf="error()" class="estado error">{{ error() }}</div>
+
+  <ng-container *ngIf="!cargando() && user(); let u">
+    <div class="fila-superior">
+      <section class="col-izq">
+        <div class="identidad">
+          <div class="avatar-halo">
+            <img
+              class="avatar-grande"
+              [src]="urlFoto(u.foto)"
+              [alt]="'Avatar de ' + u.nick"
+            />
+          </div>
+          <div class="identidad-texto">
+            <div class="fila-nick">
+              <h1 class="nick">{{ u.nick }}</h1>
+              <div class="acciones-iconos" *ngIf="esMiPerfil()">
+                <a
+                  class="icon-btn"
+                  [routerLink]="['/usuarios', u._id, 'editar']"
+                  title="Editar perfil"
+                  aria-label="Editar perfil"
+                >
+                  <span class="mat-icon">edit</span>
+                </a>
+                <button
+                  type="button"
+                  class="icon-btn peligro"
+                  (click)="abrirModalBorrar()"
+                  title="Borrar cuenta"
+                  aria-label="Borrar cuenta"
+                >
+                  <span class="mat-icon">delete</span>
+                </button>
+              </div>
+            </div>
+            <p class="meta">{{ u.edad }} años</p>
+            <div
+              class="redes"
+              *ngIf="u.redes && (u.redes.twitter || u.redes.discord || u.redes.twitch || u.redes.steam)"
+            >
+              <a
+                *ngIf="u.redes.twitter"
+                [href]="u.redes.twitter"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="red-social-img red-social-img--original"
+                aria-label="X (Twitter)"
+                title="X (Twitter)"
+                ><img src="/avatars/logotipos.png" alt="" width="24" height="24"
+              /></a>
+              <a
+                *ngIf="u.redes.discord"
+                [href]="u.redes.discord"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="red-social-img"
+                aria-label="Discord"
+                title="Discord"
+                ><img src="/avatars/discordia.png" alt="" width="24" height="24"
+              /></a>
+              <a
+                *ngIf="u.redes.twitch"
+                [href]="u.redes.twitch"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="red-social-img"
+                aria-label="Twitch"
+                title="Twitch"
+                ><img src="/avatars/twitch.png" alt="" width="24" height="24"
+              /></a>
+              <a
+                *ngIf="u.redes.steam"
+                [href]="u.redes.steam"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="red-social-img"
+                aria-label="Steam"
+                title="Steam"
+                ><img src="/avatars/logotipo-de-steam.png" alt="" width="24" height="24"
+              /></a>
+            </div>
+            <div class="acciones-perfil" *ngIf="!esMiPerfil() && auth.currentUser()">
+              <button *ngIf="!yaEsAmigo(u._id)" type="button" class="btn-neon" (click)="anadirAmigo()">
+                Añadir amigo
+              </button>
+              <button type="button" class="btn-neon ghost" (click)="abrirChat()">Abrir chat</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="col-der">
+        <h2 class="subtitulo-der">Amigos</h2>
+        <p class="hint-der" *ngIf="!u.amigos?.length">Aún no hay amigos en la lista.</p>
+        <div class="amigos-malla" *ngIf="u.amigos && u.amigos.length">
+          <div class="amigo-celda" *ngFor="let a of u.amigos">
+            <a [routerLink]="['/usuarios', idAmigo(a)]" class="amigo-tarjeta">
+              <span class="amigo-nick">{{ nickAmigo(a) }}</span>
+              <span class="amigo-flecha mat-icon sm">chevron_right</span>
+            </a>
+            <button
+              *ngIf="esMiPerfil()"
+              type="button"
+              class="quitar-amigo"
+              (click)="quitarAmigo(idAmigo(a)); $event.preventDefault()"
+              title="Quitar amigo"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="favoritos-abajo">
+      <h2 class="subtitulo-fav">Juegos favoritos</h2>
+      <div class="favoritos-cuadricula" *ngIf="juegosFavoritos(u).length">
+        <a class="fav-cuadro" *ngFor="let j of juegosFavoritos(u)" [routerLink]="['/videojuegos', j._id]">
+          <div class="fav-cuadro-thumb">
+            <img *ngIf="j.imagen" [src]="j.imagen" [alt]="j.titulo" />
+            <span *ngIf="!j.imagen" class="fav-cuadro-placeholder"><span class="mat-icon lg">videogame_asset</span></span>
+          </div>
+          <span class="fav-cuadro-titulo">{{ j.titulo }}</span>
+        </a>
+      </div>
+      <p class="hint-vacio-fav" *ngIf="!juegosFavoritos(u).length">
+        Marca la estrella en un juego para verlo aquí.
+      </p>
+    </section>
+  </ng-container>
+</div>
+
+<div class="modal-fondo" *ngIf="modalBorrar()" (click)="cerrarModalBorrar()"></div>
+<div class="modal-caja" *ngIf="modalBorrar()" role="dialog" aria-modal="true" aria-labelledby="titulo-borrar">
+  <h3 id="titulo-borrar">¿Seguro que quieres borrar tu perfil?</h3>
+  <p>Se eliminarán tus datos de la cuenta. Esta acción no se puede deshacer.</p>
+  <div class="modal-botones">
+    <button type="button" class="btn-cancelar" (click)="cerrarModalBorrar()">Cancelar</button>
+    <button type="button" class="btn-eliminar" (click)="confirmarBorrarCuenta()" [disabled]="borrando()">
+      {{ borrando() ? 'Borrando...' : 'Sí, borrar' }}
+    </button>
+  </div>
+</div>

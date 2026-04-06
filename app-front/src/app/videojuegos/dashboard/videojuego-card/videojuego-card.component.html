@@ -1,0 +1,32 @@
+<a
+  class="card card-enlace"
+  [routerLink]="['/videojuegos', videojuego._id]"
+  [attr.aria-label]="'Ver ficha de ' + videojuego.titulo"
+>
+    <div class="card-imagen">
+        <img *ngIf="videojuego.imagen" [src]="videojuego.imagen" [alt]="videojuego.titulo" />
+        <div *ngIf="!videojuego.imagen" class="placeholder-img"><span class="mat-icon xl" style="font-size:4em">sports_esports</span></div>
+    </div>
+
+    <div class="card-contenido">
+        <div class="genero-badge" *ngIf="videojuego.genero">{{ videojuego.genero }}</div>
+
+        <h3 class="titulo">{{ videojuego.titulo }}</h3>
+
+        <div class="calificacion" *ngIf="videojuego.puntuacion != null">
+            <span *ngFor="let star of obtenerEstrellas()" class="estrella mat-icon">{{ star === 'filled' ? 'star' : (star === 'half' ? 'star_half' : 'star_border') }}</span>
+            <span class="puntuacion">({{ videojuego.puntuacion }}/10)</span>
+        </div>
+
+        <div class="plataformas">
+            <span *ngFor="let plataforma of videojuego.plataformas" class="plataforma-badge">
+                {{ plataforma }}
+            </span>
+        </div>
+
+        <div class="pie-card">
+            <span class="jugadores-activos">Jugadores activos: por hacer</span>
+            <span class="pie-hint">Ver ficha</span>
+        </div>
+    </div>
+</a>

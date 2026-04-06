@@ -1,0 +1,141 @@
+<div class="contenedor-detalle">
+    <button routerLink="/videojuegos" class="btn-volver"><span class="mat-icon sm">arrow_back</span> Volver</button>
+
+    <div *ngIf="cargando" class="cargando">
+        <p>Cargando...</p>
+    </div>
+
+    <div *ngIf="error" class="error-msg">
+        <p>{{ error }}</p>
+    </div>
+
+    <div *ngIf="videojuego" class="card-grande">
+        <img *ngIf="videojuego.imagen" [src]="videojuego.imagen" [alt]="videojuego.titulo" class="imagen-card" />
+        <div *ngIf="!videojuego.imagen" class="placeholder-grande"><span class="mat-icon" style="font-size:6em">sports_esports</span></div>
+
+        <div class="overlay-contenido">
+            <h2 class="titulo-juego">{{ videojuego.titulo }}</h2>
+            <div class="fila-acciones-juego">
+              <a
+                *ngIf="auth.isLoggedIn() && videojuego"
+                [routerLink]="['/salas']"
+                [queryParams]="{ videojuego: videojuego._id }"
+                class="btn-entrar-sala">
+                Entrar a sala
+              </a>
+              <a
+                *ngIf="!auth.isLoggedIn()"
+                routerLink="/"
+                class="btn-entrar-sala btn-salas-invite"
+                title="Inicia sesión desde el inicio para usar salas">
+                Entrar a sala
+              </a>
+              <a
+                *ngIf="auth.isLoggedIn() && videojuego"
+                [routerLink]="['/salas']"
+                [queryParams]="{ crear: '1', videojuego: videojuego._id }"
+                class="btn-crear-sala">
+                Crear sala
+              </a>
+              <a
+                *ngIf="!auth.isLoggedIn()"
+                routerLink="/"
+                class="btn-crear-sala btn-salas-invite"
+                title="Inicia sesión desde el inicio para crear salas">
+                Crear sala
+              </a>
+              <button
+                *ngIf="auth.isLoggedIn()"
+                type="button"
+                class="btn-estrella-fav"
+                [class.rellena]="esFavoritoUsuario()"
+                [disabled]="favoritoCargando"
+                (click)="toggleFavorito()"
+                [attr.aria-label]="esFavoritoUsuario() ? 'Quitar de favoritos' : 'Añadir a favoritos'"
+                [title]="esFavoritoUsuario() ? 'Quitar de favoritos' : 'Añadir a favoritos'"
+              >
+                <span *ngIf="favoritoCargando">…</span>
+                <span *ngIf="!favoritoCargando" class="mat-icon" style="font-size:2rem">{{ esFavoritoUsuario() ? 'star' : 'star_border' }}</span>
+              </button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="videojuego" class="contenedor-info">
+        <div class="card-description">
+            <div class="card-descripcion">
+                <h2 class="titulo-card">Descripción</h2>
+                <p>{{ videojuego.descripcion || 'Sin descripción disponible' }}</p>
+            </div>
+            <div *ngIf="videojuego" class="cajones-recursos">
+                <details class="cajon-recurso">
+                    <summary class="cajon-summary cajon-summary--guias">
+                        <span class="mat-icon sm">menu_book</span>
+                        Guías y tutoriales
+                    </summary>
+                    <div class="cajon-cuerpo">
+                        <p class="cajon-nota">Enlaces de ejemplo a sitios donde suele haber guías y ayuda para juegos online.</p>
+                        <ul class="cajon-lista">
+                            <li><a href="https://www.pcgamingwiki.com/wiki/Home" target="_blank" rel="noopener noreferrer">PCGamingWiki</a> — fichas técnicas y soluciones</li>
+                            <li><a href="https://www.reddit.com/r/gaming/" target="_blank" rel="noopener noreferrer">r/gaming</a> — comunidad y consejos</li>
+                            <li><a href="https://store.steampowered.com/" target="_blank" rel="noopener noreferrer">Steam</a> — tienda y comunidad</li>
+                            <li><a href="https://www.ign.com/wikis" target="_blank" rel="noopener noreferrer">IGN Wikis</a> — wikis de juegos</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="cajon-recurso">
+                    <summary class="cajon-summary cajon-summary--videos">
+                        <span class="mat-icon sm">play_circle</span>
+                        Videos
+                    </summary>
+                    <div class="cajon-cuerpo">
+                        <p class="cajon-nota">Canales y búsquedas útiles para ver gameplay, tutoriales o directos.</p>
+                        <ul class="cajon-lista">
+                            <li><a href="https://www.youtube.com/gaming" target="_blank" rel="noopener noreferrer">YouTube Gaming</a></li>
+                            <li><a href="https://www.twitch.tv/" target="_blank" rel="noopener noreferrer">Twitch</a> — directos y categorías de juegos</li>
+                            <li><a href="https://www.youtube.com/results?search_query=tutorial+multijugador+online" target="_blank" rel="noopener noreferrer">YouTube: tutoriales multijugador</a></li>
+                            <li><a href="https://www.youtube.com/@IGN" target="_blank" rel="noopener noreferrer">Canal IGN</a> — noticias y vídeos</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <div class="card-informacion">
+            <h2 class="titulo-card">Información de Juego</h2>
+
+            <div class="info-item" *ngIf="videojuego.genero">
+                <h3>Género</h3>
+                <p>{{ videojuego.genero }}</p>
+            </div>
+
+            <div class="info-item" *ngIf="videojuego.desarrollador">
+                <h3>Desarrollador</h3>
+                <p>{{ videojuego.desarrollador }}</p>
+            </div>
+
+            <div class="info-item" *ngIf="videojuego.plataformas.length">
+                <h3>Plataformas</h3>
+                <div class="plataformas-list">
+                    <span *ngFor="let plataforma of videojuego.plataformas" class="plataforma-tag">
+                        {{ plataforma }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="info-item" *ngIf="videojuego.puntuacion != null">
+                <h3>Calificación</h3>
+                <div class="calificacion-info">
+                    <span *ngFor="let star of obtenerEstrellas()" class="estrella-info mat-icon">{{ star === 'filled' ? 'star' : (star === 'half' ? 'star_half' : 'star_border') }}</span>
+                    <span class="puntuacion-info">({{ videojuego.puntuacion }}/10)</span>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <h3>Jugadores activos</h3>
+                <p class="jugadores-activos-tag">Por hacer</p>
+            </div>
+        </div>
+    </div>
+</div>

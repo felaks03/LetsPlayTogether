@@ -1,0 +1,111 @@
+<div class="dashboard-container">
+    <div class="header">
+        <h1>Videojuegos</h1>
+        <p>Explora los mejores juegos disponibles</p>
+    </div>
+
+    <div class="buscador-row">
+        <div class="buscador">
+            <input type="text" class="input-busqueda" placeholder="Buscar por título o género..."
+                [(ngModel)]="terminoBusqueda">
+        </div>
+        <button *ngIf="esAdmin" class="btn-admin btn-añadir" (click)="abrirModalCrear()">
+            + Añadir Videojuego
+        </button>
+    </div>
+
+    <div *ngIf="error" class="error-msg">
+        {{ error }}
+        <button class="btn-cerrar-error" (click)="error = null"><span class="mat-icon sm">close</span></button>
+    </div>
+
+    <div *ngIf="cargando" class="cargando">
+        <p>Cargando videojuegos...</p>
+    </div>
+
+    <div class="videojuegos-grid" *ngIf="!cargando">
+        <div *ngFor="let vj of videojuegosFiltrados" class="card-wrapper">
+            <app-videojuego-card [videojuego]="vj"></app-videojuego-card>
+            <div *ngIf="esAdmin" class="admin-acciones">
+                <button class="btn-admin btn-editar" (click)="abrirModalEditar(vj)"><span class="mat-icon sm">edit</span> Editar</button>
+                <button class="btn-admin btn-eliminar" (click)="confirmarEliminar(vj)"><span class="mat-icon sm">delete</span> Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!cargando && videojuegosFiltrados.length === 0" class="sin-resultados">
+        <p>No hay videojuegos disponibles</p>
+    </div>
+
+    <!-- Modal Crear/Editar -->
+    <div *ngIf="mostrarModal" class="modal-overlay" (click)="cerrarModal()">
+        <div class="modal-contenido" (click)="$event.stopPropagation()">
+            <h2>{{ modoEdicion ? 'Editar Videojuego' : 'Añadir Videojuego' }}</h2>
+
+            <div class="form-group">
+                <label>Título *</label>
+                <input type="text" [(ngModel)]="videojuegoEditando.titulo" placeholder="Título del videojuego">
+            </div>
+
+            <div class="form-group">
+                <label>Descripción</label>
+                <textarea [(ngModel)]="videojuegoEditando.descripcion" placeholder="Descripción del videojuego"
+                    rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Imagen (URL)</label>
+                <input type="text" [(ngModel)]="videojuegoEditando.imagen" placeholder="https://...">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Género</label>
+                    <input type="text" [(ngModel)]="videojuegoEditando.genero" placeholder="RPG, FPS, etc.">
+                </div>
+                <div class="form-group">
+                    <label>Desarrollador</label>
+                    <input type="text" [(ngModel)]="videojuegoEditando.desarrollador" placeholder="Nombre del estudio">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Plataformas (separadas por coma)</label>
+                    <input type="text" [(ngModel)]="plataformasTexto" placeholder="PC, PS5, Xbox">
+                </div>
+                <div class="form-group">
+                    <label>Puntuación (0-10)</label>
+                    <input type="number" [(ngModel)]="videojuegoEditando.puntuacion" min="0" max="10" step="0.1">
+                </div>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" [(ngModel)]="videojuegoEditando.multijugador">
+                    Multijugador
+                </label>
+            </div>
+
+            <div class="modal-acciones">
+                <button class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+                <button class="btn-guardar" (click)="guardarVideojuego()">
+                    {{ modoEdicion ? 'Guardar Cambios' : 'Crear Videojuego' }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Confirmar Eliminar -->
+    <div *ngIf="mostrarConfirmacion" class="modal-overlay" (click)="cancelarEliminar()">
+        <div class="modal-contenido modal-confirmacion" (click)="$event.stopPropagation()">
+            <h2>¿Eliminar videojuego?</h2>
+            <p>Estás a punto de eliminar <strong>{{ videojuegoAEliminar?.titulo }}</strong>. Esta acción no se puede
+                deshacer.</p>
+            <div class="modal-acciones">
+                <button class="btn-cancelar" (click)="cancelarEliminar()">Cancelar</button>
+                <button class="btn-eliminar-confirm" (click)="eliminarVideojuego()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>

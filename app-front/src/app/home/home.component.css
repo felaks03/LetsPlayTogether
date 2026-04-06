@@ -1,0 +1,131 @@
+.landing {
+  width: min(1280px, 100%);
+  margin: 0 auto;
+  min-height: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 44px 24px 36px;
+  align-items: stretch;
+}
+
+.landing-left,
+.landing-right {
+  background: linear-gradient(135deg, #1e0f32 0%, #12081f 100%);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  border-radius: 16px;
+  padding: 24px 26px;
+  min-height: 500px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.landing-left h1 {
+  margin: 0 0 8px;
+  background: var(--gradiente-titulos);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  margin: 0 0 18px;
+  color: var(--texto-suave, #94a3b8);
+}
+
+.news-card {
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 12px;
+  transition: all 0.3s ease;
+}
+
+.news-card:hover {
+  border-color: rgba(124, 58, 237, 0.5);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.15);
+}
+
+.news-card img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.news-card:hover img {
+  transform: scale(1.02);
+}
+
+.news-card h3 {
+  margin: 12px 0 8px;
+  color: #f5d0fe;
+  text-shadow: 0 0 12px rgba(192, 132, 252, 0.4);
+}
+
+.news-card p {
+  margin: 0 0 6px;
+  color: #c7d2f1;
+}
+
+.news-controls {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.news-controls button {
+  border: 1px solid rgba(34, 211, 238, 0.4);
+  background: rgba(20, 20, 40, 0.8);
+  color: #a5f3fc;
+  border-radius: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.news-controls button:hover {
+  background: rgba(192, 132, 252, 0.2);
+  border-color: rgba(192, 132, 252, 0.5);
+  box-shadow: 0 0 16px rgba(34, 211, 238, 0.2);
+}
+
+.news-controls span {
+  color: #fde68a;
+  font-weight: 600;
+}
+
+.landing-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Pantallas estrechas: solo login / registro (sin carrusel de noticias) */
+@media (max-width: 900px) {
+  .landing {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding: 16px 14px 28px;
+    padding-top: 24px;
+    gap: 0;
+  }
+
+  .landing-left {
+    display: none !important;
+  }
+
+  .landing-right {
+    min-height: auto;
+    padding: 20px 18px;
+  }
+}
